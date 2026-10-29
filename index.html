@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ping me — Smart Anonymous Vehicle Contact Stickers</title>
+  <meta name="description" content="Never get blocked. Never leave your phone number. Ping Me is the smart QR code sticker for your car windshield that lets anyone contact you privately in seconds.">
+  
+  <!-- Favicon using the uploaded logo -->
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Google Fonts: Quicksand & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       THEME VARIABLES: LIGHT (Example 2 Default) & DARK (Example 3 Urban)
+       ========================================================================== */
+    :root {
+      --font-display: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* DEFAULT (LIGHT MODE): Example 2 - Daylight Clean SaaS */
+    html[data-theme="light"] {
+      --bg-body: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-surface-elevated: #F1F5F9;
+      --bg-card: #FFFFFF;
+      --bg-card-border: #E2E8F0;
+      --bg-card-hover: #F8FAFC;
+
+      --text-heading: #0F172A;
+      --text-body: #475569;
+      --text-muted: #94A3B8;
+
+      --brand-lime: #BCF249;
+      --brand-lime-text: #649600;
+      --brand-lime-glow: rgba(188, 242, 73, 0.35);
+      --brand-lime-subtle: #F2FCE2;
+
+      --nav-bg: rgba(255, 255, 255, 0.92);
+      --pill-bg: #EDF2F7;
+      --hero-grid: radial-gradient(circle at 50% 10%, rgba(188, 242, 73, 0.25) 0%, rgba(248, 250, 252, 0) 65%);
+
+      --btn-primary-bg: #0F172A;
+      --btn-primary-text: #FFFFFF;
+      --btn-secondary-bg: #FFFFFF;
+      --btn-secondary-border: #CBD5E1;
+      --btn-secondary-text: #0F172A;
+
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --card-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.08);
+
+      --logo-badge-bg: #0F172A;
+      --logo-badge-padding: 6px 16px;
+      --logo-badge-radius: 999px;
+      --logo-badge-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+    }
+
+    /* DARK MODE: Example 3 - Urban Vibrant Neo-Pulse */
+    html[data-theme="dark"] {
+      --bg-body: #0D1117;
+      --bg-surface: #141A23;
+      --bg-surface-elevated: #1C232E;
+      --bg-card: #151C24;
+      --bg-card-border: #27313F;
+      --bg-card-hover: #1E2735;
+
+      --text-heading: #FFFFFF;
+      --text-body: #A0AEC0;
+      --text-muted: #718096;
+
+      --brand-lime: #CEF86B;
+      --brand-lime-text: #CEF86B;
+      --brand-lime-glow: rgba(206, 248, 107, 0.45);
+      --brand-lime-subtle: rgba(206, 248, 107, 0.12);
+
+      --nav-bg: rgba(13, 17, 23, 0.92);
+      --pill-bg: #1E2837;
+      --hero-grid: radial-gradient(ellipse at 50% 0%, rgba(188, 242, 73, 0.18) 0%, rgba(13, 17, 23, 0) 65%);
+
+      --btn-primary-bg: #BCF249;
+      --btn-primary-text: #0D1117;
+      --btn-secondary-bg: #1C2430;
+      --btn-secondary-border: #2F3B4D;
+      --btn-secondary-text: #FFFFFF;
+
+      --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      --card-shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.5);
+
+      --logo-badge-bg: transparent;
+      --logo-badge-padding: 0;
+      --logo-badge-radius: 0;
+      --logo-badge-shadow: none;
+    }
+
+    /* ==========================================================================
+       BASE STYLES & RESET
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-body);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    h1, h2, h3, h4, .brand-font, .btn, .tag, .price-val {
+      font-family: var(--font-display);
+      letter-spacing: -0.01em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ==========================================================================
+       STICKY NAVIGATION
+       ========================================================================== */
+    .header-dock {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--bg-card-border);
+      transition: var(--transition-smooth);
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 0;
+    }
+
+    /* Brand Logo Wrapper (Ensures crisp contrast in both light & dark mode) */
+    .brand-logo-container {
+      display: inline-flex;
+      align-items: center;
+      background: var(--logo-badge-bg);
+      padding: var(--logo-badge-padding);
+      border-radius: var(--logo-badge-radius);
+      box-shadow: var(--logo-badge-shadow);
+      transition: var(--transition-smooth);
+    }
+
+    .brand-logo-img {
+      height: 38px;
+      width: auto;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+
+    .brand-logo-container:hover .brand-logo-img {
+      transform: scale(1.03);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-body);
+      transition: var(--transition-smooth);
+    }
+
+    .nav-link:hover {
+      color: var(--text-heading);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    /* Modern Light/Dark Toggle Switch */
+    .theme-mode-toggle {
+      background: var(--pill-bg);
+      border: 1px solid var(--bg-card-border);
+      color: var(--text-heading);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition-smooth);
+    }
+
+    .theme-mode-toggle:hover {
+      border-color: var(--brand-lime);
+      transform: translateY(-1px);
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      box-shadow: 0 4px 18px var(--brand-lime-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--brand-lime-glow);
+      filter: brightness(1.08);
+    }
+
+    .btn-secondary {
+      background: var(--btn-secondary-bg);
+      border-color: var(--btn-secondary-border);
+      color: var(--btn-secondary-text);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--brand-lime);
+      transform: translateY(-2px);
+    }
+
+    .btn-lg {
+      padding: 0.95rem 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* ==========================================================================
+       HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      padding: 4.5rem 0 5rem;
+      background: var(--hero-grid);
+      position: relative;
+    }
+
+    .hero-grid-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--brand-lime-subtle);
+      border: 1px solid rgba(188, 242, 73, 0.35);
+      color: var(--brand-lime-text);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: 3.8rem;
+      line-height: 1.08;
+      color: var(--text-heading);
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-title span.lime-word {
+      color: var(--brand-lime-text);
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-body);
+      line-height: 1.6;
+      margin-bottom: 2.2rem;
+      max-width: 540px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .trust-metrics {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--bg-card-border);
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      font-family: var(--font-display);
+    }
+
+    .metric-lbl {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       HERO VISUAL / WINDSHIELD SHOWCASE
+       ========================================================================== */
+    .hero-showcase-box {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      text-align: center;
+    }
+
+    /* Realistic Windshield Surface */
+    .windshield-glass {
+      width: 100%;
+      height: 320px;
+      background: linear-gradient(180deg, #182230 0%, #0D121B 100%);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 2px 20px rgba(255, 255, 255, 0.05);
+    }
+
+    /* Sticker on Windshield using user's uploaded logo.png */
+    .windshield-sticker {
+      background: #080A0D;
+      border: 3px solid var(--brand-lime);
+      border-radius: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 0 35px var(--brand-lime-glow);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      animation: floatTag 5s ease-in-out infinite;
+    }
+
+    .windshield-sticker:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px var(--brand-lime-glow);
+    }
+
+    @keyframes floatTag {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* Vector QR Inside Tag */
+    .qr-tag-canvas {
+      width: 100px;
+      height: 100px;
+      background: #FFFFFF;
+      border-radius: 0.6rem;
+      padding: 0.45rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sticker-logo-img {
+      height: 30px;
+      width: auto;
+      display: block;
+    }
+
+    /* ==========================================================================
+       HOW IT WORKS (3 SIMPLE STEPS)
+       ========================================================================== */
+    .section-pad {
+      padding: 6rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--brand-lime-text);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 2.75rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      line-height: 1.18;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--text-body);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.5rem;
+      padding: 2.25rem 2rem;
+      position: relative;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition-smooth);
+    }
+
+    .step-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--card-shadow-hover);
+      border-color: var(--brand-lime);
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--brand-lime-subtle);
+      color: var(--brand-lime-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-card h3 {
+      font-size: 1.35rem;
+      color: var(--text-heading);
+      margin-bottom: 0.65rem;
+    }
+
+    /* ==========================================================================
+       SCENARIOS
+       ========================================================================== */
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .scenario-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.25rem;
+      padding: 1.75rem;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    .scenario-card:hover {
+      border-color: var(--brand-lime);
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .scenario-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: var(--pill-bg);
+      color: var(--brand-lime-text);
+      display: inline-block;
+      margin-bottom: 0.85rem;
+    }
+
+    .scenario-card h4 {
+      font-size: 1.2rem;
+      color: var(--text-heading);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ==========================================================================
+       INTERACTIVE PHONE SCANNER SIMULATOR
+       ========================================================================== */
+    .simulator-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 2rem;
+      padding: 3rem;
+      box-shadow: var(--card-shadow);
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .phone-frame {
+      width: 100%;
+      max-width: 370px;
+      margin: 0 auto;
+      background: #000000;
+      border-radius: 2.75rem;
+      border: 4px solid #232733;
+      padding: 1rem 0.85rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .phone-speaker {
+      width: 80px;
+      height: 4px;
+      background: #333;
+      border-radius: 999px;
+      margin: 0 auto 0.85rem;
+    }
+
+    .phone-screen {
+      background: #0E1117;
+      border-radius: 2rem;
+      padding: 1.25rem;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      color: #FFFFFF;
+    }
+
+    .screen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #1F2432;
+    }
+
+    .preset-btn {
+      background: #171C26;
+      border: 1px solid #283144;
+      color: #FFFFFF;
+      padding: 0.75rem 0.9rem;
+      border-radius: 0.85rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+      transition: var(--transition-smooth);
+      font-family: var(--font-body);
+    }
+
+    .preset-btn:hover, .preset-btn.selected {
+      border-color: #BCF249;
+      background: rgba(188, 242, 73, 0.12);
+      color: #BCF249;
+    }
+
+    .btn-send-ping {
+      width: 100%;
+      background: #BCF249;
+      color: #08090C;
+      font-weight: 700;
+      font-family: var(--font-display);
+      padding: 0.85rem;
+      border-radius: 0.85rem;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    /* WhatsApp View */
+    .whatsapp-bubble {
+      background: #005C4B;
+      color: #E9EDEF;
+      padding: 0.85rem 1rem;
+      border-radius: 0.85rem;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    /* ==========================================================================
+       PRICING PACKS
+       ========================================================================== */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.75rem;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .pricing-card.featured {
+      border: 2px solid var(--brand-lime);
+      transform: translateY(-6px);
+      box-shadow: var(--card-shadow-hover), 0 0 30px var(--brand-lime-glow);
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand-lime);
+      color: #08090C;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .price-num {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    /* ==========================================================================
+       COMPARISON TABLE
+       ========================================================================== */
+    .comparison-table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      margin-top: 3.5rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .compare-table th, .compare-table td {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid var(--bg-card-border);
+      font-size: 0.9rem;
+    }
+
+    .compare-table th {
+      background: var(--bg-surface-elevated);
+      color: var(--text-heading);
+      font-family: var(--font-display);
+    }
+
+    .col-highlight {
+      background: var(--brand-lime-subtle);
+      font-weight: 600;
+      color: var(--text-heading) !important;
+    }
+
+    /* ==========================================================================
+       FAQ ACCORDION
+       ========================================================================== */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1rem;
+      padding: 1.25rem 1.75rem;
+      cursor: pointer;
+      box-shadow: var(--card-shadow);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      font-family: var(--font-display);
+    }
+
+    .faq-answer {
+      display: none;
+      margin-top: 0.85rem;
+      font-size: 0.95rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .footer {
+      padding: 4rem 0 2rem;
+      border-top: 1px solid var(--bg-card-border);
+      background: var(--bg-surface);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Toast */
+    .toast-pill {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #0F172A;
+      color: #FFFFFF;
+      border: 1px solid var(--brand-lime);
+      padding: 0.75rem 1.4rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: var(--transition-smooth);
+      pointer-events: none;
+    }
+
+    .toast-pill.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid-layout, .simulator-box, .steps-grid, .scenarios-grid, .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-menu { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       TOP NAVIGATION WITH LIGHT / DARK TOGGLE
+       ========================================================================== -->
+  <header class="header-dock">
+    <div class="container">
+      <nav class="navbar">
+        <!-- Brand using user's uploaded logo.png -->
+        <a href="#hero" class="brand-logo-container">
+          <img src="logo.png" alt="ping me logo" class="brand-logo-img">
+        </a>
+
+        <ul class="nav-menu">
+          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="#scenarios" class="nav-link">Scenarios</a></li>
+          <li><a href="#simulator" class="nav-link">Live Demo</a></li>
+          <li><a href="#pricing" class="nav-link">Plan &amp; Pricing</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <!-- Light / Dark Mode Toggle Button -->
+          <button class="theme-mode-toggle" id="themeToggleBtn" onclick="toggleThemeMode()">
+            <span id="themeIcon">🌙</span>
+            <span id="themeLabel">Dark Mode</span>
+          </button>
+          
+          <a href="login.html" class="nav-link" style="font-weight: 700; color: var(--text-heading);">Portal Login</a>
+          <a href="#pricing" class="btn btn-primary">Subscribe — €10/yr</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION (Example 2 Light / Example 3 Dark)
+       ========================================================================== -->
+  <section class="hero-section" id="hero">
+    <div class="container hero-grid-layout">
+      <!-- Left Copy -->
+      <div>
+        <div class="badge-pill">
+          <span>🇳🇱</span>
+          <span>Anonymous Vehicle Contact • Netherlands Launch</span>
+        </div>
+
+        <h1 class="hero-title">
+          The friendly way to reach <span class="lime-word">parked drivers.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Place a weatherproof <strong>Ping Me</strong> QR sticker on your windshield. If your car is blocking a driveway, lights are left on, or in an emergency, anyone can reach you privately in seconds via your choice of <strong>WhatsApp, SMS, or Email</strong>.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#pricing" class="btn btn-primary btn-lg">
+            <span>Subscribe &amp; Get Sticker (€10/yr)</span>
+            <span>→</span>
+          </a>
+          <button onclick="scrollToSimulator()" class="btn btn-secondary btn-lg">
+            <span>📱</span>
+            <span>Try Scanner Simulator</span>
+          </button>
+        </div>
+
+        <div class="trust-metrics">
+          <div class="metric-item">
+            <span class="metric-val">€10 / yr</span>
+            <span class="metric-lbl">Sticker Included</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-val">1 Channel</span>
+            <span class="metric-lbl">WhatsApp, SMS or Email</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-val">PostNL</span>
+            <span class="metric-lbl">Letterbox Delivery in NL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual Mockup (Windshield with user's uploaded logo) -->
+      <div class="hero-showcase-box">
+        <div class="windshield-glass">
+          <!-- Sticker Badge displaying user's logo.png -->
+          <div class="windshield-sticker" onclick="window.open('tag.html?token=PM-NL-8924', '_blank')">
+            <div class="qr-tag-canvas">
+              <svg viewBox="0 0 100 100" fill="#080A0D" style="width: 100%; height: 100%;">
+                <rect x="0" y="0" width="30" height="30" rx="4" />
+                <rect x="5" y="5" width="20" height="20" rx="2" fill="#FFFFFF" />
+                <rect x="10" y="10" width="10" height="10" rx="1" fill="#080A0D" />
+                <rect x="70" y="0" width="30" height="30" rx="4" />
+                <rect x="75" y="5" width="20" height="20" rx="2" fill="#FFFFFF" />
+                <rect x="80" y="10" width="10" height="10" rx="1" fill="#080A0D" />
+                <rect x="0" y="70" width="30" height="30" rx="4" />
+                <rect x="5" y="75" width="20" height="20" rx="2" fill="#FFFFFF" />
+                <rect x="10" y="80" width="10" height="10" rx="1" fill="#080A0D" />
+                <circle cx="50" cy="50" r="14" fill="#BCF249" />
+              </svg>
+            </div>
+            <!-- Uploaded logo displayed right on the windshield sticker -->
+            <img src="logo.png" alt="ping me tag" class="sticker-logo-img">
+          </div>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+          👆 Click windshield tag to test live phone simulator
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HOW IT WORKS (3 STEPS)
+       ========================================================================== -->
+  <section class="section-pad" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Frictionless Experience</span>
+        <h2 class="section-title">How Ping Me Works in 3 Seconds</h2>
+        <p class="section-desc">No handwriting notes, no leaving your personal number for strangers, and no apps required for anyone.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Stick in 10 Seconds</h3>
+          <p>Peel and apply your premium UV-resistant Ping Me sticker to the inside of your windshield or rear glass.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Camera Scan</h3>
+          <p>If someone needs you, they point any smartphone camera at your QR tag. A clean web page opens instantly—no app download needed.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Masked WhatsApp Ping</h3>
+          <p>You receive an instant alert on WhatsApp. Reply with a single tap while your real phone number stays 100% hidden.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SCENARIOS
+       ========================================================================== -->
+  <section class="section-pad" id="scenarios" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Everyday Situations</span>
+        <h2 class="section-title">Designed for Every Parking Conflict</h2>
+        <p class="section-desc">From blocked driveways to forgotten headlights, Ping Me resolves awkward parking situations with zero tension.</p>
+      </div>
+
+      <div class="scenarios-grid">
+        <div class="scenario-card" onclick="selectScenario('blocked')">
+          <span class="scenario-pill">Most Frequent</span>
+          <h4>🚗 Blocked In / Double Parked</h4>
+          <p>Prevent towing or angry honking. The driver you blocked pings you politely and you can reply "Down in 2 minutes!"</p>
+        </div>
+
+        <div class="scenario-card" onclick="selectScenario('lights')">
+          <span class="scenario-pill">Battery Saver</span>
+          <h4>💡 Headlights Left On</h4>
+          <p>Avoid waking up to a completely dead battery. A friendly passerby notifies you right after you park.</p>
+        </div>
+
+        <div class="scenario-card" onclick="selectScenario('window')">
+          <span class="scenario-pill">Weather & Theft</span>
+          <h4>🪟 Window Down in Heavy Rain</h4>
+          <p>Left your window or sunroof cracked? Get alerted before your car interior gets drenched or broken into.</p>
+        </div>
+
+        <div class="scenario-card" onclick="selectScenario('alarm')">
+          <span class="scenario-pill">Peace & Quiet</span>
+          <h4>🚨 Car Alarm Triggered</h4>
+          <p>Know immediately if an impact sets off your alarm so you can silence it before neighbors get irritated.</p>
+        </div>
+
+        <div class="scenario-card" onclick="selectScenario('bump')">
+          <span class="scenario-pill">Honest Contact</span>
+          <h4>🛡️ Parking Scratches & Contact</h4>
+          <p>Give honest drivers an easy, safe way to contact you for insurance details without sticking paper notes in the rain.</p>
+        </div>
+
+        <div class="scenario-card" onclick="selectScenario('ev')">
+          <span class="scenario-pill">EV Etiquette</span>
+          <h4>⚡ EV Charging Complete</h4>
+          <p>Let other EV drivers ping you once your car reaches 80% charge so you can free up the charging spot gracefully.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE PHONE SIMULATOR
+       ========================================================================== -->
+  <section class="section-pad" id="simulator">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Live Demonstration</span>
+        <h2 class="section-title">Try Scanning a Ping Me Tag</h2>
+        <p class="section-desc">Experience both sides: how easy it is for someone to ping you, and how safe the alert appears on your phone.</p>
+      </div>
+
+      <div class="simulator-box">
+        <div>
+          <h3 style="font-size: 2rem; color: var(--text-heading); margin-bottom: 1rem;">
+            Test the live relay communication
+          </h3>
+          <p style="font-size: 1.05rem; color: var(--text-body); margin-bottom: 2rem;">
+            Choose a preset reason in the simulated smartphone, then hit <strong>"Send Anonymous Ping"</strong> to watch the WhatsApp alert arrive with 1-tap quick replies!
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="color: var(--brand-lime-text); font-size: 1.2rem;">✔</span>
+              <span style="color: var(--text-heading);"><strong>Zero phone numbers revealed</strong> to either party</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="color: var(--brand-lime-text); font-size: 1.2rem;">✔</span>
+              <span style="color: var(--text-heading);"><strong>Built-in anti-spam:</strong> Max 2 pings per 15 minutes</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="color: var(--brand-lime-text); font-size: 1.2rem;">✔</span>
+              <span style="color: var(--text-heading);"><strong>1-Tap ETA replies:</strong> "Coming down in 2 mins!"</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulated Device -->
+        <div class="phone-frame">
+          <div class="phone-speaker"></div>
+          <div class="phone-screen">
+            
+            <div id="scannerView">
+              <div class="screen-header">
+                <span style="font-size: 0.8rem; font-weight: 700; color: #BCF249;">🚗 PingMe Vehicle #PM-4480</span>
+                <span style="font-size: 0.7rem; color: #94A3B8; background: #1C232E; padding: 2px 6px; border-radius: 4px;">🛡️ Masked</span>
+              </div>
+
+              <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 0.75rem;">Select reason to alert owner:</p>
+
+              <button class="preset-btn selected" onclick="pickPreset(this, 'Car is blocking my vehicle')">
+                <span>🚗</span> Car is blocking my way
+              </button>
+              <button class="preset-btn" onclick="pickPreset(this, 'Headlights are left on')">
+                <span>💡</span> Lights are left on
+              </button>
+              <button class="preset-btn" onclick="pickPreset(this, 'Window is open / rain is coming in')">
+                <span>🪟</span> Window is open
+              </button>
+              <button class="preset-btn" onclick="pickPreset(this, 'Car alarm is going off')">
+                <span>🚨</span> Alarm sounding
+              </button>
+
+              <button class="btn-send-ping" onclick="triggerSimulatorPing()">
+                ⚡ Send Anonymous Ping
+              </button>
+            </div>
+
+            <!-- WhatsApp Simulated View -->
+            <div id="waView" style="display: none; flex-direction: column; height: 100%;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; background: #1F2C34; padding: 8px; border-radius: 8px;">
+                <div style="width: 32px; height: 32px; background: #BCF249; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">PM</div>
+                <div>
+                  <div style="font-size: 0.85rem; font-weight: 700; color: #fff;">Ping Me Bot</div>
+                  <div style="font-size: 0.65rem; color: #25D366;">Online • Encrypted Relay</div>
+                </div>
+              </div>
+
+              <div class="whatsapp-bubble">
+                <div style="font-weight: 700; color: #BCF249; margin-bottom: 4px;">🔔 New Vehicle Alert</div>
+                <div id="waMsgText">"Car is blocking my way"</div>
+                <div style="font-size: 0.7rem; color: #8696A0; text-align: right; margin-top: 6px;">Just now • Masked</div>
+              </div>
+
+              <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+                <p style="font-size: 0.75rem; color: #8696A0; text-align: center;">Send 1-Tap ETA Response:</p>
+                <button class="btn-secondary" style="padding: 6px; font-size: 0.8rem;" onclick="replyToast('Coming in 2 mins!')">
+                  🏃 "Coming down in 2 mins!"
+                </button>
+                <button class="btn-secondary" style="padding: 6px; font-size: 0.8rem;" onclick="resetSimulator()">
+                  🔄 Restart Scanner Demo
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PLAN & PRICING SECTION (Netherlands Launch)
+       ========================================================================== -->
+  <section class="section-pad" id="pricing" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Simple &amp; Transparent</span>
+        <h2 class="section-title">One Annual Plan. Zero Complications.</h2>
+        <p class="section-desc">Get your smart windshield sticker delivered through your letterbox by PostNL. No hidden fees.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.25fr 0.85fr; gap: 2rem; max-width: 980px; margin: 0 auto;">
+        
+        <!-- Main Annual Subscription Plan (€10/yr) -->
+        <div class="pricing-card featured">
+          <div class="featured-badge">Annual Subscription</div>
+          <h3 style="font-size: 1.75rem; color: var(--text-heading); margin-bottom: 0.5rem;">Ping Me Jaarabonnement</h3>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+            Everything you need to keep your car protected and reachable across the Netherlands.
+          </p>
+          
+          <div style="margin-bottom: 1.5rem; display: flex; align-items: baseline; gap: 0.5rem;">
+            <span class="price-num">€10</span>
+            <span style="font-size: 1.05rem; font-weight: 700; color: var(--text-muted);">/ year</span>
+          </div>
+
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 2rem; flex-grow: 1;">
+            <li>✓ <strong>1st Smart UV-Proof Windshield Sticker Included</strong></li>
+            <li>✓ <strong>Pick 1 Alert Channel:</strong> WhatsApp, SMS, or Email</li>
+            <li>✓ <strong>Free PostNL Letterbox Parcel (*Brievenbuspakje*)</strong> with tracking</li>
+            <li>✓ 100% Telephone number privacy (Encrypted Relay)</li>
+            <li>✓ Unlimited anonymous bystander pings &amp; 1-tap ETA replies</li>
+            <li>✓ Self-service cancel or renew anytime via Stripe Customer Portal</li>
+            <li>✓ Pay with <strong>iDEAL</strong>, Apple Pay, SEPA, or Credit Card</li>
+          </ul>
+
+          <a href="login.html" class="btn btn-primary btn-lg" style="width: 100%;">
+            <span>Subscribe for €10/year</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Replacement Sticker Card (€5) -->
+        <div class="pricing-card" style="justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--brand-lime-text); text-transform: uppercase;">Existing Members</span>
+            <h3 style="font-size: 1.45rem; color: var(--text-heading); margin-top: 0.25rem; margin-bottom: 0.5rem;">Replacement Sticker</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+              Replaced your windshield or got a new car? Order a new pre-printed tag for your existing account.
+            </p>
+
+            <div style="margin-bottom: 1.5rem; display: flex; align-items: baseline; gap: 0.5rem;">
+              <span class="price-num">€5</span>
+              <span style="font-size: 0.9rem; color: var(--text-muted);">one-time flat fee</span>
+            </div>
+
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; font-size: 0.88rem;">
+              <li>✓ 1x Pre-printed ceramic UV sticker</li>
+              <li>✓ PostNL letterbox delivery included</li>
+              <li>✓ 1-click token re-binding in your dashboard</li>
+              <li>✓ Available anytime during active subscription</li>
+            </ul>
+          </div>
+
+          <a href="dashboard.html" class="btn btn-secondary" style="width: 100%;">
+            <span>Order Replacement (€5)</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Comparison: Old Paper Note vs Ping Me -->
+      <div class="comparison-table-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Old Handwritten Paper Note</th>
+              <th class="col-highlight">Ping Me Smart Tag ⚡</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Privacy & Security</strong></td>
+              <td>❌ Zero. Exposes your mobile number to strangers.</td>
+              <td class="col-highlight">✅ 100% Anonymous. Number never revealed.</td>
+            </tr>
+            <tr>
+              <td><strong>Weather Resistance</strong></td>
+              <td>❌ Fades in sun, smudges in rain, blows away in wind.</td>
+              <td class="col-highlight">✅ 10-Year UV proof, water & heat resistant vinyl.</td>
+            </tr>
+            <tr>
+              <td><strong>Two-Way Communication</strong></td>
+              <td>❌ One-way or requires calling from stranger's phone.</td>
+              <td class="col-highlight">✅ Instant 1-tap WhatsApp reply with ETA.</td>
+            </tr>
+            <tr>
+              <td><strong>App Installation</strong></td>
+              <td>❌ N/A</td>
+              <td class="col-highlight">✅ 0 Apps required for anyone to scan.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FAQ ACCORDION
+       ========================================================================== -->
+  <section class="section-pad" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Got Questions?</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-desc">Everything you need to know about privacy, sticker durability, and how Ping Me works.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>Does the person scanning my sticker need to install an app?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-answer">
+            No! Any smartphone camera (iPhone or Android) scans the QR code directly and opens an ultra-fast web interface in their mobile browser. They simply select why they are contacting you and click send.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>How does Ping Me keep my phone number completely hidden?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-answer">
+            When someone scans your sticker, they interact exclusively with our secure proxy relay server. The message is encrypted and forwarded to your linked WhatsApp or SMS. Neither the person scanning nor anyone reading the QR data can see your real telephone number.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>What prevents someone from repeatedly spamming me?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-answer">
+            Ping Me has built-in smart rate-limiting. A single device can only send 2 alerts within 15 minutes. In addition, our automated filter rejects abusive language and gives you an instant 1-tap "Block Sender" button.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>Will the sticker withstand hot summers, car washes, and rain?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-answer">
+            Yes! Our stickers are printed on premium automotive-grade vinyl with an anti-UV laminate. When placed on the inside of your windshield, they are 100% protected from wiper friction, car wash brushes, and outdoor sun degradation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Logo in Footer -->
+        <div class="brand-logo-container">
+          <img src="logo.png" alt="ping me logo" class="brand-logo-img">
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; font-size: 0.88rem; font-weight: 600;">
+          <a href="login.html" style="color: var(--text-heading);">Portal Login</a>
+          <a href="dashboard.html" style="color: var(--text-heading);">Customer Dashboard</a>
+          <a href="tag.html?token=PM-NL-8924" target="_blank" style="color: var(--brand-lime-text);">Test QR Screen</a>
+        </div>
+
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+          © 2026 ping me Technologies B.V. (Netherlands). All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-pill" id="toastPill">Alert sent!</div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT: THEME TOGGLE & SIMULATOR
+       ========================================================================== -->
+  <script>
+    // 1. Light (Example 2 Default) / Dark (Example 3 Urban) Theme Toggle
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('pingme_theme_mode', theme);
+      
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+
+      if (theme === 'dark') {
+        icon.textContent = '☀️';
+        label.textContent = 'Light Mode';
+      } else {
+        icon.textContent = '🌙';
+        label.textContent = 'Dark Mode';
+      }
+    }
+
+    function toggleThemeMode() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const nextTheme = current === 'dark' ? 'light' : 'dark';
+      setTheme(nextTheme);
+      showToast(nextTheme === 'dark' ? 'Switched to Dark Mode (Urban)' : 'Switched to Light Mode (Daylight)');
+    }
+
+    // Initialize with Light Mode as Default unless user previously toggled or query param
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryTheme = urlParams.get('theme');
+      const savedTheme = localStorage.getItem('pingme_theme_mode');
+      if (queryTheme === 'dark' || (!queryTheme && savedTheme === 'dark')) {
+        setTheme('dark');
+      } else {
+        setTheme('light');
+      }
+    });
+
+    // 2. Interactive Simulator
+    let selectedMsg = "Car is blocking my vehicle";
+
+    function pickPreset(btn, msg) {
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedMsg = msg;
+    }
+
+    function selectScenario(type) {
+      const msgs = {
+        blocked: "Car is blocking my vehicle",
+        lights: "Headlights are left on",
+        window: "Window is open / rain is coming in",
+        alarm: "Car alarm is going off",
+        bump: "Minor parking lot contact",
+        ev: "EV charging is completed"
+      };
+      if (msgs[type]) {
+        selectedMsg = msgs[type];
+        scrollToSimulator();
+        showToast(`Loaded scenario: "${msgs[type]}"`);
+      }
+    }
+
+    function triggerSimulatorPing() {
+      document.getElementById('scannerView').style.display = 'none';
+      const wa = document.getElementById('waView');
+      wa.style.display = 'flex';
+      document.getElementById('waMsgText').textContent = `"${selectedMsg}"`;
+      showToast("🚀 Ping dispatched! Owner phone notified.");
+    }
+
+    function replyToast(text) {
+      showToast(`Reply sent to driver: "${text}"`);
+    }
+
+    function resetSimulator() {
+      document.getElementById('waView').style.display = 'none';
+      document.getElementById('scannerView').style.display = 'block';
+      showToast("Simulator reset to camera scanner view");
+    }
+
+    function scrollToSimulator() {
+      const el = document.getElementById('simulator');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 3. FAQ Accordion
+    function toggleFaq(el) {
+      el.classList.toggle('open');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastPill');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    function openOrder(pack, price) {
+      showToast(`Order initiated for ${pack} (${price})! Redirecting to secure checkout.`);
+    }
+  </script>
+</body>
+</html>

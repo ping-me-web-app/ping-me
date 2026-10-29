@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — ping me</title>
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Google Fonts: Quicksand & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-display: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html[data-theme="light"] {
+      --bg-body: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --bg-card-border: #E2E8F0;
+      --text-heading: #0F172A;
+      --text-body: #475569;
+      --text-muted: #94A3B8;
+      --brand-lime: #BCF249;
+      --brand-lime-text: #649600;
+      --brand-lime-glow: rgba(188, 242, 73, 0.35);
+      --btn-primary-bg: #0F172A;
+      --btn-primary-text: #FFFFFF;
+      --logo-badge-bg: #0F172A;
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    html[data-theme="dark"] {
+      --bg-body: #0D1117;
+      --bg-surface: #141A23;
+      --bg-card: #151C24;
+      --bg-card-border: #27313F;
+      --text-heading: #FFFFFF;
+      --text-body: #A0AEC0;
+      --text-muted: #718096;
+      --brand-lime: #CEF86B;
+      --brand-lime-text: #CEF86B;
+      --brand-lime-glow: rgba(206, 248, 107, 0.45);
+      --btn-primary-bg: #BCF249;
+      --btn-primary-text: #0D1117;
+      --logo-badge-bg: transparent;
+      --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-body);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      transition: background-color 0.3s ease;
+    }
+
+    h1, h2, h3, .brand-font, .btn {
+      font-family: var(--font-display);
+      letter-spacing: -0.01em;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.75rem;
+      padding: 2.5rem 2rem;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      position: relative;
+    }
+
+    .brand-logo-container {
+      display: inline-flex;
+      align-items: center;
+      background: var(--logo-badge-bg);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 1.75rem;
+      transition: var(--transition-smooth);
+    }
+
+    .brand-logo-img { height: 38px; width: auto; display: block; }
+
+    .login-title {
+      font-size: 1.85rem;
+      color: var(--text-heading);
+      margin-bottom: 0.5rem;
+    }
+
+    .login-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--bg-body);
+      border: 1px solid var(--bg-card-border);
+      color: var(--text-heading);
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 0.85rem 1rem;
+      border-radius: 0.85rem;
+      transition: var(--transition-smooth);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--brand-lime);
+      box-shadow: 0 0 0 3px var(--brand-lime-glow);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      border: none;
+      border-radius: 999px;
+      padding: 0.9rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 18px var(--brand-lime-glow);
+      transition: var(--transition-smooth);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .demo-bypass-btn {
+      margin-top: 1.25rem;
+      background: transparent;
+      border: 1px dashed var(--bg-card-border);
+      color: var(--text-body);
+      padding: 0.65rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition-smooth);
+      font-family: var(--font-body);
+    }
+
+    .demo-bypass-btn:hover {
+      border-color: var(--brand-lime);
+      color: var(--brand-lime-text);
+    }
+
+    .magic-link-sent {
+      display: none;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .sent-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--brand-lime);
+      color: #08090C;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+
+    .back-link {
+      margin-top: 1.75rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: inline-block;
+    }
+    .back-link:hover { color: var(--text-heading); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <!-- Brand Logo -->
+    <a href="index.html" class="brand-logo-container">
+      <img src="logo.png" alt="ping me logo" class="brand-logo-img">
+    </a>
+
+    <!-- Step 1: Request Magic Link Form -->
+    <div id="loginFormBlock">
+      <h1 class="login-title">Customer Portal</h1>
+      <p class="login-sub">Enter your email address to receive a secure, passwordless login link.</p>
+
+      <form id="magicLinkForm" onsubmit="handleSendLink(event)">
+        <div class="form-group">
+          <label class="form-label" for="userEmail">Email Address</label>
+          <input type="email" id="userEmail" class="form-input" placeholder="e.g. jan@bedrijf.nl" required value="driver@pingme.nl">
+        </div>
+
+        <button type="submit" class="btn-submit">
+          <span>✉️</span>
+          <span>Send Magic Link</span>
+        </button>
+      </form>
+
+      <!-- Instant Demo Login Button -->
+      <div>
+        <button class="demo-bypass-btn" onclick="directLogin('driver@pingme.nl')">
+          <span>⚡ One-Click Demo Access</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Magic Link Sent Confirmation -->
+    <div id="sentBlock" class="magic-link-sent">
+      <div class="sent-icon">✓</div>
+      <h2 style="font-size: 1.6rem; color: var(--text-heading); margin-bottom: 0.5rem;">Magic Link Sent!</h2>
+      <p style="font-size: 0.9rem; color: var(--text-body); margin-bottom: 1.5rem;">
+        We sent an instant login link to <strong id="sentEmailAddress" style="color: var(--text-heading);">driver@pingme.nl</strong>.
+      </p>
+      
+      <button onclick="goToDashboard()" class="btn-submit" style="background: var(--brand-lime); color: #08090C;">
+        <span>Open Portal Dashboard</span>
+        <span>→</span>
+      </button>
+    </div>
+
+    <br>
+    <a href="index.html" class="back-link">← Back to Homepage</a>
+  </div>
+
+  <script>
+    // Sync theme with main site
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('pingme_theme_mode') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    });
+
+    function handleSendLink(e) {
+      e.preventDefault();
+      const email = document.getElementById('userEmail').value.trim();
+      document.getElementById('sentEmailAddress').textContent = email;
+      localStorage.setItem('pingme_user_email', email);
+
+      document.getElementById('loginFormBlock').style.display = 'none';
+      document.getElementById('sentBlock').style.display = 'block';
+    }
+
+    function directLogin(email) {
+      localStorage.setItem('pingme_user_email', email);
+      window.location.href = 'dashboard.html';
+    }
+
+    function goToDashboard() {
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

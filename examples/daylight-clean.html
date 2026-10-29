@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ping me — Design Example 2: Daylight Clean SaaS</title>
+  <meta name="description" content="Friendly, simple, and clean QR contact tags for your vehicle. Reachable anytime without exposing your phone number.">
+
+  <!-- Google Fonts: Quicksand & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand-lime: #BCF249;
+      --brand-lime-dark: #6CA600;
+      --brand-lime-subtle: #F2FCE2;
+      
+      --bg-body: #F8FAFC;
+      --bg-white: #FFFFFF;
+      --border-light: #E2E8F0;
+
+      --text-dark: #0F172A;
+      --text-slate: #475569;
+      --text-muted: #94A3B8;
+
+      --font-fredoka: 'Quicksand', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-slate);
+      font-family: var(--font-body);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .brand-font, .btn, .tag, .price-val {
+      font-family: var(--font-fredoka);
+      letter-spacing: -0.01em;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Return Bar */
+    .top-meta-nav {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-light);
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-meta-nav a { color: var(--brand-lime-dark); font-weight: 600; }
+
+    /* Navigation */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+    }
+    .brand-logo-container {
+      display: inline-flex;
+      align-items: center;
+      background: #0F172A;
+      padding: 6px 16px;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+      transition: all 0.25s ease;
+    }
+    .brand-logo-container:hover {
+      transform: scale(1.02);
+    }
+    .brand-logo-img { height: 38px; width: auto; display: block; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.6rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+    .btn-dark {
+      background: #0F172A;
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+    }
+    .btn-dark:hover { background: #1E293B; transform: translateY(-2px); }
+    .btn-outline {
+      background: #FFFFFF;
+      border-color: var(--border-light);
+      color: var(--text-dark);
+    }
+    .btn-outline:hover { border-color: var(--brand-lime-dark); color: var(--brand-lime-dark); }
+
+    /* Hero */
+    .hero {
+      padding: 4rem 0 5rem;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--brand-lime-subtle);
+      border: 1px solid #D9F99D;
+      color: #3F6212;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: 3.8rem;
+      line-height: 1.1;
+      color: var(--text-dark);
+      margin-bottom: 1.25rem;
+    }
+    .hero-title span { color: var(--brand-lime-dark); }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-slate);
+      margin-bottom: 2rem;
+    }
+
+    /* Product Card Box */
+    .product-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      position: relative;
+    }
+
+    .sticker-art {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 1.5rem;
+      background: #0F172A;
+      border: 4px solid var(--brand-lime);
+      border-radius: 1.5rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(188, 242, 73, 0.3);
+    }
+
+    /* 3 Steps */
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      padding: 5rem 0;
+    }
+    .step-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: 1.5rem;
+      padding: 2.25rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .step-num {
+      width: 42px; height: 42px; border-radius: 50%; background: var(--brand-lime-subtle);
+      color: var(--brand-lime-dark); display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-family: var(--font-fredoka); margin-bottom: 1.25rem; font-size: 1.1rem;
+    }
+    .step-item h3 { font-size: 1.3rem; color: var(--text-dark); margin-bottom: 0.5rem; }
+
+    footer {
+      border-top: 1px solid var(--border-light);
+      padding: 3rem 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: #FFFFFF;
+    }
+
+    @media (max-width: 992px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .steps-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-meta-nav">
+    <span>☀️ <strong>Design Example 2:</strong> Daylight Clean SaaS (Minimalist, Trust-Focused & High Clarity)</span>
+    <a href="../index.html">← Back to Master Showcase</a>
+  </div>
+
+  <div class="container">
+    <nav class="navbar">
+      <a href="../index.html" class="brand-logo-container">
+        <img src="../logo.png" alt="ping me logo" class="brand-logo-img">
+      </a>
+
+      <div style="display: flex; gap: 1rem;">
+        <a href="../index.html#simulator" class="btn btn-outline">Live Simulator</a>
+        <a href="../index.html#pricing" class="btn btn-dark">Get Your Tag</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div>
+        <div class="pill-badge">
+          <span>🌿</span>
+          <span>Europe's Clean Privacy Standard</span>
+        </div>
+        <h1 class="hero-title">
+          The friendly way to reach <span>parked drivers.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Place a minimalist Ping Me sticker on your window. If your car is blocking an exit or your lights are on, neighbors reach you privately in 2 seconds.
+        </p>
+        <div style="display: flex; gap: 1rem;">
+          <a href="../index.html#pricing" class="btn btn-dark" style="padding: 1rem 2rem; font-size: 1.05rem;">Order Tag Pack ($9.99)</a>
+          <a href="../index.html#how-it-works" class="btn btn-outline" style="padding: 1rem 2rem; font-size: 1.05rem;">Learn How It Works</a>
+        </div>
+      </div>
+
+      <div class="product-box">
+        <div class="sticker-art">
+          <div style="background: white; border-radius: 8px; padding: 6px; width: 85px; height: 85px;">
+            <svg viewBox="0 0 100 100" fill="#0F172A">
+              <rect x="0" y="0" width="30" height="30" rx="4" />
+              <rect x="70" y="0" width="30" height="30" rx="4" />
+              <rect x="0" y="70" width="30" height="30" rx="4" />
+              <circle cx="50" cy="50" r="14" fill="#BCF249" />
+            </svg>
+          </div>
+          <span style="color: white; font-weight: 700; font-size: 0.75rem; margin-top: 8px; font-family: var(--font-fredoka);">
+            ping <span style="color: var(--brand-lime);">me</span>
+          </span>
+        </div>
+        <h3 style="font-size: 1.4rem; color: var(--text-dark); margin-bottom: 0.35rem;">UV & Weatherproof Tag</h3>
+        <p style="font-size: 0.9rem; color: var(--text-slate);">Attaches firmly inside windshield. Zero residue when removed.</p>
+      </div>
+    </section>
+
+    <!-- 3 Steps -->
+    <div class="steps-row">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <h3>Stick in 10s</h3>
+        <p>Peel and place on your front windshield or rear glass. No wiring, batteries, or pairing needed.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <h3>Camera Scan</h3>
+        <p>Anyone with an iPhone or Android camera scans the QR code. Zero apps to download.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <h3>Masked Ping</h3>
+        <p>You receive the alert on your preferred messenger with full telephone privacy.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 ping me — Design Example 2: Daylight Clean SaaS. Inspired by TagTalk & QrCar.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

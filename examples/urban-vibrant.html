@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ping me — Design Example 3: Urban Vibrant Neo-Pulse</title>
+  <meta name="description" content="High-energy smart parking stickers. Never get blocked in, towed, or caught with a dead battery.">
+
+  <!-- Google Fonts: Quicksand & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand-lime: #BCF249;
+      --brand-lime-neon: #CEF86B;
+      --brand-lime-glow: rgba(206, 248, 107, 0.45);
+      
+      --bg-dark: #0D1117;
+      --bg-card: #151B23;
+      --border-card: #27313F;
+
+      --text-white: #FFFFFF;
+      --text-gray: #A0AEC0;
+      --text-muted: #718096;
+
+      --font-fredoka: 'Quicksand', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-gray);
+      font-family: var(--font-body);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .brand-font, .btn, .tag, .price-val {
+      font-family: var(--font-fredoka);
+      letter-spacing: -0.01em;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Return Bar */
+    .top-meta-nav {
+      background: #151B23;
+      border-bottom: 1px solid var(--border-card);
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-meta-nav a { color: var(--brand-lime-neon); font-weight: 700; }
+
+    /* Navigation */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border-card);
+    }
+    .brand-logo-container {
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.25s ease;
+    }
+    .brand-logo-container:hover {
+      transform: scale(1.02);
+    }
+    .brand-logo-img { height: 42px; width: auto; display: block; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+    .btn-neon {
+      background: var(--brand-lime);
+      color: #0D1117;
+      box-shadow: 0 6px 20px rgba(188, 242, 73, 0.4);
+    }
+    .btn-neon:hover {
+      background: var(--brand-lime-neon);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(206, 248, 107, 0.6);
+    }
+    .btn-dark-pill {
+      background: #1C2430;
+      color: #FFFFFF;
+      border: 1px solid var(--border-card);
+    }
+    .btn-dark-pill:hover { border-color: var(--brand-lime); color: var(--brand-lime); }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 0 6rem;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .badge-pop {
+      display: inline-block;
+      background: #1E2836;
+      border: 1px solid var(--border-card);
+      color: var(--brand-lime-neon);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: 4.2rem;
+      line-height: 1.05;
+      color: var(--text-white);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title span { color: var(--brand-lime-neon); text-shadow: 0 0 30px rgba(188, 242, 73, 0.4); }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-gray);
+      margin-bottom: 2.2rem;
+    }
+
+    /* Sticker Showcase Box */
+    .sticker-showcase {
+      background: var(--bg-card);
+      border: 2px solid var(--border-card);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .sticker-plate {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 1.5rem;
+      background: #0D1117;
+      border: 4px solid var(--brand-lime-neon);
+      border-radius: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 40px rgba(188, 242, 73, 0.35);
+      animation: bouncePulse 4s infinite ease-in-out;
+    }
+
+    @keyframes bouncePulse {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Scenario Cards */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+      margin: 5rem 0;
+    }
+    .scenario-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      transition: all 0.25s ease;
+    }
+    .scenario-card:hover {
+      border-color: var(--brand-lime-neon);
+      transform: translateY(-5px);
+    }
+    .scenario-card h3 {
+      font-size: 1.3rem;
+      color: var(--text-white);
+      margin-bottom: 0.6rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-card);
+      padding: 3rem 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 992px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .scenario-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-meta-nav">
+    <span>🚀 <strong>Design Example 3:</strong> Urban Vibrant Neo-Pulse (High Energy, D2C Parking Solutions)</span>
+    <a href="../index.html">← Back to Master Showcase</a>
+  </div>
+
+  <div class="container">
+    <nav class="navbar">
+      <a href="../index.html" class="brand-logo-container">
+        <img src="../logo.png" alt="ping me logo" class="brand-logo-img">
+      </a>
+
+      <div style="display: flex; gap: 1rem;">
+        <a href="../index.html#simulator" class="btn btn-dark-pill">Live Demo</a>
+        <a href="../index.html#pricing" class="btn btn-neon">Get Tag Pack ($9.99)</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div>
+        <div class="badge-pop">
+          <span>⚡ High-Speed Urban Parking Guard</span>
+        </div>
+        <h1 class="hero-title">
+          Get pinged. Not <span>towed.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Double parked? Someone blocked in? Lights draining your battery? Let anyone ping your smartphone via QR in 2 seconds flat. 100% private.
+        </p>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="../index.html#pricing" class="btn btn-neon">Order Ping Me ($9.99)</a>
+          <a href="../index.html#simulator" class="btn btn-dark-pill">Try Scanner Simulator</a>
+        </div>
+      </div>
+
+      <div class="sticker-showcase">
+        <div class="sticker-plate">
+          <div style="background: #FFFFFF; border-radius: 12px; padding: 8px; width: 110px; height: 110px;">
+            <svg viewBox="0 0 100 100" fill="#0D1117">
+              <rect x="0" y="0" width="30" height="30" rx="4" />
+              <rect x="70" y="0" width="30" height="30" rx="4" />
+              <rect x="0" y="70" width="30" height="30" rx="4" />
+              <circle cx="50" cy="50" r="14" fill="#BCF249" />
+            </svg>
+          </div>
+          <p style="color: #FFFFFF; font-weight: 700; font-size: 0.85rem; margin-top: 10px; font-family: var(--font-fredoka);">
+            ping <span style="color: var(--brand-lime-neon);">me</span>
+          </p>
+        </div>
+        <h3 style="font-size: 1.5rem; color: #FFFFFF; margin-bottom: 0.5rem;">Anti-Sun UV Tag</h3>
+        <p style="font-size: 0.95rem; color: var(--text-gray);">Built for city heat, car washes, and street parking.</p>
+      </div>
+    </section>
+
+    <!-- Scenarios -->
+    <div class="scenario-grid">
+      <div class="scenario-card">
+        <h3>🚗 Blocked in Narrow City Streets</h3>
+        <p>No honking, no neighbor feuds. They tap your QR and you get a WhatsApp message with an ETA.</p>
+      </div>
+      <div class="scenario-card">
+        <h3>💡 Lights Left On</h3>
+        <p>Save yourself a \$150 roadside battery boost call when leaving your lights on overnight.</p>
+      </div>
+      <div class="scenario-card">
+        <h3>🌧️ Sunroof Left Open</h3>
+        <p>Neighbors ping you before sudden torrential rain drenches your car interior.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 ping me — Design Example 3: Urban Vibrant Neo-Pulse. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

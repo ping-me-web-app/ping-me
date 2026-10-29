@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard — ping me</title>
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Google Fonts: Quicksand & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-display: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* LIGHT MODE (Daylight Clean) */
+    html[data-theme="light"] {
+      --bg-body: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-surface-elevated: #F1F5F9;
+      --bg-card: #FFFFFF;
+      --bg-card-border: #E2E8F0;
+      --bg-card-hover: #F8FAFC;
+
+      --text-heading: #0F172A;
+      --text-body: #475569;
+      --text-muted: #94A3B8;
+
+      --brand-lime: #BCF249;
+      --brand-lime-text: #649600;
+      --brand-lime-glow: rgba(188, 242, 73, 0.35);
+      --brand-lime-subtle: #F2FCE2;
+
+      --btn-primary-bg: #0F172A;
+      --btn-primary-text: #FFFFFF;
+      --btn-secondary-bg: #FFFFFF;
+      --btn-secondary-border: #CBD5E1;
+      --btn-secondary-text: #0F172A;
+
+      --logo-badge-bg: #0F172A;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --card-shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --tracker-track: #E2E8F0;
+    }
+
+    /* DARK MODE (Urban Vibrant) */
+    html[data-theme="dark"] {
+      --bg-body: #0D1117;
+      --bg-surface: #141A23;
+      --bg-surface-elevated: #1C232E;
+      --bg-card: #151C24;
+      --bg-card-border: #27313F;
+      --bg-card-hover: #1E2735;
+
+      --text-heading: #FFFFFF;
+      --text-body: #A0AEC0;
+      --text-muted: #718096;
+
+      --brand-lime: #CEF86B;
+      --brand-lime-text: #CEF86B;
+      --brand-lime-glow: rgba(206, 248, 107, 0.45);
+      --brand-lime-subtle: rgba(206, 248, 107, 0.12);
+
+      --btn-primary-bg: #BCF249;
+      --btn-primary-text: #0D1117;
+      --btn-secondary-bg: #1C2430;
+      --btn-secondary-border: #2F3B4D;
+      --btn-secondary-text: #FFFFFF;
+
+      --logo-badge-bg: transparent;
+      --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      --card-shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.5);
+      --tracker-track: #263346;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-body);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    h1, h2, h3, h4, .brand-font, .btn, .tag, .stat-val {
+      font-family: var(--font-display);
+      letter-spacing: -0.01em;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Top Dashboard Nav */
+    .dash-header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--bg-card-border);
+      padding: 0.85rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .dash-navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo-container {
+      display: inline-flex;
+      align-items: center;
+      background: var(--logo-badge-bg);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: var(--transition-smooth);
+    }
+    .brand-logo-img { height: 34px; width: auto; display: block; }
+
+    .user-dock {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .user-pill {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--bg-card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .theme-mode-btn {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--bg-card-border);
+      color: var(--text-heading);
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition-smooth);
+    }
+    .theme-mode-btn:hover { border-color: var(--brand-lime); }
+
+    /* Dashboard Layout */
+    .dashboard-main {
+      padding: 3rem 0 5rem;
+      flex-grow: 1;
+    }
+
+    .dash-welcome-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--bg-card-border);
+    }
+
+    .dash-welcome-bar h1 {
+      font-size: 2.4rem;
+      color: var(--text-heading);
+      margin-bottom: 0.25rem;
+    }
+
+    /* Grid Layout */
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.85fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .dash-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Reusable Card */
+    .dash-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .dash-card:hover {
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      color: var(--text-heading);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: var(--brand-lime-subtle);
+      color: var(--brand-lime-text);
+      border: 1px solid rgba(188, 242, 73, 0.3);
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      box-shadow: 0 4px 15px var(--brand-lime-glow);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--brand-lime-glow);
+      filter: brightness(1.08);
+    }
+
+    .btn-secondary {
+      background: var(--btn-secondary-bg);
+      border-color: var(--btn-secondary-border);
+      color: var(--btn-secondary-text);
+    }
+    .btn-secondary:hover {
+      border-color: var(--brand-lime);
+      transform: translateY(-2px);
+    }
+
+    .btn-sm { padding: 0.45rem 1rem; font-size: 0.82rem; }
+
+    /* Active Sticker Card Details */
+    .sticker-hero-row {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--bg-card-border);
+      padding: 1.25rem;
+      border-radius: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .sticker-qr-thumb {
+      width: 80px;
+      height: 80px;
+      background: #FFFFFF;
+      border-radius: 0.8rem;
+      padding: 0.4rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sticker-info h4 {
+      font-size: 1.25rem;
+      color: var(--text-heading);
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sticker-info p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .plate-badge {
+      display: inline-block;
+      background: #FEE440;
+      color: #000000;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      border: 1px solid #111;
+      letter-spacing: 0.05em;
+      margin-top: 0.35rem;
+    }
+
+    /* Single Channel Selector (Radio Group) */
+    .channel-radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .channel-option-label {
+      background: var(--bg-surface-elevated);
+      border: 2px solid var(--bg-card-border);
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .channel-option-label:hover {
+      border-color: var(--brand-lime);
+    }
+
+    .channel-option-label.active {
+      border-color: var(--brand-lime);
+      background: var(--brand-lime-subtle);
+    }
+
+    .channel-label-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .channel-icon {
+      font-size: 1.4rem;
+    }
+
+    .channel-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-heading);
+      display: block;
+    }
+
+    .channel-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .radio-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+    }
+
+    .channel-option-label.active .radio-circle {
+      border-color: var(--brand-lime-text);
+      background: var(--brand-lime);
+    }
+
+    .radio-circle::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #08090C;
+      display: none;
+    }
+
+    .channel-option-label.active .radio-circle::after {
+      display: block;
+    }
+
+    .channel-input-group {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--bg-card-border);
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--bg-card-border);
+      color: var(--text-heading);
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 0.8rem 1rem;
+      border-radius: 0.8rem;
+      margin-top: 0.4rem;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--brand-lime);
+    }
+
+    /* PostNL Tracker Visual Bar */
+    .postnl-box {
+      margin-top: 1rem;
+    }
+
+    .postnl-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .postnl-badge {
+      background: #EB6B00;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+    }
+
+    .tracker-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .tracker-steps::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      right: 20px;
+      height: 4px;
+      background: var(--tracker-track);
+      z-index: 0;
+    }
+
+    .tracker-progress-bar {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      width: 66%;
+      height: 4px;
+      background: var(--brand-lime);
+      z-index: 1;
+      transition: width 0.4s ease;
+    }
+
+    .tracker-node {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 75px;
+    }
+
+    .tracker-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 3px solid var(--tracker-track);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .tracker-node.completed .tracker-circle {
+      border-color: var(--brand-lime);
+      background: var(--brand-lime);
+      color: #08090C;
+      font-weight: 800;
+    }
+
+    .tracker-node.active .tracker-circle {
+      border-color: var(--brand-lime);
+      background: var(--bg-card);
+      color: var(--brand-lime-text);
+      font-weight: 800;
+      box-shadow: 0 0 12px var(--brand-lime-glow);
+    }
+
+    .tracker-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      line-height: 1.25;
+    }
+    .tracker-node.active .tracker-label, .tracker-node.completed .tracker-label {
+      color: var(--text-heading);
+    }
+
+    /* Modal dialogs */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 14, 20, 0.85);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 1000;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.75rem;
+      max-width: 480px;
+      width: 100%;
+      padding: 2.25rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    /* Toast */
+    .toast-pill {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #0F172A;
+      color: #FFFFFF;
+      border: 1px solid var(--brand-lime);
+      padding: 0.75rem 1.4rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: var(--transition-smooth);
+      pointer-events: none;
+    }
+    .toast-pill.show { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 900px) {
+      .dash-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Dashboard Nav -->
+  <header class="dash-header">
+    <div class="container dash-navbar">
+      <a href="index.html" class="brand-logo-container">
+        <img src="logo.png" alt="ping me logo" class="brand-logo-img">
+      </a>
+
+      <div class="user-dock">
+        <span class="user-pill">
+          <span>👤</span>
+          <span id="navUserEmail">driver@pingme.nl</span>
+        </span>
+
+        <button class="theme-mode-btn" onclick="toggleDashboardTheme()">
+          <span id="dashThemeIcon">🌙</span>
+        </button>
+
+        <a href="login.html" class="btn btn-secondary btn-sm" onclick="logout()">Log out</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Content -->
+  <main class="dashboard-main">
+    <div class="container">
+      
+      <!-- Welcome Header -->
+      <div class="dash-welcome-bar">
+        <div>
+          <h1>Welcome, <span id="welcomeName" style="color: var(--brand-lime-text);">Driver</span></h1>
+          <p style="font-size: 1rem; color: var(--text-muted);">
+            Manage your annual subscription, configure your single notification channel, and track sticker deliveries.
+          </p>
+        </div>
+
+        <div>
+          <button class="btn btn-secondary btn-sm" onclick="openStripePortalModal()">
+            <span>💳</span>
+            <span>Stripe Customer Portal</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Columns -->
+      <div class="dash-grid">
+        
+        <!-- LEFT COLUMN: Active Sticker & Communication Channel -->
+        <div class="dash-col">
+          
+          <!-- Card 1: Active QR Sticker -->
+          <div class="dash-card">
+            <div class="card-head">
+              <h2 class="card-title">
+                <span>🏷️</span> Active Windshield Sticker
+              </h2>
+              <span class="card-badge">● Active & Protected</span>
+            </div>
+
+            <!-- Sticker preview row -->
+            <div class="sticker-hero-row">
+              <div class="sticker-qr-thumb">
+                <svg viewBox="0 0 100 100" fill="#080A0D" style="width: 100%; height: 100%;">
+                  <rect x="0" y="0" width="30" height="30" rx="4" />
+                  <rect x="5" y="5" width="20" height="20" rx="2" fill="#FFFFFF" />
+                  <rect x="10" y="10" width="10" height="10" rx="1" fill="#080A0D" />
+                  <rect x="70" y="0" width="30" height="30" rx="4" />
+                  <rect x="75" y="5" width="20" height="20" rx="2" fill="#FFFFFF" />
+                  <rect x="80" y="10" width="10" height="10" rx="1" fill="#080A0D" />
+                  <rect x="0" y="70" width="30" height="30" rx="4" />
+                  <circle cx="50" cy="50" r="14" fill="#BCF249" />
+                </svg>
+              </div>
+
+              <div class="sticker-info">
+                <h4>
+                  <span>Token: PM-NL-8924</span>
+                </h4>
+                <p>Bound to: <strong id="vehicleModelTxt">Volkswagen Golf</strong> • <span class="plate-badge" id="plateTxt">K-123-XX</span></p>
+                <p style="margin-top: 4px;">Public URL: <a href="tag.html?token=PM-NL-8924" target="_blank" style="color: var(--brand-lime-text); text-decoration: underline;">pingme.app/tag/PM-NL-8924 ↗</a></p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+              <a href="tag.html?token=PM-NL-8924" target="_blank" class="btn btn-secondary btn-sm">
+                <span>👀</span> Test Scanner Screen
+              </a>
+              <button onclick="openEditVehicleModal()" class="btn btn-secondary btn-sm">
+                <span>✏️</span> Edit Kenteken / Model
+              </button>
+              <button onclick="openReplacementModal()" class="btn btn-primary btn-sm">
+                <span>🔄</span> Order Replacement Sticker (€5)
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: Single Communication Channel (Email, SMS, WhatsApp) -->
+          <div class="dash-card">
+            <div class="card-head">
+              <h2 class="card-title">
+                <span>📡</span> Alert Routing Channel
+              </h2>
+              <span class="card-badge">Pick Exactly 1</span>
+            </div>
+
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              When someone scans your windshield sticker, how should Ping Me privately alert you?
+            </p>
+
+            <div class="channel-radio-group">
+              <!-- Option A: WhatsApp -->
+              <label class="channel-option-label active" id="opt-whatsapp" onclick="setChannel('whatsapp')">
+                <div class="channel-label-left">
+                  <span class="channel-icon">🟢</span>
+                  <div>
+                    <span class="channel-name">WhatsApp</span>
+                    <span class="channel-desc">Instant message via our verified WhatsApp Business relay</span>
+                  </div>
+                </div>
+                <div class="radio-circle"></div>
+              </label>
+
+              <!-- Option B: SMS -->
+              <label class="channel-option-label" id="opt-sms" onclick="setChannel('sms')">
+                <div class="channel-label-left">
+                  <span class="channel-icon">💬</span>
+                  <div>
+                    <span class="channel-name">SMS Text Message</span>
+                    <span class="channel-desc">Priority telecom SMS delivered to your mobile</span>
+                  </div>
+                </div>
+                <div class="radio-circle"></div>
+              </label>
+
+              <!-- Option C: Email -->
+              <label class="channel-option-label" id="opt-email" onclick="setChannel('email')">
+                <div class="channel-label-left">
+                  <span class="channel-icon">✉️</span>
+                  <div>
+                    <span class="channel-name">Email</span>
+                    <span class="channel-desc">Direct email notification to your registered inbox</span>
+                  </div>
+                </div>
+                <div class="radio-circle"></div>
+              </label>
+            </div>
+
+            <!-- Dynamic Input Based on Channel -->
+            <div class="channel-input-group">
+              <div id="phoneInputBlock">
+                <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-heading);">
+                  Mobile Phone Number (with Country Code)
+                </label>
+                <input type="tel" id="userPhoneNumber" class="form-input" value="+31 6 12345678" placeholder="+31 6 12345678">
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">
+                  🔒 100% masked: Scanners will NEVER see this number.
+                </p>
+              </div>
+
+              <div id="emailInputBlock" style="display: none;">
+                <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-heading);">
+                  Alert Destination Email
+                </label>
+                <input type="email" id="alertEmailAddress" class="form-input" value="driver@pingme.nl">
+              </div>
+
+              <div style="margin-top: 1.25rem;">
+                <button onclick="saveChannelSettings()" class="btn btn-primary btn-sm">
+                  <span>💾</span> Save Channel Preference
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Delivery Tracker & Subscription Management -->
+        <div class="dash-col">
+          
+          <!-- Card 3: PostNL Letterbox Delivery Tracker -->
+          <div class="dash-card">
+            <div class="card-head">
+              <h2 class="card-title">
+                <span>📦</span> Sticker Delivery
+              </h2>
+              <span class="postnl-badge">PostNL Brievenbuspakje</span>
+            </div>
+
+            <div class="postnl-box">
+              <div class="postnl-header">
+                <span>Order #ORD-NL-1042</span>
+                <strong style="color: var(--brand-lime-text);">In Transit (Onderweg)</strong>
+              </div>
+
+              <!-- 4-step progress bar -->
+              <div class="tracker-steps">
+                <div class="tracker-progress-bar"></div>
+
+                <div class="tracker-node completed">
+                  <div class="tracker-circle">✓</div>
+                  <span class="tracker-label">Ontvangen</span>
+                </div>
+
+                <div class="tracker-node completed">
+                  <div class="tracker-circle">✓</div>
+                  <span class="tracker-label">Geprint</span>
+                </div>
+
+                <div class="tracker-node active">
+                  <div class="tracker-circle">🚚</div>
+                  <span class="tracker-label">Onderweg</span>
+                </div>
+
+                <div class="tracker-node">
+                  <div class="tracker-circle">📬</div>
+                  <span class="tracker-label">Bezorgd</span>
+                </div>
+              </div>
+
+              <div style="background: var(--bg-surface-elevated); padding: 0.85rem 1rem; border-radius: 0.85rem; border: 1px solid var(--bg-card-border); font-size: 0.8rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                  <span style="color: var(--text-muted);">Tracking code:</span>
+                  <strong style="color: var(--text-heading); font-family: monospace;">3SABCD9821471</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-muted);">Estimated Delivery:</span>
+                  <span style="color: var(--text-heading); font-weight: 600;">Tomorrow afternoon</span>
+                </div>
+              </div>
+
+              <div style="margin-top: 1rem; text-align: center;">
+                <a href="https://postnl.nl" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%;">
+                  <span>↗</span> Track on PostNL.nl
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Subscription & Stripe Billing -->
+          <div class="dash-card">
+            <div class="card-head">
+              <h2 class="card-title">
+                <span>💳</span> Subscription Plan
+              </h2>
+              <span class="card-badge">€10 / Jaar</span>
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+              <h4 style="font-size: 1.2rem; color: var(--text-heading); margin-bottom: 0.25rem;">Ping Me Jaarabonnement</h4>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">
+                Renews automatically on <strong>October 27, 2027</strong> via iDEAL / SEPA.
+              </p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem; font-size: 0.85rem;">
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Included stickers:</span>
+                <strong>1x Smart Tag (Active)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Relay pings:</span>
+                <strong>Unlimited</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">BTW / VAT Status:</span>
+                <strong>21% Included (€2.10)</strong>
+              </div>
+            </div>
+
+            <button onclick="openStripePortalModal()" class="btn btn-secondary btn-sm" style="width: 100%;">
+              <span>⚙️</span> Manage Plan, Invoices &amp; Cancel
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL 1: Stripe Customer Portal Simulation -->
+  <div class="modal-overlay" id="stripeModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('stripeModal')">✕</button>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem;">
+        <span style="font-size: 1.5rem;">💳</span>
+        <h3 style="font-size: 1.35rem; color: var(--text-heading);">Stripe Customer Portal</h3>
+      </div>
+      
+      <p style="font-size: 0.88rem; color: var(--text-body); margin-bottom: 1.5rem;">
+        This self-service portal is powered by Stripe. You can cancel your subscription, update your payment card or SEPA account, or download invoices.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.75rem;">
+        <button class="btn btn-secondary" onclick="simulateStripeAction('Subscription renewed for 2027!')" style="justify-content: space-between;">
+          <span>🔄 Renew / Extend Annual Plan (€10)</span>
+          <span>→</span>
+        </button>
+        <button class="btn btn-secondary" onclick="simulateStripeAction('Payment method updated!')" style="justify-content: space-between;">
+          <span>💳 Update Payment Method (iDEAL / SEPA)</span>
+          <span>→</span>
+        </button>
+        <button class="btn btn-secondary" onclick="simulateStripeAction('Downloaded Factuur_2026_ORD1042.pdf')" style="justify-content: space-between;">
+          <span>📄 Download BTW / VAT Invoice</span>
+          <span>↓</span>
+        </button>
+        <button class="btn btn-secondary" onclick="simulateStripeAction('Subscription canceled. Active until Oct 2027.')" style="justify-content: space-between; color: #EF4444;">
+          <span>✕ Cancel Subscription</span>
+          <span>→</span>
+        </button>
+      </div>
+
+      <button class="btn btn-primary" onclick="closeModal('stripeModal')" style="width: 100%;">
+        Return to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Order Replacement Sticker (€5) -->
+  <div class="modal-overlay" id="replacementModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('replacementModal')">✕</button>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem;">
+        <span style="font-size: 1.5rem;">🔄</span>
+        <h3 style="font-size: 1.35rem; color: var(--text-heading);">Order Replacement Sticker</h3>
+      </div>
+      
+      <p style="font-size: 0.88rem; color: var(--text-body); margin-bottom: 1.25rem;">
+        Did you replace your windshield or lose your tag? Order an exact pre-printed replacement sticker for a flat <strong>€5,00</strong>.
+      </p>
+
+      <div style="background: var(--bg-surface-elevated); padding: 1rem; border-radius: 1rem; border: 1px solid var(--bg-card-border); margin-bottom: 1.5rem; font-size: 0.85rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span>1x UV Weatherproof Windshield Tag</span>
+          <strong>€5,00</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span>PostNL Letterbox Parcel</span>
+          <strong style="color: var(--brand-lime-text);">FREE</strong>
+        </div>
+        <div style="border-top: 1px solid var(--bg-card-border); padding-top: 6px; display: flex; justify-content: space-between; font-weight: 700; color: var(--text-heading);">
+          <span>Total</span>
+          <span>€5,00</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="processReplacementSticker()" style="width: 100%;">
+        <span>Pay €5,00 with iDEAL / Card</span>
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Edit Vehicle Kenteken & Model -->
+  <div class="modal-overlay" id="editVehicleModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('editVehicleModal')">✕</button>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem;">
+        <span style="font-size: 1.5rem;">🚗</span>
+        <h3 style="font-size: 1.35rem; color: var(--text-heading);">Edit Vehicle Details</h3>
+      </div>
+      
+      <div style="margin-bottom: 1rem;">
+        <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-heading);">Dutch Kenteken (License Plate)</label>
+        <input type="text" id="kentekenInput" class="form-input" value="K-123-XX" style="text-transform: uppercase;">
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-heading);">Vehicle Brand &amp; Model</label>
+        <input type="text" id="vehicleModelInput" class="form-input" value="Volkswagen Golf">
+      </div>
+
+      <button class="btn btn-primary" onclick="saveVehicleDetails()" style="width: 100%;">
+        Save Vehicle Details
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast-pill" id="toastPill">Settings saved!</div>
+
+  <script>
+    // State initialization
+    let currentChannel = 'whatsapp';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Load user email from session
+      const email = localStorage.getItem('pingme_user_email') || 'driver@pingme.nl';
+      document.getElementById('navUserEmail').textContent = email;
+      document.getElementById('welcomeName').textContent = email.split('@')[0];
+      document.getElementById('alertEmailAddress').value = email;
+
+      // Theme sync
+      const savedTheme = localStorage.getItem('pingme_theme_mode') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+
+      // Load saved channel
+      const savedChan = localStorage.getItem('pingme_channel') || 'whatsapp';
+      setChannel(savedChan);
+
+      // Load saved vehicle info
+      const savedPlate = localStorage.getItem('pingme_plate') || 'K-123-XX';
+      const savedModel = localStorage.getItem('pingme_model') || 'Volkswagen Golf';
+      document.getElementById('plateTxt').textContent = savedPlate;
+      document.getElementById('vehicleModelTxt').textContent = savedModel;
+      document.getElementById('kentekenInput').value = savedPlate;
+      document.getElementById('vehicleModelInput').value = savedModel;
+    });
+
+    // Theme toggle
+    function toggleDashboardTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const nextTheme = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('pingme_theme_mode', nextTheme);
+      updateThemeIcon(nextTheme);
+    }
+
+    function updateThemeIcon(theme) {
+      document.getElementById('dashThemeIcon').textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Communication Channel selection (Single choice)
+    function setChannel(channel) {
+      currentChannel = channel;
+      localStorage.setItem('pingme_channel', channel);
+
+      // Update active option styling
+      ['whatsapp', 'sms', 'email'].forEach(ch => {
+        const el = document.getElementById(`opt-${ch}`);
+        if (el) el.classList.toggle('active', ch === channel);
+      });
+
+      // Update visible input fields
+      const phoneBlock = document.getElementById('phoneInputBlock');
+      const emailBlock = document.getElementById('emailInputBlock');
+
+      if (channel === 'email') {
+        phoneBlock.style.display = 'none';
+        emailBlock.style.display = 'block';
+      } else {
+        phoneBlock.style.display = 'block';
+        emailBlock.style.display = 'none';
+      }
+    }
+
+    function saveChannelSettings() {
+      let dest = '';
+      if (currentChannel === 'email') {
+        dest = document.getElementById('alertEmailAddress').value;
+      } else {
+        dest = document.getElementById('userPhoneNumber').value;
+      }
+      showToast(`Channel saved: ${currentChannel.toUpperCase()} (${dest})`);
+    }
+
+    // Vehicle details modal
+    function openEditVehicleModal() {
+      document.getElementById('editVehicleModal').style.display = 'flex';
+    }
+
+    function saveVehicleDetails() {
+      const plate = document.getElementById('kentekenInput').value.trim().toUpperCase();
+      const model = document.getElementById('vehicleModelInput').value.trim();
+      document.getElementById('plateTxt').textContent = plate;
+      document.getElementById('vehicleModelTxt').textContent = model;
+      localStorage.setItem('pingme_plate', plate);
+      localStorage.setItem('pingme_model', model);
+      closeModal('editVehicleModal');
+      showToast("Vehicle details updated!");
+    }
+
+    // Modals & Stripe simulations
+    function openStripePortalModal() {
+      document.getElementById('stripeModal').style.display = 'flex';
+    }
+
+    function openReplacementModal() {
+      document.getElementById('replacementModal').style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    function simulateStripeAction(msg) {
+      closeModal('stripeModal');
+      showToast(msg);
+    }
+
+    function processReplacementSticker() {
+      closeModal('replacementModal');
+      showToast("Order placed! Replacement sticker will ship via PostNL.");
+    }
+
+    function logout() {
+      localStorage.removeItem('pingme_user_email');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastPill');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+  </script>
+</body>
+</html>

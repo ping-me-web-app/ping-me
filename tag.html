@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle QR Tag — ping me</title>
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Google Fonts: Quicksand & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-display: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html[data-theme="light"] {
+      --bg-body: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --bg-card-border: #E2E8F0;
+      --text-heading: #0F172A;
+      --text-body: #475569;
+      --text-muted: #94A3B8;
+      --brand-lime: #BCF249;
+      --brand-lime-text: #649600;
+      --brand-lime-glow: rgba(188, 242, 73, 0.35);
+      --btn-primary-bg: #0F172A;
+      --btn-primary-text: #FFFFFF;
+      --logo-badge-bg: #0F172A;
+      --card-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    html[data-theme="dark"] {
+      --bg-body: #0D1117;
+      --bg-surface: #141A23;
+      --bg-card: #151C24;
+      --bg-card-border: #27313F;
+      --text-heading: #FFFFFF;
+      --text-body: #A0AEC0;
+      --text-muted: #718096;
+      --brand-lime: #CEF86B;
+      --brand-lime-text: #CEF86B;
+      --brand-lime-glow: rgba(206, 248, 107, 0.45);
+      --btn-primary-bg: #BCF249;
+      --btn-primary-text: #0D1117;
+      --logo-badge-bg: transparent;
+      --card-shadow: 0 15px 45px rgba(0, 0, 0, 0.55);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-body);
+      font-family: var(--font-body);
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+    }
+
+    h1, h2, h3, h4, .brand-font, .btn {
+      font-family: var(--font-display);
+      letter-spacing: -0.01em;
+    }
+
+    /* Top testing switcher */
+    .test-state-bar {
+      margin-bottom: 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--bg-card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .state-toggle-btn {
+      background: transparent;
+      border: none;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .state-toggle-btn.active {
+      background: var(--brand-lime);
+      color: #08090C;
+    }
+
+    /* Mobile Web Card Shell */
+    .scanner-card-shell {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.75rem;
+      padding: 2rem 1.75rem;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      text-align: center;
+    }
+
+    .brand-logo-container {
+      display: inline-flex;
+      align-items: center;
+      background: var(--logo-badge-bg);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+      transition: var(--transition-smooth);
+    }
+    .brand-logo-img { height: 32px; width: auto; display: block; }
+
+    /* STATE A: ACTIVE CLAIMED TAG */
+    .vehicle-header-box {
+      background: var(--bg-body);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 1.25rem;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    .car-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--brand-lime);
+      color: #08090C;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .car-meta h3 {
+      font-size: 1.15rem;
+      color: var(--text-heading);
+      margin-bottom: 0.15rem;
+    }
+
+    .car-meta p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .dutch-plate {
+      background: #FEE440;
+      color: #000;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 3px;
+      border: 1px solid #000;
+      display: inline-block;
+      margin-left: 0.35rem;
+    }
+
+    .channel-hint-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(188, 242, 73, 0.15);
+      border: 1px solid rgba(188, 242, 73, 0.3);
+      color: var(--brand-lime-text);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+
+    .preset-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    .preset-item {
+      background: var(--bg-body);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 0.85rem;
+      padding: 0.85rem 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      transition: var(--transition-smooth);
+    }
+
+    .preset-item:hover, .preset-item.active {
+      border-color: var(--brand-lime);
+      background: rgba(188, 242, 73, 0.12);
+      color: var(--brand-lime-text);
+    }
+
+    .note-input {
+      width: 100%;
+      background: var(--bg-body);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 0.85rem;
+      padding: 0.8rem;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: var(--text-heading);
+      margin-bottom: 1.25rem;
+      resize: none;
+    }
+    .note-input:focus {
+      outline: none;
+      border-color: var(--brand-lime);
+    }
+
+    .btn-send {
+      width: 100%;
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      border: none;
+      border-radius: 999px;
+      padding: 0.95rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 18px var(--brand-lime-glow);
+      transition: var(--transition-smooth);
+    }
+    .btn-send:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    /* STATE B: UNCLAIMED STICKER */
+    .unclaimed-box {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .unclaimed-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #FEE440;
+      color: #000;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+
+    /* Success confirmation view */
+    .success-view {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--brand-lime);
+      color: #08090C;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 0 25px var(--brand-lime-glow);
+    }
+
+    .security-footer {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 1.25rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Demo Switcher Bar -->
+  <div class="test-state-bar">
+    <span style="color: var(--text-muted);">Simulate Sticker State:</span>
+    <button class="state-toggle-btn active" id="btnActive" onclick="setStickerState('active')">● Active Tag</button>
+    <button class="state-toggle-btn" id="btnUnclaimed" onclick="setStickerState('unclaimed')">○ Unclaimed</button>
+  </div>
+
+  <div class="scanner-card-shell">
+    <div class="brand-logo-container">
+      <img src="logo.png" alt="ping me logo" class="brand-logo-img">
+    </div>
+
+    <!-- VIEW 1: ACTIVE STICKER (Passerby contacts driver) -->
+    <div id="activeView">
+      <div class="vehicle-header-box">
+        <div class="car-avatar">🚗</div>
+        <div class="car-meta">
+          <h3>Volkswagen Golf <span class="dutch-plate" id="tagPlate">K-123-XX</span></h3>
+          <p>Tag Code: <strong id="tagCodeTxt">PM-NL-8924</strong> • Masked</p>
+        </div>
+      </div>
+
+      <div class="channel-hint-badge">
+        <span>⚡</span>
+        <span id="channelNotice">Routing to Driver's WhatsApp</span>
+      </div>
+
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.75rem; text-align: left;">
+        Select reason to alert the driver:
+      </p>
+
+      <div class="preset-list">
+        <div class="preset-item active" onclick="pickReason(this, 'Car is blocking my vehicle / driveway')">
+          <span>🚫</span> Car is blocking my way
+        </div>
+        <div class="preset-item" onclick="pickReason(this, 'Headlights or interior lights left on')">
+          <span>💡</span> Lights are left on
+        </div>
+        <div class="preset-item" onclick="pickReason(this, 'Window or sunroof is open in rain')">
+          <span>🪟</span> Window is open
+        </div>
+        <div class="preset-item" onclick="pickReason(this, 'Car alarm is sounding continuously')">
+          <span>🚨</span> Alarm sounding
+        </div>
+      </div>
+
+      <textarea id="passerbyNote" class="note-input" rows="2" placeholder="Add an optional polite note (e.g. Parked in bay 4)..."></textarea>
+
+      <button class="btn-send" onclick="sendAlert()">
+        <span>⚡ Send Anonymous Alert</span>
+      </button>
+
+      <p class="security-footer">
+        🔒 100% Anonymous • Neither party sees phone numbers or emails • Anti-Spam Protected
+      </p>
+    </div>
+
+    <!-- VIEW 2: UNCLAIMED STICKER (Customer received envelope & activates) -->
+    <div id="unclaimedView" class="unclaimed-box">
+      <div class="unclaimed-icon">🏷️</div>
+      <h2 style="font-size: 1.6rem; color: var(--text-heading); margin-bottom: 0.5rem;">Unactivated Sticker</h2>
+      <p style="font-size: 0.9rem; color: var(--text-body); margin-bottom: 1.5rem; line-height: 1.5;">
+        This pre-printed Ping Me tag (<strong>PM-NL-NEW</strong>) has not been activated yet. Did you just receive this in the mail?
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <button class="btn-send" onclick="claimTag()">
+          <span>✓ Activate to My Account</span>
+        </button>
+        <a href="index.html#pricing" class="btn-send" style="background: var(--bg-surface); color: var(--text-heading); border: 1px solid var(--bg-card-border); box-shadow: none;">
+          <span>Subscribe for €10/yr</span>
+        </a>
+      </div>
+
+      <p class="security-footer">
+        Received this by mistake? Leave it on the car window or contact support@pingme.nl
+      </p>
+    </div>
+
+    <!-- VIEW 3: ALERT SENT CONFIRMATION -->
+    <div id="successView" class="success-view">
+      <div class="success-icon">✓</div>
+      <h2 style="font-size: 1.6rem; color: var(--text-heading); margin-bottom: 0.5rem;">Alert Dispatched!</h2>
+      <p style="font-size: 0.9rem; color: var(--text-body); margin-bottom: 1.5rem; line-height: 1.5;">
+        Your message was encrypted and forwarded to the driver's chosen channel (<strong id="dispatchedChannelTxt">WhatsApp</strong>).
+      </p>
+      <div style="background: var(--bg-body); padding: 1rem; border-radius: 1rem; border: 1px solid var(--bg-card-border); margin-bottom: 1.5rem; font-size: 0.85rem; text-align: left;">
+        <div style="color: var(--text-muted); font-size: 0.75rem;">Dispatched message:</div>
+        <div id="dispatchedMsgTxt" style="color: var(--text-heading); font-weight: 600; margin-top: 2px;">"Car is blocking my vehicle"</div>
+      </div>
+      <button class="btn-send" onclick="resetScannerView()">
+        Send Another Update
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    let selectedReason = "Car is blocking my vehicle / driveway";
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Sync theme
+      const savedTheme = localStorage.getItem('pingme_theme_mode') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      // Check token in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token') || 'PM-NL-8924';
+      document.getElementById('tagCodeTxt').textContent = token;
+
+      // Check communication channel preference
+      const channel = localStorage.getItem('pingme_channel') || 'whatsapp';
+      const channelNames = {
+        whatsapp: 'Driver\'s WhatsApp 🟢',
+        sms: 'Driver\'s SMS 💬',
+        email: 'Driver\'s Email ✉️'
+      };
+      document.getElementById('channelNotice').textContent = `Routing to ${channelNames[channel] || 'Driver\'s WhatsApp'}`;
+      document.getElementById('dispatchedChannelTxt').textContent = channel.toUpperCase();
+
+      // Check plate
+      const plate = localStorage.getItem('pingme_plate') || 'K-123-XX';
+      document.getElementById('tagPlate').textContent = plate;
+
+      // If token contains 'new' or 'unclaimed' default to unclaimed state
+      if (token.toLowerCase().includes('new') || token.toLowerCase().includes('unclaim')) {
+        setStickerState('unclaimed');
+      }
+    });
+
+    function setStickerState(state) {
+      document.getElementById('btnActive').classList.toggle('active', state === 'active');
+      document.getElementById('btnUnclaimed').classList.toggle('active', state === 'unclaimed');
+
+      if (state === 'unclaimed') {
+        document.getElementById('activeView').style.display = 'none';
+        document.getElementById('successView').style.display = 'none';
+        document.getElementById('unclaimedView').style.display = 'block';
+      } else {
+        document.getElementById('unclaimedView').style.display = 'none';
+        document.getElementById('successView').style.display = 'none';
+        document.getElementById('activeView').style.display = 'block';
+      }
+    }
+
+    function pickReason(el, reason) {
+      document.querySelectorAll('.preset-item').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      selectedReason = reason;
+    }
+
+    function sendAlert() {
+      const note = document.getElementById('passerbyNote').value.trim();
+      const full = note ? `${selectedReason} (Note: "${note}")` : selectedReason;
+      document.getElementById('dispatchedMsgTxt').textContent = full;
+
+      document.getElementById('activeView').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+    }
+
+    function resetScannerView() {
+      document.getElementById('successView').style.display = 'none';
+      document.getElementById('activeView').style.display = 'block';
+    }
+
+    function claimTag() {
+      alert("Tag PM-NL-NEW successfully bound to driver@pingme.nl! Redirecting to Dashboard.");
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

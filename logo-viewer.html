@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PingMe - Ultra-Smooth Vector Logo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #0a0b0e;
+      --card-bg: #131418;
+      --card-border: #23252e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --lime-green: #BCF249;
+      --dark-canvas: #18191B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-page);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text-main);
+      padding: 2rem 1.5rem 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Header Bar */
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header-title h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .header-title p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .tag-smooth {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      background: rgba(188, 242, 73, 0.15);
+      color: var(--lime-green);
+      border: 1px solid rgba(188, 242, 73, 0.3);
+    }
+
+    .actions-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.5rem 0.95rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #1d1f26;
+      border-color: #363a48;
+    }
+
+    .btn-lime {
+      background: var(--lime-green);
+      color: #111317;
+      border-color: var(--lime-green);
+      font-weight: 700;
+    }
+
+    .btn-lime:hover {
+      background: #aae62d;
+      border-color: #aae62d;
+      color: #000;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 0.75rem;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .control-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .pill-group {
+      display: inline-flex;
+      background: #090a0d;
+      border: 1px solid var(--card-border);
+      border-radius: 0.5rem;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .pill-btn {
+      appearance: none;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .pill-btn:hover {
+      color: var(--text-main);
+    }
+
+    .pill-btn.active {
+      background: var(--lime-green);
+      color: #111317;
+      font-weight: 700;
+    }
+
+    /* VERY BIG Hero Canvas */
+    .hero-stage {
+      background-color: var(--dark-canvas);
+      border: 1px solid var(--card-border);
+      border-radius: 1.25rem;
+      padding: 4rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      transition: background-color 0.2s ease;
+      overflow: hidden;
+      min-height: 520px;
+      position: relative;
+    }
+
+    .hero-stage.bg-grid {
+      background-color: #1f2128;
+      background-image: 
+        linear-gradient(45deg, #2a2d37 25%, transparent 25%), 
+        linear-gradient(-45deg, #2a2d37 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #2a2d37 75%), 
+        linear-gradient(-45deg, transparent 75%, #2a2d37 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+    }
+
+    .hero-stage.bg-light-mode {
+      background-color: #f8fafc;
+    }
+
+    .svg-viewport {
+      width: 100%;
+      max-width: 1200px; /* VERY BIG default size */
+      aspect-ratio: 1024 / 365;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: max-width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 14px 35px rgba(0, 0, 0, 0.3));
+    }
+
+    .svg-viewport svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Inspection & Quality Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 0.85rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .feature-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(188, 242, 73, 0.15);
+      color: var(--lime-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .feature-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .feature-desc {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--lime-green);
+      color: #111317;
+      padding: 0.65rem 1.4rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(188, 242, 73, 0.35);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Header -->
+    <div class="header-bar">
+      <div class="header-title">
+        <h1>
+          PingMe Master Brandmark
+          <span class="tag-smooth">Infinitely Smooth Vectors</span>
+        </h1>
+        <p>Pure mathematical Bezier curves with true circular arcs — 100% vector fidelity at any resolution</p>
+      </div>
+
+      <div class="actions-group">
+        <button class="btn btn-lime" onclick="copySvg()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Smooth SVG
+        </button>
+        <button class="btn" onclick="downloadSvg()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download ping-me.svg
+        </button>
+      </div>
+    </div>
+
+    <!-- Controls Toolbar -->
+    <div class="controls-bar">
+      <!-- Size / Zoom Presets -->
+      <div class="control-group">
+        <span class="control-label">Stage Size:</span>
+        <div class="pill-group">
+          <button class="pill-btn" onclick="setSize('800px')">Medium (800px)</button>
+          <button class="pill-btn active" id="btn-size-large" onclick="setSize('1200px')">Very Big (1200px)</button>
+          <button class="pill-btn" onclick="setSize('100%')">Fullscreen Hero (100%)</button>
+        </div>
+      </div>
+
+      <!-- Canvas Background -->
+      <div class="control-group">
+        <span class="control-label">Background:</span>
+        <div class="pill-group">
+          <button class="pill-btn active" id="btn-bg-dark" onclick="setBg('dark')">Dark (#18191B)</button>
+          <button class="pill-btn" id="btn-bg-grid" onclick="setBg('grid')">Transparent Grid</button>
+          <button class="pill-btn" id="btn-bg-light" onclick="setBg('light')">Light Theme</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VERY BIG Hero Presentation Stage -->
+    <div class="hero-stage" id="hero-stage">
+      <div class="svg-viewport" id="svg-viewport">
+        <!-- Mathematically Smooth Bezier Vector SVG -->
+        <svg id="pingme-master-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 365" width="100%" height="100%">
+          <defs>
+            <style id="svg-inline-style">
+              .ws-stroke {
+                fill: none;
+                stroke: #FFFFFF;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+              }
+              .green-fill {
+                fill: #BCF249;
+              }
+              .white-fill {
+                fill: #FFFFFF;
+              }
+            </style>
+          </defs>
+
+          <!-- ================= 1. WINDSHIELD ICON ================= -->
+          <g id="windshield-icon">
+            <!-- Outer Windshield Frame (Smooth 26px Stroke with Beziers) -->
+            <path class="ws-stroke" stroke-width="26"
+                  d="M 148,94 
+                     C 178,82 236,71 298,71 
+                     C 360,71 418,82 448,94 
+                     C 466,101 474,115 480,131 
+                     L 520,227 
+                     C 527,243 518,258 502,266 
+                     C 445,294 374,308 298,308 
+                     C 222,308 151,294 94,266 
+                     C 78,258 69,243 76,227 
+                     L 116,131 
+                     C 122,115 130,101 148,94 Z" />
+
+            <!-- Left Resting Wiper Blade -->
+            <path class="ws-stroke" stroke-width="15"
+                  d="M 152,246 C 174,258 196,269 220,277" />
+
+            <!-- Right Resting Wiper Blade -->
+            <path class="ws-stroke" stroke-width="15"
+                  d="M 444,246 C 422,258 400,269 376,277" />
+          </g>
+
+          <!-- ================= 2. LIME GREEN SPEECH BUBBLE ================= -->
+          <!-- Smooth Rounded Rect with Triangular Tail & 3 True Circular Cutouts -->
+          <path class="green-fill" fill-rule="evenodd"
+                d="M 240,114 
+                   L 363,114 
+                   C 383,114 399,130 399,150 
+                   L 399,198 
+                   C 399,218 383,234 363,234 
+                   L 308,234 
+                   L 267.5,265 
+                   L 263,234 
+                   L 240,234 
+                   C 220,234 204,218 204,198 
+                   L 204,150 
+                   C 204,130 220,114 240,114 Z
+                   M 253.5,159.1 A 14.5,14.5 0 1 0 253.5,188.1 A 14.5,14.5 0 1 0 253.5,159.1 Z
+                   M 299.5,159.1 A 14.5,14.5 0 1 0 299.5,188.1 A 14.5,14.5 0 1 0 299.5,159.1 Z
+                   M 346.0,159.1 A 14.5,14.5 0 1 0 346.0,188.1 A 14.5,14.5 0 1 0 346.0,159.1 Z" />
+
+          <!-- ================= 3. TYPOGRAPHY: ping (White) ================= -->
+          <g id="word-ping" class="white-fill" fill-rule="evenodd">
+            <!-- 'p' -->
+            <path d="M 564.5,89 
+                     L 601.5,89 
+                     L 601.5,98.5 
+                     C 607,91.5 614.5,86 626,86 
+                     C 654,86 674.5,108 674.5,137 
+                     C 674.5,166 654,188 626,188 
+                     C 614.5,188 607,182.5 601.5,175.5 
+                     L 601.5,196 
+                     L 564.5,196 Z
+                     M 601.5,137 
+                     C 601.5,151.5 611,162 624,162 
+                     C 637,162 646.5,151.5 646.5,137 
+                     C 646.5,122.5 637,112 624,112 
+                     C 611,112 601.5,122.5 601.5,137 Z" />
+
+            <!-- 'i' (True Mathematical Circle Dot + Clean Stem) -->
+            <circle cx="696.0" cy="63.5" r="19.5" />
+            <path d="M 678.5,89 L 715.5,89 L 715.5,191 L 678.5,191 Z" />
+
+            <!-- 'n' -->
+            <path d="M 723,89 
+                     L 760,89 
+                     L 760,98.5 
+                     C 766,91 776,85.5 790,85.5 
+                     C 815,85.5 833,101 833,128 
+                     L 833,191 
+                     L 796,191 
+                     L 796,133 
+                     C 796,122 789,116 779,116 
+                     C 768,116 760,123 760,134 
+                     L 760,191 
+                     L 723,191 Z" />
+
+            <!-- 'g' -->
+            <path d="M 839,137 
+                     C 839,108 859,86 887,86 
+                     C 899,86 908,91.5 914,97.5 
+                     L 914,89 
+                     L 962,89 
+                     L 962,186 
+                     C 962,222 938,241 898,241 
+                     C 878,241 860,235 848,225 
+                     L 865,202 
+                     C 874,210 885,214 897,214 
+                     C 917,214 927,204 927,185 
+                     L 927,175.5 
+                     C 921,182.5 912,188 900,188 
+                     C 872,188 852,165 852,137 Z
+                     M 889,162 
+                     C 902,162 912,151 912,137 
+                     C 912,123 902,112 889,112 
+                     C 876,112 866.5,123 866.5,137 
+                     C 866.5,151 876,162 889,162 Z" />
+          </g>
+
+          <!-- ================= 4. TYPOGRAPHY: me (Lime Green #BCF249) ================= -->
+          <g id="word-me" class="green-fill" fill-rule="evenodd">
+            <!-- 'm' -->
+            <path d="M 569,205 
+                     L 606,205 
+                     L 606,214.5 
+                     C 611.5,207 621.5,201 635,201 
+                     C 648,201 656.5,206.5 661.5,214.5 
+                     C 667,207 677,201 690,201 
+                     C 714,201 719,217 719,244 
+                     L 719,307 
+                     L 682,307 
+                     L 682,249 
+                     C 682,238 676,232 666,232 
+                     C 655,232 647,239 647,250 
+                     L 647,307 
+                     L 610,307 
+                     L 610,249 
+                     C 610,238 604,232 594,232 
+                     C 583,232 575,239 575,250 
+                     L 575,307 
+                     L 569,307 Z" />
+
+            <!-- 'e' -->
+            <path d="M 776,200 
+                     C 808,200 830,222 830,254 
+                     L 830,263 
+                     L 757,263 
+                     C 758,276 768,285 782,285 
+                     C 793,285 802,280 808,272 
+                     L 826,288 
+                     C 816,301 799,309 780,309 
+                     C 748,309 722,284 722,254 
+                     C 722,223 746,200 776,200 Z
+                     M 758,244 
+                     L 794,244 
+                     C 793,232 785,223 775,223 
+                     C 765,223 759,232 758,244 Z" />
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Mathematical Smoothness Details -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">◎</div>
+        <div class="feature-title">True Circular Arcs</div>
+        <div class="feature-desc">All three dots and the 'i' dot are mathematical circles (zero polygonal segmenting or pixelation).</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">∿</div>
+        <div class="feature-title">Cubic Bezier Curves</div>
+        <div class="feature-desc">The bowls of 'p', 'g', and 'e' plus the windshield corners use smooth cubic bezier curves (infinite sharpness at 8K).</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">★</div>
+        <div class="feature-title">Clean Geometry</div>
+        <div class="feature-desc">The file is under 4KB, completely free of raster artifacts, stair-stepping, or pixelated edges.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">SVG copied to clipboard!</div>
+
+  <script>
+    function setSize(size) {
+      const vp = document.getElementById('svg-viewport');
+      vp.style.maxWidth = size;
+      
+      const buttons = document.querySelectorAll('.controls-bar .pill-group')[0].querySelectorAll('.pill-btn');
+      buttons.forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function setBg(mode) {
+      const stage = document.getElementById('hero-stage');
+      const styleEl = document.getElementById('svg-inline-style');
+
+      stage.classList.remove('bg-grid', 'bg-light-mode');
+
+      document.getElementById('btn-bg-dark').classList.toggle('active', mode === 'dark');
+      document.getElementById('btn-bg-grid').classList.toggle('active', mode === 'grid');
+      document.getElementById('btn-bg-light').classList.toggle('active', mode === 'light');
+
+      if (mode === 'dark') {
+        stage.style.backgroundColor = '#18191B';
+        styleEl.textContent = `
+          .ws-stroke { fill: none; stroke: #FFFFFF; stroke-linecap: round; stroke-linejoin: round; }
+          .green-fill { fill: #BCF249; }
+          .white-fill { fill: #FFFFFF; }
+        `;
+      } else if (mode === 'grid') {
+        stage.classList.add('bg-grid');
+        stage.style.backgroundColor = '';
+        styleEl.textContent = `
+          .ws-stroke { fill: none; stroke: #FFFFFF; stroke-linecap: round; stroke-linejoin: round; }
+          .green-fill { fill: #BCF249; }
+          .white-fill { fill: #FFFFFF; }
+        `;
+      } else if (mode === 'light') {
+        stage.classList.add('bg-light-mode');
+        stage.style.backgroundColor = '#f8fafc';
+        styleEl.textContent = `
+          .ws-stroke { fill: none; stroke: #18191B; stroke-linecap: round; stroke-linejoin: round; }
+          .green-fill { fill: #7EC914; }
+          .white-fill { fill: #18191B; }
+        `;
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    function copySvg() {
+      const svgCode = document.getElementById('pingme-master-svg').outerHTML;
+      navigator.clipboard.writeText(svgCode).then(() => {
+        showToast('Smooth SVG copied to clipboard!');
+      }).catch(err => {
+        showToast('Failed to copy');
+      });
+    }
+
+    function downloadSvg() {
+      const svgCode = document.getElementById('pingme-master-svg').outerHTML;
+      const blob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'ping-me.svg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('Downloading ping-me.svg');
+    }
+  </script>
+</body>
+</html>
