@@ -40,27 +40,22 @@ export function PhoneMockup({
           borderRadius: "44px",
         }}
       >
-        {/* iOS Top Status Bar & Dynamic Island */}
+        {/* iOS Top Status Bar (Clock on left, transparent spacer for frame's Dynamic Island, Indicators on right) */}
         {showStatusBar && (
-          <div className="relative z-30 flex items-center justify-between px-6 pt-3 pb-2 text-slate-900 dark:text-white text-[11px] font-semibold tracking-tight select-none flex-shrink-0 bg-transparent">
+          <div className="relative z-10 flex items-center justify-between px-6 pt-2 pb-1 text-slate-800 dark:text-slate-100 text-[11px] font-semibold tracking-tight select-none flex-shrink-0 bg-transparent">
             {/* Clock */}
             <span
               suppressHydrationWarning
-              className="w-12 text-left font-sans font-semibold text-[11px] sm:text-[12px] tabular-nums"
+              className="w-14 text-left font-sans font-semibold text-[11px] sm:text-[12px] tabular-nums"
             >
               {timeStr || "09:41"}
             </span>
 
-            {/* Authentic Dynamic Island Capsule */}
-            <div className="w-[82px] h-[24px] sm:w-[94px] sm:h-[26px] rounded-full bg-black flex items-center justify-between px-2.5 shadow-sm -mt-0.5">
-              {/* Camera lens reflection */}
-              <div className="w-2.5 h-2.5 rounded-full bg-[#111827] border border-white/10" />
-              {/* Sensor dot / active indicator */}
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/90 shadow-[0_0_4px_#10b981]" />
-            </div>
+            {/* Invisible Dynamic Island Spacer so clock & indicators sit on either side of the frame's cutout */}
+            <div className="w-24 sm:w-28 h-6 pointer-events-none flex-shrink-0" />
 
             {/* Right Indicators: Cellular Bars, 5G, Wifi, Battery */}
-            <div className="w-16 flex items-center justify-end gap-1.5 text-slate-800 dark:text-slate-200">
+            <div className="w-14 flex items-center justify-end gap-1.5 text-slate-800 dark:text-slate-100">
               {/* 4 Cellular Signal Bars */}
               <div className="flex items-end gap-[1.5px] h-2.5 pb-[0.5px]">
                 <span className="w-[2px] h-[3px] bg-current rounded-full" />
