@@ -72,10 +72,57 @@ export default function OrderPage() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("ideal");
   const [selectedBank, setSelectedBank] = useState("ING Bank");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [isVerifyingSession, setIsVerifyingSession] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   // Form State - Step 4: Success Results
   const [orderId, setOrderId] = useState("");
   const [stickerToken, setStickerToken] = useState("");
+
+  // Check for Stripe Checkout return (?session_id=...)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get("session_id");
+
+    if (sessionId) {
+      setIsVerifyingSession(true);
+      fetch(`/api/checkout/verify?session_id=${encodeURIComponent(sessionId)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.paid && data.order) {
+            setOrderId(data.order.orderId);
+            setStickerToken(data.order.token);
+            setPlate(data.order.plate);
+            setMake(data.order.make);
+            setModel(data.order.model);
+            setColor(data.order.color);
+            setChannel(data.order.channel || "whatsapp");
+            setEmail(data.order.email);
+            setPhone(data.order.phone);
+            setFullName(data.order.fullName);
+            setStreet(data.order.street);
+            setHouseNumber(data.order.houseNumber);
+            setPostalCode(data.order.postalCode);
+            setCity(data.order.city);
+
+            localStorage.setItem("pingme-user-vehicle", JSON.stringify(data.order));
+            localStorage.setItem("pingme-has-session", "true");
+            login();
+            setStep(4);
+          } else {
+            setPaymentError(data.error || "Payment verification failed.");
+          }
+        })
+        .catch((err) => {
+          console.error("Verification error:", err);
+          setPaymentError("Could not verify your payment. Please contact support.");
+        })
+        .finally(() => {
+          setIsVerifyingSession(false);
+        });
+    }
+  }, [login]);
 
   // Debounced RDW plate lookup
   useEffect(() => {
@@ -124,53 +171,86 @@ export default function OrderPage() {
     street.trim().length > 0 &&
     city.trim().length > 0;
 
-  // Handle Mock Payment Execution
+  // Handle Payment Execution (Stripe with automatic mock fallback)
   const handleCompleteOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessingPayment(true);
+    setPaymentError(null);
 
-    // Simulate realistic bank / payment gateway communication
-    await new Promise((resolve) => setTimeout(resolve, 1400));
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plate: plate.toUpperCase(),
+          make,
+          model,
+          color,
+          channel,
+          phone,
+          email,
+          fullName,
+          postalCode,
+          houseNumber,
+          addition,
+          street,
+          city,
+          paymentMethod,
+        }),
+      });
 
-    const generatedOrderId = `PM-NL-${Math.floor(100000 + Math.random() * 900000)}`;
-    const generatedToken = `PM-NL-${Math.floor(1000 + Math.random() * 9000)}`;
+      const data = await response.json();
 
-    setOrderId(generatedOrderId);
-    setStickerToken(generatedToken);
+      if (data.configured && data.url) {
+        // Redirect to real Stripe Checkout Session
+        window.location.href = data.url;
+        return;
+      }
 
-    // Store user vehicle and session locally
-    const vehicleData = {
-      plate: plate.toUpperCase(),
-      make: make || "Volkswagen",
-      model: model || "Golf",
-      color: color || "Black",
-      token: generatedToken,
-      channel,
-      phone,
-      email,
-      fullName,
-      postalCode,
-      houseNumber,
-      addition,
-      street,
-      city,
-      address: `${street} ${houseNumber}${addition ? ` ${addition}` : ""}, ${postalCode} ${city}`,
-      paymentMethod,
-      selectedBank: paymentMethod === "ideal" ? selectedBank : "Creditcard",
-      orderId: generatedOrderId,
-      createdAt: new Date().toISOString(),
-    };
+      // If Stripe keys are not configured yet, simulate payment seamlessly
+      await new Promise((resolve) => setTimeout(resolve, 1400));
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem("pingme-user-vehicle", JSON.stringify(vehicleData));
-      localStorage.setItem("pingme-has-session", "true");
+      const generatedOrderId = `PM-NL-${Math.floor(100000 + Math.random() * 900000)}`;
+      const generatedToken = `PM-NL-${Math.floor(1000 + Math.random() * 9000)}`;
+
+      setOrderId(generatedOrderId);
+      setStickerToken(generatedToken);
+
+      const vehicleData = {
+        plate: plate.toUpperCase(),
+        make: make || "Volkswagen",
+        model: model || "Golf",
+        color: color || "Black",
+        token: generatedToken,
+        channel,
+        phone,
+        email,
+        fullName,
+        postalCode,
+        houseNumber,
+        addition,
+        street,
+        city,
+        address: `${street} ${houseNumber}${addition ? ` ${addition}` : ""}, ${postalCode} ${city}`,
+        paymentMethod,
+        selectedBank: paymentMethod === "ideal" ? selectedBank : "Creditcard",
+        orderId: generatedOrderId,
+        createdAt: new Date().toISOString(),
+      };
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("pingme-user-vehicle", JSON.stringify(vehicleData));
+        localStorage.setItem("pingme-has-session", "true");
+      }
+
+      login();
+      setIsProcessingPayment(false);
+      setStep(4);
+    } catch (err: any) {
+      console.error("Payment error:", err);
+      setPaymentError(err.message || "Failed to initiate payment");
+      setIsProcessingPayment(false);
     }
-
-    // Call auth hook login
-    login();
-
-    setIsProcessingPayment(false);
-    setStep(4);
   };
 
   return (
@@ -178,9 +258,9 @@ export default function OrderPage() {
       {/* Checkout Minimal Header */}
       <header className="sticky top-0 z-30 w-full backdrop-blur-md bg-white/90 dark:bg-[#0B1117]/90 border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center">
+          <div className="flex items-center">
             <BrandLogo size="md" />
-          </Link>
+          </div>
 
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-3 py-1.5 rounded-full">
@@ -195,37 +275,65 @@ export default function OrderPage() {
 
       {/* Main Checkout Area */}
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
-        {/* Stepper Progress Bar */}
-        {step < 4 && (
-          <div className="max-w-3xl mx-auto mb-8 sm:mb-12">
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
-              {[
-                { s: 1, labelId: "order.step1" },
-                { s: 2, labelId: "order.step2" },
-                { s: 3, labelId: "order.step3" },
-              ].map(({ s, labelId }) => (
-                <div key={s} className="flex flex-col items-center">
-                  <div
-                    className={`h-2 sm:h-2.5 w-full rounded-full transition-all duration-300 ${
-                      step >= s
-                        ? "bg-emerald-500"
-                        : "bg-slate-200 dark:bg-slate-800"
-                    }`}
-                  />
-                  <span
-                    className={`text-xs font-bold mt-2 transition-colors ${
-                      step >= s
-                        ? "text-slate-900 dark:text-white"
-                        : "text-slate-400 dark:text-slate-500"
-                    }`}
-                  >
-                    <FormattedMessage id={labelId} />
-                  </span>
-                </div>
-              ))}
+        {/* Verification Loader when returning from Stripe Checkout */}
+        {isVerifyingSession ? (
+          <div className="max-w-md mx-auto py-20 text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center mx-auto text-emerald-600">
+              <Loader2 className="w-8 h-8 animate-spin" />
             </div>
+            <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white">
+              <FormattedMessage id="order.processingPayment" />
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+              Verifying payment with Stripe and linking your vehicle sticker...
+            </p>
           </div>
-        )}
+        ) : (
+          <>
+            {paymentError && (
+              <div className="max-w-3xl mx-auto mb-6 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 text-xs sm:text-sm flex items-center justify-between">
+                <span>{paymentError}</span>
+                <button
+                  type="button"
+                  onClick={() => setPaymentError(null)}
+                  className="font-bold underline text-xs ml-4"
+                >
+                  Dismiss
+                </button>
+              </div>
+            )}
+
+            {/* Stepper Progress Bar */}
+            {step < 4 && (
+              <div className="max-w-3xl mx-auto mb-8 sm:mb-12">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
+                  {[
+                    { s: 1, labelId: "order.step1" },
+                    { s: 2, labelId: "order.step2" },
+                    { s: 3, labelId: "order.step3" },
+                  ].map(({ s, labelId }) => (
+                    <div key={s} className="flex flex-col items-center">
+                      <div
+                        className={`h-2 sm:h-2.5 w-full rounded-full transition-all duration-300 ${
+                          step >= s
+                            ? "bg-emerald-500"
+                            : "bg-slate-200 dark:bg-slate-800"
+                        }`}
+                      />
+                      <span
+                        className={`text-xs font-bold mt-2 transition-colors ${
+                          step >= s
+                            ? "text-slate-900 dark:text-white"
+                            : "text-slate-400 dark:text-slate-500"
+                        }`}
+                      >
+                        <FormattedMessage id={labelId} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
         {/* 2-Column Checkout Layout (Forms on Left, Sticky Summary on Right) */}
         {step < 4 ? (
@@ -907,6 +1015,8 @@ export default function OrderPage() {
               </Link>
             </div>
           </div>
+        )}
+          </>
         )}
       </main>
     </div>

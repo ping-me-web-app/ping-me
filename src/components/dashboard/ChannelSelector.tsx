@@ -180,7 +180,7 @@ export function ChannelSelector() {
           )}
         </div>
 
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
           {saved ? (
             <span className="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold animate-in fade-in">
               <CheckCircle2 className="w-4 h-4" />
@@ -192,7 +192,7 @@ export function ChannelSelector() {
             </span>
           )}
 
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" className="w-full sm:w-auto shrink-0 whitespace-nowrap">
             <FormattedMessage id="dashboard.saveButton" />
           </Button>
         </div>

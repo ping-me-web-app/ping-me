@@ -21,7 +21,7 @@ export function PricingSection() {
 
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
           {/* Main Plan: €10 / year */}
-          <div className="md:col-span-7 rounded-3xl bg-white dark:bg-slate-900 border-2 border-emerald-500 shadow-xl p-8 flex flex-col justify-between relative">
+          <div className="md:col-span-7 rounded-3xl bg-white dark:bg-slate-900 border-2 border-emerald-500 shadow-xl p-6 sm:p-8 flex flex-col justify-between relative">
             <div className="absolute -top-3.5 right-6">
               <Badge variant="brand" className="py-1 px-3 shadow-sm bg-emerald-600 text-white border-emerald-500">
                 <Sparkles className="w-3.5 h-3.5 mr-1" />
@@ -85,7 +85,7 @@ export function PricingSection() {
           </div>
 
           {/* Replacement Sticker Card: €5 */}
-          <div className="md:col-span-5 rounded-3xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-8 flex flex-col justify-between">
+          <div className="md:col-span-5 rounded-3xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400 flex items-center justify-center mb-4">
                 <RefreshCw className="w-5 h-5" />
