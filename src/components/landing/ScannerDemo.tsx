@@ -43,7 +43,7 @@ export function ScannerDemo() {
                 maxWidthClass="max-w-[360px] sm:max-w-[410px] lg:max-w-[440px] xl:max-w-[460px]"
                 screenClassName="bg-white dark:bg-[#0B1119]"
               >
-                <div className="px-4 py-3 sm:px-5">
+                <div className="px-4 pt-5 pb-4 sm:px-5 sm:pt-6">
                   <TagAlertForm isEmbedded={true} />
                 </div>
               </PhoneMockup>
