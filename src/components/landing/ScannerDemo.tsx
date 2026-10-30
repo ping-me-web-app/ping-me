@@ -30,7 +30,7 @@ export function ScannerDemo() {
 
         <div className="mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center max-w-6xl mx-auto">
           {/* Left Column: Photorealistic iPhone 16 Pro Mockup with Live Standalone Tag Form */}
-          <div className="lg:col-span-5 flex flex-col items-center">
+          <div className="lg:col-span-6 flex flex-col items-center">
             {/* Live Interactive Tag Above Phone */}
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 mb-4 shadow-2xs">
               <Sparkles className="w-3.5 h-3.5" />
@@ -40,10 +40,10 @@ export function ScannerDemo() {
             {/* Reused Phone Mockup with scrollable standalone TagAlertForm inside */}
             <div className="w-full flex justify-center">
               <PhoneMockup
-                maxWidthClass="max-w-[320px] sm:max-w-[340px]"
+                maxWidthClass="max-w-[360px] sm:max-w-[410px] lg:max-w-[440px] xl:max-w-[460px]"
                 screenClassName="bg-slate-100 dark:bg-[#070A10]"
               >
-                <div className="p-3">
+                <div className="p-3 sm:p-4">
                   <TagAlertForm isEmbedded={true} />
                 </div>
               </PhoneMockup>
@@ -51,7 +51,7 @@ export function ScannerDemo() {
           </div>
 
           {/* Right Column: Vertical Cards Highlighting the Steps */}
-          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+          <div className="lg:col-span-6 space-y-4 sm:space-y-5">
             {/* Step 1 Card */}
             <div className="group rounded-3xl p-5 sm:p-6 bg-white dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
               <div className="flex items-start gap-4">
