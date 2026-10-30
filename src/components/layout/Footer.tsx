@@ -4,9 +4,12 @@ import React from "react";
 import Link from "next/link";
 import { FormattedMessage } from "react-intl";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import { useAuth } from "@/lib/useAuth";
 import { ShieldCheck, Truck, CreditCard } from "lucide-react";
 
 export function Footer() {
+  const { isLoggedIn, mounted } = useAuth();
+  const loggedIn = mounted && isLoggedIn;
   return (
     <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#070A11] text-slate-600 dark:text-slate-400 text-sm transition-colors">
       {/* Dutch Trust strip */}
@@ -78,7 +81,7 @@ export function Footer() {
               <li><Link href="/#hoe-het-werkt" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="nav.howItWorks" /></Link></li>
               <li><Link href="/#prijzen" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="nav.pricing" /></Link></li>
               <li><Link href="/#voordelen" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="nav.benefits" /></Link></li>
-              <li><Link href="/tag/PM-NL-8924" className="hover:text-emerald-600 dark:hover:text-emerald-400">QR Demo</Link></li>
+              <li><Link href="/tag/PM-NL-8924" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="footer.qrDemo" /></Link></li>
             </ul>
           </div>
 
@@ -87,10 +90,13 @@ export function Footer() {
               <FormattedMessage id="footer.support" />
             </h4>
             <ul className="space-y-2 text-xs">
-              <li><Link href="/login" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="common.login" /></Link></li>
-              <li><Link href="/dashboard" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="common.myDashboard" /></Link></li>
+              {loggedIn ? (
+                <li><Link href="/dashboard" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold text-emerald-600 dark:text-emerald-400"><FormattedMessage id="common.myDashboard" /></Link></li>
+              ) : (
+                <li><Link href="/login" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="common.login" /></Link></li>
+              )}
               <li><Link href="/#faq" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="nav.faq" /></Link></li>
-              <li><a href="mailto:support@pingme.app" className="hover:text-emerald-600 dark:hover:text-emerald-400">Support</a></li>
+              <li><a href="mailto:support@pingme.app" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="footer.contactSupport" /></a></li>
             </ul>
           </div>
 

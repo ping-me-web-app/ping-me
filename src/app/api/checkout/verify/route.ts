@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
+import { createClient } from "@supabase/supabase-js";
 
 export async function GET(req: Request) {
   try {
@@ -30,9 +31,8 @@ export async function GET(req: Request) {
     }
 
     const meta = session.metadata || {};
-    const orderId = `PM-NL-${session.id.slice(-6).toUpperCase()}`;
-    // Use last 4 characters of session ID or a generated token
-    const token = `PM-NL-${session.id.slice(-4).toUpperCase()}`;
+    const orderId = meta.orderId || `PM-NL-${session.id.slice(-6).toUpperCase()}`;
+    const token = meta.token || `PM-NL-${session.id.slice(-4).toUpperCase()}`;
 
     const vehicleData = {
       plate: meta.plate || "XX-00-XX",
@@ -61,9 +61,40 @@ export async function GET(req: Request) {
       currency: session.currency,
     };
 
+    // Trigger magic link to customer's email so they can securely access their dashboard
+    let magicLinkSent = false;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey =
+      process.env.SUPABASE_SECRET_KEY ||
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && supabaseKey && vehicleData.email) {
+      try {
+        const origin = new URL(req.url).origin;
+        const supabase = createClient(supabaseUrl, supabaseKey, {
+          auth: { autoRefreshToken: false, persistSession: false },
+        });
+        const { error: otpError } = await supabase.auth.signInWithOtp({
+          email: vehicleData.email,
+          options: {
+            emailRedirectTo: `${origin}/auth/callback?next=/dashboard`,
+          },
+        });
+        if (!otpError) {
+          magicLinkSent = true;
+        } else {
+          console.warn("OTP error in checkout verify:", otpError.message);
+        }
+      } catch (otpErr) {
+        console.error("Failed to send OTP in checkout verify:", otpErr);
+      }
+    }
+
     return NextResponse.json({
       paid: true,
       order: vehicleData,
+      magicLinkSent,
     });
   } catch (err: any) {
     console.error("Stripe verify error:", err);

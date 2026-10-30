@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { FormattedMessage } from "react-intl";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -10,7 +11,8 @@ import { ChannelSelector } from "@/components/dashboard/ChannelSelector";
 import { PostNLTracker } from "@/components/dashboard/PostNLTracker";
 import { SubscriptionCard } from "@/components/dashboard/SubscriptionCard";
 import { useUserData } from "@/lib/useUserData";
-import { User } from "lucide-react";
+import { useAuth } from "@/lib/useAuth";
+import { User, Loader2 } from "lucide-react";
 
 // Code Splitting: Lazy-load dialogs only when opened by user interaction
 const StripePortalModal = dynamic(
@@ -30,9 +32,25 @@ const ReplacementModal = dynamic(
 );
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { isLoggedIn, mounted } = useAuth();
   const { data } = useUserData();
   const [stripeModalOpen, setStripeModalOpen] = useState(false);
   const [replacementModalOpen, setReplacementModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (mounted && !isLoggedIn) {
+      router.replace("/login");
+    }
+  }, [mounted, isLoggedIn, router]);
+
+  if (!mounted || !isLoggedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#0B1117]">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
+      </div>
+    );
+  }
 
   return (
     <>

@@ -42,15 +42,15 @@ export async function POST(req: Request) {
 
     const plate = meta.plate;
     const email = meta.email || session.customer_email;
-    const token = `PM-NL-${session.id.slice(-4).toUpperCase()}`;
+    const token = meta.token || `PM-NL-${session.id.slice(-4).toUpperCase()}`;
 
-    // Optional: Synchronize directly with Supabase if service role key is provided
+    // Optional: Synchronize directly with Supabase if secret / service key is provided
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const secretKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    if (supabaseUrl && serviceRoleKey && email && plate) {
+    if (supabaseUrl && secretKey && email && plate) {
       try {
-        const adminSupabase = createClient(supabaseUrl, serviceRoleKey, {
+        const adminSupabase = createClient(supabaseUrl, secretKey, {
           auth: { autoRefreshToken: false, persistSession: false },
         });
 

@@ -6,9 +6,12 @@ import { FormattedMessage } from "react-intl";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Check, Truck, ShieldCheck, Sparkles, RefreshCw } from "lucide-react";
+import { useAuth } from "@/lib/useAuth";
+import { Check, Truck, ShieldCheck, Sparkles, RefreshCw, ArrowRight } from "lucide-react";
 
 export function PricingSection() {
+  const { isLoggedIn, mounted } = useAuth();
+  const loggedIn = mounted && isLoggedIn;
   return (
     <section id="prijzen" className="py-20 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,10 +26,17 @@ export function PricingSection() {
           {/* Main Plan: €10 / year */}
           <div className="md:col-span-7 rounded-3xl bg-white dark:bg-slate-900 border-2 border-emerald-500 shadow-xl p-6 sm:p-8 flex flex-col justify-between relative">
             <div className="absolute -top-3.5 right-6">
-              <Badge variant="brand" className="py-1 px-3 shadow-sm bg-emerald-600 text-white border-emerald-500">
-                <Sparkles className="w-3.5 h-3.5 mr-1" />
-                <FormattedMessage id="pricing.mainBadge" />
-              </Badge>
+              {loggedIn ? (
+                <Badge variant="success" className="py-1 px-3 shadow-sm bg-emerald-600 text-white border-emerald-500">
+                  <Check className="w-3.5 h-3.5 mr-1" />
+                  <FormattedMessage id="pricing.alreadySubscribedBadge" />
+                </Badge>
+              ) : (
+                <Badge variant="brand" className="py-1 px-3 shadow-sm bg-emerald-600 text-white border-emerald-500">
+                  <Sparkles className="w-3.5 h-3.5 mr-1" />
+                  <FormattedMessage id="pricing.mainBadge" />
+                </Badge>
+              )}
             </div>
 
             <div>
@@ -73,11 +83,20 @@ export function PricingSection() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-              <Link href="/order" className="block">
-                <Button size="lg" className="w-full shadow-lg shadow-emerald-600/20">
-                  <FormattedMessage id="pricing.mainCta" />
-                </Button>
-              </Link>
+              {loggedIn ? (
+                <Link href="/dashboard" className="block">
+                  <Button size="lg" className="w-full shadow-lg shadow-emerald-600/20">
+                    <FormattedMessage id="pricing.mainCtaManage" />
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/order" className="block">
+                  <Button size="lg" className="w-full shadow-lg shadow-emerald-600/20">
+                    <FormattedMessage id="pricing.mainCta" />
+                  </Button>
+                </Link>
+              )}
               <p className="text-center text-[11px] text-slate-400 mt-2.5">
                 <FormattedMessage id="pricing.ctaNote" />
               </p>

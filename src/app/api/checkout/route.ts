@@ -23,7 +23,29 @@ export async function POST(req: Request) {
 
     if (!plate || !email) {
       return NextResponse.json(
-        { error: "License plate and email are required." },
+        { error: "Kenteken en e-mailadres zijn verplicht / License plate and email are required." },
+        { status: 400 }
+      );
+    }
+
+    const cleanedEmail = (email || "").trim();
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanedEmail);
+    if (!isValidEmail) {
+      return NextResponse.json(
+        { error: "Vul een geldig e-mailadres in (bijv. naam@domein.nl) / Please enter a valid email address." },
+        { status: 400 }
+      );
+    }
+
+    const phoneDigits = (phone || "").replace(/\D/g, "");
+    const isValidPhone =
+      channel === "email"
+        ? !phone || (phoneDigits.length >= 9 && phoneDigits.length <= 15 && !/[a-zA-Z]/.test(phone))
+        : phoneDigits.length >= 9 && phoneDigits.length <= 15 && !/[a-zA-Z]/.test(phone);
+
+    if (!isValidPhone) {
+      return NextResponse.json(
+        { error: "Vul een geldig mobiel telefoonnummer in (bijv. +31 6 1234 5678) / Please enter a valid phone number." },
         { status: 400 }
       );
     }
@@ -35,18 +57,18 @@ export async function POST(req: Request) {
     const proto = req.headers.get("x-forwarded-proto") || (host.startsWith("localhost") ? "http" : "https");
     const origin = process.env.NEXT_PUBLIC_APP_URL || `${proto}://${host}`;
 
-    // If Stripe keys are not yet configured in environment variables, provide fallback
     if (!stripe) {
-      return NextResponse.json({
-        configured: false,
-        message: "Stripe API key (STRIPE_SECRET_KEY) not configured. In test mode.",
-        mock: true,
-      });
+      return NextResponse.json(
+        { error: "Stripe API key (STRIPE_SECRET_KEY) is niet geconfigureerd / Stripe is not configured." },
+        { status: 500 }
+      );
     }
 
-    // Payment methods for Stripe Checkout
-    const allowedPaymentMethodTypes =
-      paymentMethod === "card" ? (["card"] as const) : (["ideal", "card"] as const);
+    // Enable all primary European payment methods (iDEAL, Card, Apple Pay, Google Pay)
+    const allowedPaymentMethodTypes: ("card" | "ideal")[] = ["ideal", "card"];
+
+    const generatedOrderId = `PM-NL-${Math.floor(100000 + Math.random() * 900000)}`;
+    const generatedToken = `PM-NL-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const session = await stripe.checkout.sessions.create({
       allowed_payment_method_types: [...allowedPaymentMethodTypes],
@@ -64,15 +86,17 @@ export async function POST(req: Request) {
         },
       ],
       mode: "payment",
-      customer_email: email,
+      customer_email: cleanedEmail,
       metadata: {
+        orderId: generatedOrderId,
+        token: generatedToken,
         plate: plate.toUpperCase(),
         make: make || "",
         model: model || "",
         color: color || "",
         channel: channel || "whatsapp",
         phone: phone || "",
-        email,
+        email: cleanedEmail,
         fullName: fullName || "",
         postalCode: postalCode || "",
         houseNumber: houseNumber || "",

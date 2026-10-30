@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { FormattedMessage } from "react-intl";
 import {
   ShieldCheck,
   QrCode,
@@ -135,11 +136,11 @@ export function HeroSimulator() {
                   <div className="flex items-center gap-1.5">
                     <span className="font-mono font-bold text-[11px] text-white">PM-NL-8924</span>
                     <span className="px-1 py-0.2 rounded text-[8px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-400/40">
-                      Actief
+                      <FormattedMessage id="hero.simStickerActive" />
                     </span>
                   </div>
                   <p className="text-[9px] text-white/70">
-                    Auto: <strong className="text-white">Volkswagen (K-123-XX)</strong>
+                    <FormattedMessage id="hero.simVehicleLabel" /> <strong className="text-white">Volkswagen (K-123-XX)</strong>
                   </p>
                 </div>
               </div>
@@ -147,7 +148,7 @@ export function HeroSimulator() {
               <div className="text-right">
                 <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-sky-300">
                   <ShieldCheck className="w-3 h-3" />
-                  100% Anoniem
+                  <FormattedMessage id="common.anonymous" />
                 </span>
               </div>
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { useUserData } from "@/lib/useUserData";
@@ -12,6 +12,7 @@ interface SubscriptionCardProps {
 }
 
 export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) {
+  const intl = useIntl();
   const { data } = useUserData();
 
   // Calculate 1 year renewal date
@@ -19,18 +20,21 @@ export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) 
   const renewalDate = new Date(createdDate);
   renewalDate.setFullYear(renewalDate.getFullYear() + 1);
 
-  const renewalFormatted = renewalDate.toLocaleDateString("nl-NL", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const renewalFormatted = renewalDate.toLocaleDateString(
+    intl.locale === "nl" ? "nl-NL" : "en-US",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  );
 
   const paymentDisplay =
     data.paymentMethod === "ideal"
       ? `iDEAL (${data.selectedBank || "Bank"})`
       : data.paymentMethod === "apple_pay"
       ? "Apple Pay"
-      : "Creditcard";
+      : intl.formatMessage({ id: "common.creditCard" });
   return (
     <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-7 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-100 dark:border-slate-800 gap-3">
@@ -93,7 +97,7 @@ export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) 
             {paymentDisplay}
           </p>
           <p className="text-[11px] text-slate-400 mt-1">
-            Automatische SEPA-incasso jaarlijks
+            <FormattedMessage id="dashboard.sepaAccount" />
           </p>
         </div>
       </div>

@@ -52,7 +52,7 @@ export default function LoginPage() {
       setSent(true);
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "Failed to send magic link. Please check your credentials.";
+        err instanceof Error ? err.message : intl.formatMessage({ id: "login.magicLinkError" });
       setErrorMsg(message);
     } finally {
       setLoading(false);
@@ -125,7 +125,7 @@ export default function LoginPage() {
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    <span>Sending magic link...</span>
+                    <span><FormattedMessage id="login.sendingMagicLink" /></span>
                   </>
                 ) : (
                   <>

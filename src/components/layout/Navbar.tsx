@@ -22,6 +22,7 @@ export function Navbar() {
   };
 
   const isDashboardPage = pathname?.startsWith("/dashboard");
+  const isHomePage = pathname === "/";
 
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/85 dark:bg-[#0B1117]/85 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
@@ -32,21 +33,23 @@ export function Navbar() {
             <BrandLogo size="md" />
           </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300">
-            <Link href="/#hoe-het-werkt" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-              <FormattedMessage id="nav.howItWorks" />
-            </Link>
-            <Link href="/#voordelen" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-              <FormattedMessage id="nav.benefits" />
-            </Link>
-            <Link href="/#prijzen" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-              <FormattedMessage id="nav.pricing" />
-            </Link>
-            <Link href="/#faq" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-              <FormattedMessage id="nav.faq" />
-            </Link>
-          </nav>
+          {/* Desktop Navigation Links - Only displayed on Home Page */}
+          {isHomePage && (
+            <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300">
+              <Link href="/#hoe-het-werkt" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                <FormattedMessage id="nav.howItWorks" />
+              </Link>
+              <Link href="/#voordelen" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                <FormattedMessage id="nav.benefits" />
+              </Link>
+              <Link href="/#prijzen" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                <FormattedMessage id="nav.pricing" />
+              </Link>
+              <Link href="/#faq" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                <FormattedMessage id="nav.faq" />
+              </Link>
+            </nav>
+          )}
 
           {/* Right Action Buttons - All standardized to h-10 and rounded-xl */}
           <div className="hidden md:flex items-center gap-2.5">
@@ -99,27 +102,54 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu toggle button */}
+          {/* Mobile menu toggle or direct actions on other pages */}
           <div className="flex md:hidden items-center gap-2">
             <LanguageToggle />
             <button
               onClick={toggleTheme}
+              aria-label="Toggle theme"
               className="h-10 w-10 inline-flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300"
             >
               {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4 text-amber-400" />}
             </button>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="h-10 w-10 inline-flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+
+            {isHomePage ? (
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle menu"
+                className="h-10 w-10 inline-flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            ) : (
+              /* Non-home pages: render Logout or Login directly on mobile without any menu button */
+              mounted && (
+                isLoggedIn ? (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleLogout}
+                    className="h-10 px-3 rounded-xl font-semibold text-xs border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400"
+                  >
+                    <LogOut className="w-3.5 h-3.5 mr-1" />
+                    <FormattedMessage id="common.logout" />
+                  </Button>
+                ) : (
+                  <Link href="/login">
+                    <Button variant="primary" size="sm" className="h-10 px-3 rounded-xl font-semibold text-xs">
+                      <User className="w-3.5 h-3.5 mr-1" />
+                      <FormattedMessage id="common.login" />
+                    </Button>
+                  </Link>
+                )
+              )
+            )}
           </div>
         </div>
       </div>
 
-      {/* Mobile dropdown */}
-      {mobileMenuOpen && (
+      {/* Mobile dropdown - Only available on Home Page */}
+      {isHomePage && mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0B1117] px-4 pt-2 pb-6 space-y-3">
           <Link
             href="/#hoe-het-werkt"

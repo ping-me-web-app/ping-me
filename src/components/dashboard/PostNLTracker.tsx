@@ -11,39 +11,12 @@ export function PostNLTracker() {
 
   const barcode = `3SPL${data.token.replace(/[^a-zA-Z0-9]/g, "")}NL`;
 
-  const steps = isCustomOrder
-    ? [
-        {
-          title: `Sticker voorgeprogrammeerd voor ${data.plate}`,
-          time: "Vandaag • Zojuist geregistreerd",
-          done: true,
-          active: false,
-        },
-        {
-          title: "Klaargemaakt voor PostNL verzending",
-          time: "Vandaag • Wordt vandaag overgedragen",
-          done: false,
-          active: true,
-        },
-        {
-          title: "Onderweg met PostNL postbode",
-          time: "Verwacht: morgen tussen 09:00 - 18:00",
-          done: false,
-          active: false,
-        },
-        {
-          title: "In je brievenbus bezorgd",
-          time: "Binnen 1-2 werkdagen",
-          done: false,
-          active: false,
-        },
-      ]
-    : [
-        { titleId: "dashboard.step1", timeId: "dashboard.step1Time", done: true },
-        { titleId: "dashboard.step2", timeId: "dashboard.step2Time", done: true },
-        { titleId: "dashboard.step3", timeId: "dashboard.step3Time", done: true, active: true },
-        { titleId: "dashboard.step4", timeId: "dashboard.step4Time", done: false },
-      ];
+  const steps = [
+    { titleId: "dashboard.step1", timeId: "dashboard.step1Time", done: true },
+    { titleId: "dashboard.step2", timeId: "dashboard.step2Time", done: true, active: isCustomOrder },
+    { titleId: "dashboard.step3", timeId: "dashboard.step3Time", done: !isCustomOrder, active: !isCustomOrder },
+    { titleId: "dashboard.step4", timeId: "dashboard.step4Time", done: false },
+  ];
 
   return (
     <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-7 shadow-sm">
@@ -113,10 +86,10 @@ export function PostNLTracker() {
                 </span>
               </div>
               <p className="font-display font-bold text-xs text-slate-800 dark:text-slate-200">
-                {"title" in st ? st.title : <FormattedMessage id={st.titleId} />}
+                <FormattedMessage id={st.titleId} />
               </p>
               <p className="text-[11px] text-slate-400">
-                {"time" in st ? st.time : <FormattedMessage id={st.timeId} />}
+                <FormattedMessage id={st.timeId} />
               </p>
             </div>
           ))}

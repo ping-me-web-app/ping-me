@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ChannelType } from "@/types";
 import { Button } from "@/components/ui/Button";
 import { useUserData } from "@/lib/useUserData";
@@ -13,6 +13,7 @@ import {
 import { CheckCircle2, ShieldCheck } from "lucide-react";
 
 export function ChannelSelector() {
+  const intl = useIntl();
   const { data, updateData } = useUserData();
   const [selectedChannel, setSelectedChannel] = useState<ChannelType>(data.channel);
   const [phone, setPhone] = useState(data.phone);
@@ -169,7 +170,7 @@ export function ChannelSelector() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="naam@voorbeeld.nl"
+                placeholder={intl.formatMessage({ id: "login.emailPlaceholder" })}
                 className="w-full text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 py-2 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
                 required
               />

@@ -34,7 +34,7 @@ export function SimulatorNotification({ channel, animKey }: SimulatorNotificatio
                   <CheckCircle2 className="w-3 h-3 text-emerald-400 fill-emerald-400" />
                 </div>
                 <span className="text-[9px] text-emerald-400 font-medium">
-                  WhatsApp Verified
+                  <FormattedMessage id="hero.simVerifiedBadge" />
                 </span>
               </div>
             </div>
@@ -66,7 +66,7 @@ export function SimulatorNotification({ channel, animKey }: SimulatorNotificatio
                   <FormattedMessage id="hero.simSmsFrom" />
                 </span>
                 <p className="text-[9px] text-green-400 font-medium">
-                  Messages • Direct Relay
+                  <FormattedMessage id="hero.simDirectRelay" />
                 </p>
               </div>
             </div>
