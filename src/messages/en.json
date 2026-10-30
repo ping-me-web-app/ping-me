@@ -304,8 +304,7 @@
     "sentTitle": "Magic link sent!",
     "sentDesc": "We emailed a login link to {email}. Click the link in your inbox to sign in directly.",
     "tryAnother": "Try another email address",
-    "orDivider": "or test instantly",
-    "demoBtn": "Open Demo Dashboard (K-123-XX)"
+    "authFailed": "The login link is invalid or has expired. Please request a new link below."
   },
   "notFound": {
     "title": "Page Not Found",

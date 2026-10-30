@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormattedMessage, useIntl } from "react-intl";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Button } from "@/components/ui/Button";
@@ -9,19 +10,39 @@ import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { SuccessState } from "@/components/ui/SuccessState";
 import { useAuth } from "@/lib/useAuth";
 import { createClient } from "@/lib/supabase/client";
-import { Mail, ArrowRight, Sparkles, AlertCircle, Loader2 } from "lucide-react";
+import { Mail, ArrowRight, AlertCircle, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const intl = useIntl();
-  const { login } = useAuth();
+  const router = useRouter();
+  const { isLoggedIn, mounted } = useAuth();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  // If already authenticated, redirect directly to dashboard
+  useEffect(() => {
+    if (mounted && isLoggedIn) {
+      router.replace("/dashboard");
+    }
+  }, [mounted, isLoggedIn, router]);
+
+  // Handle URL errors (e.g. invalid or expired auth magic link)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("error") === "auth_failed") {
+        setErrorMsg(intl.formatMessage({ id: "login.authFailed" }));
+      }
+    }
+  }, [intl]);
+
   const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    const targetEmail = email.trim();
+    if (!targetEmail) return;
+
     setLoading(true);
     setErrorMsg(null);
 
@@ -35,9 +56,9 @@ export default function LoginPage() {
       if (isConfigured) {
         const supabase = createClient();
         const { error } = await supabase.auth.signInWithOtp({
-          email,
+          email: targetEmail,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
+            emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
           },
         });
         if (error) {
@@ -48,7 +69,6 @@ export default function LoginPage() {
         await new Promise((r) => setTimeout(r, 600));
       }
 
-      login();
       setSent(true);
     } catch (err: unknown) {
       const message =
@@ -57,10 +77,6 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleDemoLogin = () => {
-    login("/dashboard");
   };
 
   return (
@@ -85,7 +101,7 @@ export default function LoginPage() {
             <SuccessState
               size="sm"
               title={<FormattedMessage id="login.sentTitle" />}
-              description={<FormattedMessage id="login.sentDesc" values={{ email }} />}
+              description={<FormattedMessage id="login.sentDesc" values={{ email: email.trim() }} />}
               actionButton={
                 <Button variant="outline" size="sm" onClick={() => setSent(false)}>
                   <FormattedMessage id="login.tryAnother" />
@@ -116,7 +132,7 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={intl.formatMessage({ id: "login.emailPlaceholder" })}
                     required
-                    className="w-full text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 pl-10 pr-4 py-2.5 text-slate-900 dark:white focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-60"
+                    className="w-full text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 pl-10 pr-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-60"
                   />
                 </div>
               </div>
@@ -136,28 +152,6 @@ export default function LoginPage() {
               </Button>
             </form>
           )}
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200 dark:border-slate-800" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white dark:bg-slate-900 px-3 text-slate-400 font-semibold">
-                <FormattedMessage id="login.orDivider" />
-              </span>
-            </div>
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="md"
-            onClick={handleDemoLogin}
-            className="w-full border-sky-300 dark:border-sky-800 text-sky-700 dark:text-sky-300 hover:bg-sky-50 dark:hover:bg-sky-950/40"
-          >
-            <Sparkles className="w-4 h-4 mr-2 text-sky-500" />
-            <FormattedMessage id="login.demoBtn" />
-          </Button>
         </div>
 
         <p className="text-center text-xs text-slate-400">

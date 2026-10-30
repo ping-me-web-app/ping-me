@@ -304,8 +304,7 @@
     "sentTitle": "Magische link verzonden!",
     "sentDesc": "We hebben een inloglink gemaild naar {email}. Klik op de link in je inbox om direct in te loggen.",
     "tryAnother": "Ander e-mailadres proberen",
-    "orDivider": "of direct testen",
-    "demoBtn": "Open Demo Dashboard (K-123-XX)"
+    "authFailed": "De inloglink is verlopen of ongeldig. Vraag hieronder een nieuwe link aan."
   },
   "notFound": {
     "title": "Pagina niet gevonden",
