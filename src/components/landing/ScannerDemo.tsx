@@ -41,9 +41,9 @@ export function ScannerDemo() {
             <div className="w-full flex justify-center">
               <PhoneMockup
                 maxWidthClass="max-w-[360px] sm:max-w-[410px] lg:max-w-[440px] xl:max-w-[460px]"
-                screenClassName="bg-slate-100 dark:bg-[#070A10]"
+                screenClassName="bg-white dark:bg-[#0B1119]"
               >
-                <div className="p-3 sm:p-4">
+                <div className="px-4 py-3 sm:px-5">
                   <TagAlertForm isEmbedded={true} />
                 </div>
               </PhoneMockup>

@@ -42,22 +42,46 @@ export function PhoneMockup({
       >
         {/* iOS Top Status Bar & Dynamic Island */}
         {showStatusBar && (
-          <div className="relative z-30 flex items-center justify-between px-5 pt-2 pb-1 text-slate-800 dark:text-white/90 text-[10px] font-semibold tracking-tight select-none flex-shrink-0 bg-slate-100/90 dark:bg-[#070A10]/90 backdrop-blur-md">
+          <div className="relative z-30 flex items-center justify-between px-6 pt-3 pb-2 text-slate-900 dark:text-white text-[11px] font-semibold tracking-tight select-none flex-shrink-0 bg-transparent">
             {/* Clock */}
-            <span suppressHydrationWarning className="w-9 text-left font-mono">
+            <span
+              suppressHydrationWarning
+              className="w-12 text-left font-sans font-semibold text-[11px] sm:text-[12px] tabular-nums"
+            >
               {timeStr || "09:41"}
             </span>
 
-            {/* Dynamic Island Pill */}
-            <div className="w-18 h-4.5 rounded-full bg-black flex items-center justify-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80 animate-pulse ml-auto mr-1.5" />
+            {/* Authentic Dynamic Island Capsule */}
+            <div className="w-[82px] h-[24px] sm:w-[94px] sm:h-[26px] rounded-full bg-black flex items-center justify-between px-2.5 shadow-sm -mt-0.5">
+              {/* Camera lens reflection */}
+              <div className="w-2.5 h-2.5 rounded-full bg-[#111827] border border-white/10" />
+              {/* Sensor dot / active indicator */}
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/90 shadow-[0_0_4px_#10b981]" />
             </div>
 
-            {/* Right Indicators */}
-            <div className="flex items-center gap-1.5 text-[9px]">
-              <Wifi className="w-2.5 h-2.5" />
-              <span className="font-sans font-bold text-[8px]">5G</span>
-              <Battery className="w-3 h-3 fill-current" />
+            {/* Right Indicators: Cellular Bars, 5G, Wifi, Battery */}
+            <div className="w-16 flex items-center justify-end gap-1.5 text-slate-800 dark:text-slate-200">
+              {/* 4 Cellular Signal Bars */}
+              <div className="flex items-end gap-[1.5px] h-2.5 pb-[0.5px]">
+                <span className="w-[2px] h-[3px] bg-current rounded-full" />
+                <span className="w-[2px] h-[5px] bg-current rounded-full" />
+                <span className="w-[2px] h-[7px] bg-current rounded-full" />
+                <span className="w-[2px] h-[9px] bg-current rounded-full" />
+              </div>
+
+              {/* 5G text */}
+              <span className="font-sans font-bold text-[9px] leading-none">5G</span>
+
+              {/* Wifi */}
+              <Wifi className="w-3 h-3 stroke-[2.2]" />
+
+              {/* iOS Battery with Terminal Nub */}
+              <div className="relative flex items-center">
+                <div className="w-[18px] h-[9px] rounded-[3px] border border-current p-[1px] flex items-center">
+                  <div className="h-full w-full bg-current rounded-[1.5px]" />
+                </div>
+                <div className="w-[1px] h-[3.5px] bg-current rounded-r-[1px] ml-[0.5px]" />
+              </div>
             </div>
           </div>
         )}

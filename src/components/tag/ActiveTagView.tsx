@@ -43,7 +43,7 @@ export function ActiveTagView({
       className={cn(
         "w-full transition-colors",
         isEmbedded
-          ? "p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#0F172A] border border-slate-200/90 dark:border-slate-800 shadow-sm my-2"
+          ? "py-1 space-y-4"
           : "rounded-3xl bg-white dark:bg-[#0F172A] border border-slate-200/90 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-black/40 overflow-hidden p-5 sm:p-7",
         className
       )}
