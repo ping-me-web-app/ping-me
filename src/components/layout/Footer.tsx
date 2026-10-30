@@ -1,15 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { FormattedMessage } from "react-intl";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import { KvkModal } from "@/components/ui/KvkModal";
 import { useAuth } from "@/lib/useAuth";
 import { ShieldCheck, Truck, CreditCard } from "lucide-react";
 
 export function Footer() {
   const { isLoggedIn, mounted } = useAuth();
   const loggedIn = mounted && isLoggedIn;
+  const [kvkOpen, setKvkOpen] = useState(false);
+
   return (
     <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#070A11] text-slate-600 dark:text-slate-400 text-sm transition-colors">
       {/* Dutch Trust strip */}
@@ -105,9 +108,25 @@ export function Footer() {
               <FormattedMessage id="footer.legal" />
             </h4>
             <ul className="space-y-2 text-xs">
-              <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="footer.privacy" /></a></li>
-              <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="footer.terms" /></a></li>
-              <li><a href="#" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="footer.kvk" /></a></li>
+              <li>
+                <Link href="/privacy" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                  <FormattedMessage id="footer.privacy" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                  <FormattedMessage id="footer.terms" />
+                </Link>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setKvkOpen(true)}
+                  className="hover:text-emerald-600 dark:hover:text-emerald-400 text-left cursor-pointer"
+                >
+                  <FormattedMessage id="footer.kvk" />
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -117,6 +136,9 @@ export function Footer() {
           <p><FormattedMessage id="footer.stripeProcessed" /></p>
         </div>
       </div>
+
+      {/* KvK Chamber of Commerce Details Modal */}
+      <KvkModal isOpen={kvkOpen} onClose={() => setKvkOpen(false)} />
     </footer>
   );
 }

@@ -21,18 +21,18 @@ export function ChannelFloatButtons({
     <>
       {/* 1. WhatsApp: Upper-Right Floating */}
       <div
-        className={`absolute top-14 -right-5 sm:-right-8 animate-calm-float-1 transition-all duration-300 ${
-          activeChannel === "whatsapp" ? "z-40" : "z-30"
+        className={`absolute top-12 sm:top-14 -right-1 sm:-right-8 animate-calm-float-1 transition-all duration-300 ${
+          activeChannel === "whatsapp" ? "z-30" : "z-20"
         }`}
       >
         <button
           onClick={() => onSelectChannel("whatsapp")}
           title="WhatsApp (iOS)"
           aria-label="Switch to WhatsApp Alert"
-          className={`group relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0 transition-all duration-500 [transition-timing-function:cubic-bezier(0.34,1.4,0.64,1)] cursor-pointer select-none ${
+          className={`group relative w-12 h-12 sm:w-16 sm:h-16 rounded-full p-0 transition-all duration-500 [transition-timing-function:cubic-bezier(0.34,1.4,0.64,1)] cursor-pointer select-none ${
             activeChannel === "whatsapp"
-              ? "scale-[1.3] shadow-2xl shadow-emerald-500/40 opacity-100"
-              : "scale-100 opacity-70 hover:opacity-100 shadow-md shadow-black/25 hover:scale-105"
+              ? "scale-[1.12] sm:scale-[1.3] shadow-2xl shadow-emerald-500/40 opacity-100"
+              : "scale-100 opacity-75 hover:opacity-100 shadow-md shadow-black/25 hover:scale-105"
           }`}
         >
           <IosWhatsAppIcon className="w-full h-full drop-shadow-md" />
@@ -46,18 +46,18 @@ export function ChannelFloatButtons({
 
       {/* 2. Messages / SMS: Middle-Left Floating */}
       <div
-        className={`absolute top-60 -left-5 sm:-left-8 animate-calm-float-2 transition-all duration-300 ${
-          activeChannel === "sms" ? "z-40" : "z-30"
+        className={`absolute top-52 sm:top-60 -left-1 sm:-left-8 animate-calm-float-2 transition-all duration-300 ${
+          activeChannel === "sms" ? "z-30" : "z-20"
         }`}
       >
         <button
           onClick={() => onSelectChannel("sms")}
           title="Apple Messages (iOS)"
           aria-label="Switch to SMS Alert"
-          className={`group relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0 transition-all duration-500 [transition-timing-function:cubic-bezier(0.34,1.4,0.64,1)] cursor-pointer select-none ${
+          className={`group relative w-12 h-12 sm:w-16 sm:h-16 rounded-full p-0 transition-all duration-500 [transition-timing-function:cubic-bezier(0.34,1.4,0.64,1)] cursor-pointer select-none ${
             activeChannel === "sms"
-              ? "scale-[1.3] shadow-2xl shadow-green-500/40 opacity-100"
-              : "scale-100 opacity-70 hover:opacity-100 shadow-md shadow-black/25 hover:scale-105"
+              ? "scale-[1.12] sm:scale-[1.3] shadow-2xl shadow-green-500/40 opacity-100"
+              : "scale-100 opacity-75 hover:opacity-100 shadow-md shadow-black/25 hover:scale-105"
           }`}
         >
           <IosMessagesIcon className="w-full h-full drop-shadow-md" />
@@ -71,18 +71,18 @@ export function ChannelFloatButtons({
 
       {/* 3. Mail: Lower-Right Floating */}
       <div
-        className={`absolute bottom-28 -right-5 sm:-right-8 animate-calm-float-3 transition-all duration-300 ${
-          activeChannel === "email" ? "z-40" : "z-30"
+        className={`absolute bottom-24 sm:bottom-28 -right-1 sm:-right-8 animate-calm-float-3 transition-all duration-300 ${
+          activeChannel === "email" ? "z-30" : "z-20"
         }`}
       >
         <button
           onClick={() => onSelectChannel("email")}
           title="Apple Mail (iOS)"
           aria-label="Switch to Email Alert"
-          className={`group relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0 transition-all duration-500 [transition-timing-function:cubic-bezier(0.34,1.4,0.64,1)] cursor-pointer select-none ${
+          className={`group relative w-12 h-12 sm:w-16 sm:h-16 rounded-full p-0 transition-all duration-500 [transition-timing-function:cubic-bezier(0.34,1.4,0.64,1)] cursor-pointer select-none ${
             activeChannel === "email"
-              ? "scale-[1.3] shadow-2xl shadow-sky-500/40 opacity-100"
-              : "scale-100 opacity-70 hover:opacity-100 shadow-md shadow-black/25 hover:scale-105"
+              ? "scale-[1.12] sm:scale-[1.3] shadow-2xl shadow-sky-500/40 opacity-100"
+              : "scale-100 opacity-75 hover:opacity-100 shadow-md shadow-black/25 hover:scale-105"
           }`}
         >
           <IosMailIcon className="w-full h-full drop-shadow-md" />

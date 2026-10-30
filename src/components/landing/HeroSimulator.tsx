@@ -30,7 +30,7 @@ export function HeroSimulator() {
   };
 
   return (
-    <div className="relative w-full max-w-[340px] mx-auto">
+    <div className="relative w-full max-w-[300px] sm:max-w-[360px] mx-auto select-none px-1 sm:px-0">
       {/* Floating Circular iOS Channel Switcher Buttons */}
       <ChannelFloatButtons
         activeChannel={activeChannel}
@@ -38,7 +38,7 @@ export function HeroSimulator() {
       />
 
       {/* Photorealistic iPhone 16 Pro Device Mockup */}
-      <div className="relative w-full aspect-[1406/2822] max-w-[325px] sm:max-w-[340px] mx-auto select-none drop-shadow-2xl">
+      <div className="relative w-full aspect-[1406/2822] max-w-[300px] sm:max-w-[340px] mx-auto select-none drop-shadow-2xl">
         {/* Screen Area */}
         <div
           className="absolute z-10 overflow-hidden flex flex-col justify-between p-3.5 pt-3.5 text-white"

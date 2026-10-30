@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-clip relative z-0">
         <Hero />
         <HowItWorks />
         <Features />

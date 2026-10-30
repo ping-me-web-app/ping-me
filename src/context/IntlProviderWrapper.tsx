@@ -35,7 +35,7 @@ const messageCatalogs: Record<Locale, Record<string, string>> = {
 };
 
 export function IntlProviderWrapper({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
+  const [locale, setLocaleState] = useState<Locale>("nl");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -44,7 +44,8 @@ export function IntlProviderWrapper({ children }: { children: React.ReactNode })
       setLocaleState(saved);
       document.documentElement.lang = saved;
     } else {
-      document.documentElement.lang = "en";
+      setLocaleState("nl");
+      document.documentElement.lang = "nl";
     }
     setMounted(true);
   }, []);
@@ -63,7 +64,7 @@ export function IntlProviderWrapper({ children }: { children: React.ReactNode })
     <LocaleContext.Provider value={{ locale, setLocale, toggleLocale }}>
       <IntlProvider
         locale={locale}
-        defaultLocale="en"
+        defaultLocale="nl"
         messages={messageCatalogs[locale]}
       >
         {children}

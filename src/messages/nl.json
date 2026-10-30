@@ -21,7 +21,10 @@
     "pricing": "Prijzen",
     "faq": "Veelgestelde vragen",
     "switchTheme": "Schakel thema",
-    "switchLang": "Wissel taal"
+    "switchLang": "Wissel taal",
+    "languageLabel": "Taal",
+    "themeDark": "Donker",
+    "themeLight": "Licht"
   },
   "hero": {
     "badgeNL": "Nu beschikbaar in Nederland 🇳🇱",
@@ -58,18 +61,30 @@
     "simStickerActive": "Actief",
     "simVehicleLabel": "Auto:",
     "simVerifiedBadge": "WhatsApp Geverifieerd",
-    "simDirectRelay": "Berichten • Directe Doorschakeling"
+    "simDirectRelay": "Berichten • Directe Doorschakeling",
+    "tabAlertPreview": "Bericht Preview",
+    "tabPhysicalSticker": "Fysieke Sticker",
+    "simPreviewLabel": "Live Bericht Notificatie",
+    "simInstantDelivery": "Direct afgeleverd"
+  },
+  "sticker": {
+    "showcaseBadge": "Fysieke Sticker Inbegrepen",
+    "featureCling": "0% Lijmresten (Statisch hechtend)",
+    "featureDiscreet": "Discreet formaat (7×7 cm)",
+    "featureUV": "UV- & weerbestendig",
+    "featurePreLinked": "Direct gekoppeld & actief"
   },
   "howItWorks": {
-    "tag": "Direct Gebruiksklaar",
+    "tag": "Eenvoudig & Zonder Gedoe",
     "title": "Hoe werkt Ping Me?",
-    "subtitle": "Geen ingewikkelde stappen. Direct gekoppeld en klaar om je auto te beschermen.",
-    "step1Title": "Kies je kanaal & bestel",
-    "step1Desc": "Kies WhatsApp, SMS of e-mail. Wij wijzen direct een voorbedrukte sticker uit onze voorraad toe aan jouw auto.",
-    "step2Title": "Bezorgd via PostNL brievenbuspost",
-    "step2Desc": "Binnen 2 werkdagen in je brievenbus. De sticker is al volledig geactiveerd en gekoppeld aan je account.",
-    "step3Title": "Plak op je ruit & blijf bereikbaar",
-    "step3Desc": "Plak de folie aan de binnenkant van je voorruit. Voorbijgangers scannen en bereiken je direct anoniem."
+    "subtitle": "Geen ingewikkelde apps of setup. Binnen 24 uur een slimme statische sticker op je mat, direct klaar voor gebruik.",
+    "step1Title": "Kies je meldingskanaal & bestel",
+    "step1Desc": "Kies WhatsApp, SMS of e-mail. Wij koppelen je unieke QR-code direct aan je kenteken.",
+    "step2Title": "PostNL brievenbusbezorging met Track & Trace",
+    "step2Desc": "Binnen 24-48 uur in je brievenbus. Je hoeft er niet voor thuis te blijven.",
+    "step3Title": "Plak statisch op je ruit & blijf anoniem bereikbaar",
+    "step3Desc": "0% lijmresten. Kleeft door statische lading aan de binnenzijde van je voorruit. Voorbijgangers scannen en bereiken je direct privé.",
+    "ctaHint": "Binnen 24 uur verzonden via PostNL met Track & Trace."
   },
   "features": {
     "tag": "Waarom Ping Me?",
@@ -102,7 +117,7 @@
     "step3Title": "Direct bericht, 100% privé",
     "step3Desc": "Onze veilige server stuurt direct een WhatsApp of SMS naar de autobezitter. 06-nummers en persoonsgegevens blijven voor beide partijen volledig geheim.",
     "liveDemoTag": "Live Telefoon Simulator",
-    "liveDemoHint": "Probeer het zelf in de telefoon hiernaast: selecteer een optie en verzend een testmelding!",
+    "liveDemoHint": "Probeer het zelf in de interactieve preview: selecteer een optie en verzend een testmelding!",
     "ctaOrder": "Bestel jouw Ping Me sticker voor €10/jr",
     "scannedSticker": "Gescande sticker",
     "tokenInfo": "{token} • Kenteken: {plate}",
@@ -138,7 +153,12 @@
     "repOneTime": "éénmalig",
     "repPostNL": "Inclusief PostNL verzending",
     "repLinkAccount": "Direct gekoppeld aan je huidige auto",
-    "repCta": "Bestel via je Dashboard"
+    "repCta": "Bestel via je Dashboard",
+    "whyTitle": "Waarom een jaarabonnement van €10?",
+    "whyDesc": "Statische gratis QR-codes verouderen en vereisen dat je 06-nummer openbaar op je voorruit hangt. Ping Me biedt een actieve telecom privacy relay:",
+    "whyPoint1": "Onbeperkte gecodeerde WhatsApp & SMS verzending (wij dekken alle telecomkosten)",
+    "whyPoint2": "24/7 beveiligde privacy proxy servers die je identiteit en persoonsgegevens afschermen",
+    "whyPoint3": "Eenvoudig met 1 klik online opzegbaar via je Stripe portaal (geen addertjes of opzegtermijnen)"
   },
   "faq": {
     "tag": "Duidelijkheid",

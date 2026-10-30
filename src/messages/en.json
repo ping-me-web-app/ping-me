@@ -21,7 +21,10 @@
     "pricing": "Pricing",
     "faq": "FAQ",
     "switchTheme": "Toggle theme",
-    "switchLang": "Change language"
+    "switchLang": "Change language",
+    "languageLabel": "Language",
+    "themeDark": "Dark",
+    "themeLight": "Light"
   },
   "hero": {
     "badgeNL": "Now available in the Netherlands 🇳🇱",
@@ -58,18 +61,30 @@
     "simStickerActive": "Active",
     "simVehicleLabel": "Car:",
     "simVerifiedBadge": "WhatsApp Verified",
-    "simDirectRelay": "Messages • Direct Relay"
+    "simDirectRelay": "Messages • Direct Relay",
+    "tabAlertPreview": "Alert Preview",
+    "tabPhysicalSticker": "Physical Sticker",
+    "simPreviewLabel": "Live Notification Preview",
+    "simInstantDelivery": "Delivered instantly"
+  },
+  "sticker": {
+    "showcaseBadge": "Physical Windshield Sticker",
+    "featureCling": "0% Glue Residue (Electrostatic)",
+    "featureDiscreet": "Discreet Size (7×7 cm)",
+    "featureUV": "UV & Weatherproof",
+    "featurePreLinked": "Pre-linked & Ready to Stick"
   },
   "howItWorks": {
-    "tag": "Ready Out of the Box",
+    "tag": "Simple & Frictionless",
     "title": "How does Ping Me work?",
-    "subtitle": "Zero setup friction. Pre-activated and ready to protect your car from day one.",
-    "step1Title": "Choose your channel & order",
-    "step1Desc": "Pick WhatsApp, SMS, or email. We automatically assign a pre-printed smart sticker from our batch directly to your vehicle.",
-    "step2Title": "PostNL letterbox delivery",
-    "step2Desc": "Delivered to your mailbox within 2 business days. It arrives pre-linked to your account — no activation required.",
-    "step3Title": "Stick on your windshield & stay reachable",
-    "step3Desc": "Stick it on the inside of your windshield. Anyone can scan and contact you instantly without seeing your personal data."
+    "subtitle": "No app download or complex pairing. A smart electrostatic sticker delivered within 24-48h, ready out of the box.",
+    "step1Title": "Choose your alert channel & order",
+    "step1Desc": "Select WhatsApp, SMS, or email. We pre-link your unique smart QR sticker directly to your vehicle plate.",
+    "step2Title": "PostNL letterbox delivery with Track & Trace",
+    "step2Desc": "Delivered to your mailbox within 24-48 hours. Fits standard letterboxes, no need to be home.",
+    "step3Title": "Stick statically & stay reachable",
+    "step3Desc": "0% glue residue. Adheres via electrostatic cling to the inside of your windshield. Passersby scan and reach you 100% privately.",
+    "ctaHint": "Dispatched within 24 hours via PostNL with Track & Trace."
   },
   "features": {
     "tag": "Why Ping Me?",
@@ -102,7 +117,7 @@
     "step3Title": "Instant alert, 100% private",
     "step3Desc": "Our secure relay immediately notifies the owner via WhatsApp or SMS. Neither party's personal phone number or email is ever revealed.",
     "liveDemoTag": "Live Mobile Simulator",
-    "liveDemoHint": "Try it live in the phone on the left: tap any option and send a demo alert!",
+    "liveDemoHint": "Try it live in the interactive preview: tap any option and send a demo alert!",
     "ctaOrder": "Get your Ping Me sticker for €10/yr",
     "scannedSticker": "Scanned sticker",
     "tokenInfo": "{token} • Plate: {plate}",
@@ -138,7 +153,12 @@
     "repOneTime": "one-time",
     "repPostNL": "Includes PostNL shipping",
     "repLinkAccount": "Pre-assigned & linked to your vehicle",
-    "repCta": "Order via your Dashboard"
+    "repCta": "Order via your Dashboard",
+    "whyTitle": "Why an annual subscription of €10?",
+    "whyDesc": "Free static QR codes quickly break and force your personal 06-number onto public windshields. Ping Me provides an active telecom privacy relay:",
+    "whyPoint1": "Unlimited encrypted WhatsApp & SMS messaging without exposing your phone number",
+    "whyPoint2": "24/7 dedicated privacy relay servers protecting your vehicle identity",
+    "whyPoint3": "Cancel online anytime in 1 click via your Stripe self-service portal (no lock-in)"
   },
   "faq": {
     "tag": "Clarity",

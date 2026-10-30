@@ -12,11 +12,11 @@ interface BrandLogoProps {
 
 export function BrandLogo({ size = "md", className, href = "/" }: BrandLogoProps) {
   const heightClass = {
-    xs: "h-[26px] sm:h-[30px] w-auto",
-    sm: "h-[54px] sm:h-[60px] w-auto",
-    md: "h-[70px] sm:h-[82px] w-auto",
-    lg: "h-[96px] sm:h-[120px] w-auto",
-    xl: "h-[120px] sm:h-[144px] w-auto",
+    xs: "h-[22px] sm:h-[26px] w-auto",
+    sm: "h-[30px] sm:h-[38px] w-auto",
+    md: "h-[38px] sm:h-[48px] md:h-[58px] w-auto",
+    lg: "h-[64px] sm:h-[84px] w-auto",
+    xl: "h-[84px] sm:h-[110px] w-auto",
   }[size];
 
   const content = (
@@ -43,7 +43,11 @@ export function BrandLogo({ size = "md", className, href = "/" }: BrandLogoProps
   );
 
   if (href) {
-    return <Link href={href} className="inline-block">{content}</Link>;
+    return (
+      <Link href={href} className="inline-block" aria-label="Ping Me homepage">
+        {content}
+      </Link>
+    );
   }
 
   return content;

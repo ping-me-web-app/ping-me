@@ -1,19 +1,19 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { FormattedMessage } from "react-intl";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { useAuth } from "@/lib/useAuth";
-import { Check, Truck, ShieldCheck, Sparkles, RefreshCw, ArrowRight } from "lucide-react";
+import { Check, Truck, ShieldCheck, Sparkles, RefreshCw, ArrowRight, Server, MessageSquare, Zap } from "lucide-react";
 
 export function PricingSection() {
   const { isLoggedIn, mounted } = useAuth();
   const loggedIn = mounted && isLoggedIn;
   return (
-    <section id="prijzen" className="py-20 transition-colors">
+    <section id="prijzen" className="relative py-20 transition-colors">
+      <span id="pricing" className="absolute -top-24 block" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           tagId="pricing.tag"
@@ -84,18 +84,22 @@ export function PricingSection() {
 
             <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
               {loggedIn ? (
-                <Link href="/dashboard" className="block">
-                  <Button size="lg" className="w-full shadow-lg shadow-emerald-600/20">
-                    <FormattedMessage id="pricing.mainCtaManage" />
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </Link>
+                <Button
+                  href="/dashboard"
+                  size="lg"
+                  className="w-full shadow-lg shadow-emerald-600/20"
+                >
+                  <FormattedMessage id="pricing.mainCtaManage" />
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
               ) : (
-                <Link href="/order" className="block">
-                  <Button size="lg" className="w-full shadow-lg shadow-emerald-600/20">
-                    <FormattedMessage id="pricing.mainCta" />
-                  </Button>
-                </Link>
+                <Button
+                  href="/order"
+                  size="lg"
+                  className="w-full shadow-lg shadow-emerald-600/20"
+                >
+                  <FormattedMessage id="pricing.mainCta" />
+                </Button>
               )}
               <p className="text-center text-[11px] text-slate-400 mt-2.5">
                 <FormattedMessage id="pricing.ctaNote" />
@@ -138,11 +142,46 @@ export function PricingSection() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
-              <Link href="/dashboard" className="block">
-                <Button variant="outline" size="md" className="w-full text-xs">
-                  <FormattedMessage id="pricing.repCta" />
-                </Button>
-              </Link>
+              <Button
+                href="/dashboard"
+                variant="outline"
+                size="md"
+                className="w-full text-xs"
+              >
+                <FormattedMessage id="pricing.repCta" />
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Value Justification: "Why €10/year?" Transparent Friction Remover */}
+        <div className="max-w-4xl mx-auto mt-8 p-6 sm:p-7 rounded-3xl bg-slate-100/80 dark:bg-slate-900/40 border border-slate-200/90 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-3">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+              <Zap className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-slate-900 dark:text-white text-base">
+                <FormattedMessage id="pricing.whyTitle" />
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                <FormattedMessage id="pricing.whyDesc" />
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-4 pt-4 border-t border-slate-200/60 dark:border-slate-800/80 text-xs text-slate-700 dark:text-slate-300">
+            <div className="flex items-start gap-2">
+              <MessageSquare className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+              <span><FormattedMessage id="pricing.whyPoint1" /></span>
+            </div>
+            <div className="flex items-start gap-2">
+              <Server className="w-4 h-4 text-sky-500 shrink-0 mt-0.5" />
+              <span><FormattedMessage id="pricing.whyPoint2" /></span>
+            </div>
+            <div className="flex items-start gap-2">
+              <ShieldCheck className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
+              <span><FormattedMessage id="pricing.whyPoint3" /></span>
             </div>
           </div>
         </div>

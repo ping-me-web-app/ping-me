@@ -18,8 +18,10 @@ export function ScannerDemo() {
   return (
     <section
       id="ervaar-het-zelf"
-      className="py-20 sm:py-28 bg-slate-50 dark:bg-[#080D17] border-y border-slate-200/80 dark:border-slate-800/80 transition-colors"
+      className="relative py-20 sm:py-28 bg-slate-50 dark:bg-[#080D17] border-y border-slate-200/80 dark:border-slate-800/80 transition-colors"
     >
+      <span id="simulator" className="absolute -top-24 block" aria-hidden="true" />
+      <span id="demo" className="absolute -top-24 block" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           tagId="scannerDemo.tag"

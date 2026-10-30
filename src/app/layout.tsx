@@ -20,7 +20,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE_CONFIG.name} — Anonymous Vehicle Contact`,
+  title: `${SITE_CONFIG.name} — Anoniem bereikbaar voor je voertuig`,
   description: SITE_CONFIG.description,
 };
 
@@ -30,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${quicksand.variable} ${plusJakarta.variable}`} suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col font-sans">
+    <html lang="nl" className={`${quicksand.variable} ${plusJakarta.variable}`} suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col font-sans overflow-x-clip">
         <IntlProviderWrapper>
           <ThemeProvider>
             {children}
