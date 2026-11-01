@@ -3,7 +3,7 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { ShieldCheck, MessageCircle, SunMedium, Smartphone, Lock, RefreshCw } from "lucide-react";
+import { ShieldCheck, MessageCircle, SunMedium, Smartphone, Lock, CheckCircle2 } from "lucide-react";
 
 export function Features() {
   const features = [
@@ -12,7 +12,7 @@ export function Features() {
     { icon: Smartphone, titleId: "features.f3Title", descId: "features.f3Desc" },
     { icon: SunMedium, titleId: "features.f4Title", descId: "features.f4Desc" },
     { icon: Lock, titleId: "features.f5Title", descId: "features.f5Desc" },
-    { icon: RefreshCw, titleId: "features.f6Title", descId: "features.f6Desc" },
+    { icon: CheckCircle2, titleId: "features.f6Title", descId: "features.f6Desc" },
   ];
 
   return (

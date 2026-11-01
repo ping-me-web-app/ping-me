@@ -16,46 +16,46 @@ export function Footer() {
   return (
     <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#070A11] text-slate-600 dark:text-slate-400 text-sm transition-colors">
       {/* Dutch Trust strip */}
-      <div className="border-b border-slate-200/80 dark:border-slate-800/80 py-6">
+      <div className="border-b border-slate-200/80 dark:border-slate-800/80 py-5 sm:py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-3">
-              <div className="p-2 rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-400">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
+            <div className="flex items-center gap-3.5 p-3.5 sm:p-0 rounded-2xl bg-white dark:bg-slate-900/60 sm:bg-transparent sm:dark:bg-transparent border border-slate-200/80 dark:border-slate-800/80 sm:border-0 shadow-xs sm:shadow-none text-left">
+              <div className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-400 flex items-center justify-center shrink-0">
                 <Truck className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 dark:text-white">
+                <p className="font-bold text-sm text-slate-900 dark:text-white leading-tight">
                   <FormattedMessage id="footer.postnlTitle" />
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
                   <FormattedMessage id="footer.postnlDesc" />
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-center md:justify-start gap-3">
-              <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+            <div className="flex items-center gap-3.5 p-3.5 sm:p-0 rounded-2xl bg-white dark:bg-slate-900/60 sm:bg-transparent sm:dark:bg-transparent border border-slate-200/80 dark:border-slate-800/80 sm:border-0 shadow-xs sm:shadow-none text-left">
+              <div className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 flex items-center justify-center shrink-0">
                 <CreditCard className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 dark:text-white">
+                <p className="font-bold text-sm text-slate-900 dark:text-white leading-tight">
                   <FormattedMessage id="footer.idealTitle" />
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
                   <FormattedMessage id="footer.idealDesc" />
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-center md:justify-start gap-3">
-              <div className="p-2 rounded-xl bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-400">
+            <div className="flex items-center gap-3.5 p-3.5 sm:p-0 rounded-2xl bg-white dark:bg-slate-900/60 sm:bg-transparent sm:dark:bg-transparent border border-slate-200/80 dark:border-slate-800/80 sm:border-0 shadow-xs sm:shadow-none text-left">
+              <div className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-400 flex items-center justify-center shrink-0">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 dark:text-white">
+                <p className="font-bold text-sm text-slate-900 dark:text-white leading-tight">
                   <FormattedMessage id="footer.gdprTitle" />
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
                   <FormattedMessage id="footer.gdprDesc" />
                 </p>
               </div>
