@@ -439,6 +439,8 @@
     "paymentTitle": "Controleer & Rond Bestelling Af",
     "paymentSubtitle": "{years}-Jaar Geldigheid inclusief voorgeprogrammeerde sticker.",
     "summaryTitle": "Overzicht van je bestelling",
+    "viewSummary": "Bekijk details",
+    "hideSummary": "Verberg details",
     "itemSticker": "Ping Me Slimme QR-Sticker Statische Raamfolie",
     "itemStickerDesc": "Elektrostatische folie voor binnenzijde van de voorruit",
     "itemFree": "Inbegrepen",

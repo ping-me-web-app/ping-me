@@ -439,6 +439,8 @@
     "paymentTitle": "Review & Complete Order",
     "paymentSubtitle": "{years}-Year Validity including pre-printed windshield sticker.",
     "summaryTitle": "Order Summary",
+    "viewSummary": "View details",
+    "hideSummary": "Hide details",
     "itemSticker": "Ping Me Smart QR Sticker Cling Film",
     "itemStickerDesc": "Electrostatic cling film for inside your windshield",
     "itemFree": "Included",
