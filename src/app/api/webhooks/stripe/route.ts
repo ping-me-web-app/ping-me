@@ -73,7 +73,11 @@ export async function POST(req: Request) {
               .eq("id", userId);
           }
 
-          // 2. Insert vehicle
+          // 2. Insert vehicle with duration and expiry
+          const durationYears = parseInt(meta.durationYears || "2", 10) || 2;
+          const expiresAt = new Date();
+          expiresAt.setFullYear(expiresAt.getFullYear() + durationYears);
+
           const { data: vehicle, error: vehicleErr } = await adminSupabase
             .from("vehicles")
             .insert({
@@ -81,6 +85,8 @@ export async function POST(req: Request) {
               license_plate: plate,
               make_model: `${meta.make || ""} ${meta.model || ""}`.trim() || "Auto",
               color: meta.color || "Onbekend",
+              duration_years: durationYears,
+              expires_at: expiresAt.toISOString(),
             })
             .select()
             .single();

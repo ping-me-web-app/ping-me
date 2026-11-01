@@ -8,6 +8,7 @@ import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Button } from "@/components/ui/Button";
 import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { useAuth } from "@/lib/useAuth";
+import { useUserData } from "@/lib/useUserData";
 import { createClient } from "@/lib/supabase/client";
 import {
   ShieldCheck,
@@ -40,7 +41,11 @@ const PLAN_PRICES: Record<1 | 2 | 3, { amount: string; numeric: number; perYear:
 export default function OrderPage() {
   const intl = useIntl();
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, user, isLoggedIn } = useAuth();
+  const { data: existingUserData } = useUserData();
+
+  // Multi-vehicle addition mode
+  const [isAddingVehicle, setIsAddingVehicle] = useState(false);
 
   // Stepper state: 1 = Vehicle/Alerts, 2 = Shipping & Payment, 3 = Success
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -122,6 +127,21 @@ export default function OrderPage() {
     else if (yearsParam === "3") setSelectedYears(3);
     else if (yearsParam === "2") setSelectedYears(2);
 
+    const isAddVehicleParam = params.get("add_vehicle") === "true";
+    if (isAddVehicleParam) {
+      setIsAddingVehicle(true);
+      if (existingUserData.email || user?.email) {
+        setEmail(existingUserData.email || user?.email || "");
+      }
+      if (existingUserData.fullName) setFullName(existingUserData.fullName);
+      if (existingUserData.phone) setPhone(existingUserData.phone);
+      if (existingUserData.postalCode) setPostalCode(existingUserData.postalCode);
+      if (existingUserData.houseNumber) setHouseNumber(existingUserData.houseNumber);
+      if (existingUserData.addition) setAddition(existingUserData.addition);
+      if (existingUserData.street) setStreet(existingUserData.street);
+      if (existingUserData.city) setCity(existingUserData.city);
+    }
+
     const sessionId = params.get("session_id");
     const paymentStatus = params.get("payment");
 
@@ -159,10 +179,34 @@ export default function OrderPage() {
               setSelectedYears(data.order.durationYears === 1 ? 1 : data.order.durationYears === 3 ? 3 : 2);
             }
 
+            // Append to multi-vehicle storage
+            try {
+              const existingMulti = localStorage.getItem("pingme-user-vehicles");
+              let list: any[] = [];
+              if (existingMulti) {
+                const parsed = JSON.parse(existingMulti);
+                if (Array.isArray(parsed)) list = parsed;
+              }
+              const existingIndex = list.findIndex(
+                (v: any) => v.token === data.order.token || v.plate === data.order.plate
+              );
+              if (existingIndex >= 0) {
+                list[existingIndex] = data.order;
+              } else {
+                list.push(data.order);
+              }
+              localStorage.setItem("pingme-user-vehicles", JSON.stringify(list));
+              localStorage.setItem("pingme-active-vehicle-index", (list.length - 1).toString());
+            } catch (e) {
+              console.error("Error storing new vehicle order:", e);
+            }
+
             localStorage.setItem("pingme-user-vehicle", JSON.stringify(data.order));
-            // Do NOT log in directly; clear session flags so user must use the magic link sent to their email
-            localStorage.removeItem("pingme-has-session");
-            localStorage.removeItem("pingme-auth");
+
+            if (!isLoggedIn) {
+              localStorage.removeItem("pingme-has-session");
+              localStorage.removeItem("pingme-auth");
+            }
 
             // Client-side OTP fallback if server did not send it
             if (!data.magicLinkSent && data.order?.email) {
@@ -462,6 +506,21 @@ export default function OrderPage() {
                       <FormattedMessage id="order.vehicleSubtitle" />
                     </p>
                   </div>
+
+                  {/* Notice when adding extra vehicle to existing account */}
+                  {isAddingVehicle && (
+                    <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Car className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span>
+                          <strong>Extra voertuig toevoegen</strong> aan account ({email || user?.email})
+                        </span>
+                      </div>
+                      <Link href="/dashboard" className="underline font-bold text-[11px] shrink-0 ml-2">
+                        Dashboard
+                      </Link>
+                    </div>
+                  )}
 
                   {/* Dutch License Plate Input */}
                   <div className="space-y-2">
@@ -1523,10 +1582,17 @@ export default function OrderPage() {
               </div>
             </div>
 
-            {/* Back to Home Button */}
-            <div className="pt-2 flex justify-center">
+            {/* Back to Home / Dashboard Button */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+              {(isLoggedIn || isAddingVehicle) && (
+                <Link href="/dashboard">
+                  <Button size="md" className="rounded-2xl text-xs font-bold px-6 bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer shadow-lg shadow-emerald-600/20">
+                    <FormattedMessage id="dashboard.portalTag" />
+                  </Button>
+                </Link>
+              )}
               <Link href="/">
-                <Button variant="outline" size="md" className="rounded-2xl text-xs font-bold px-6">
+                <Button variant="outline" size="md" className="rounded-2xl text-xs font-bold px-6 cursor-pointer">
                   <FormattedMessage id="common.backToHome" />
                 </Button>
               </Link>

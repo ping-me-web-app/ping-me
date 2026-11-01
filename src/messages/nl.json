@@ -209,6 +209,10 @@
     "welcome": "Welkom terug",
     "welcomeUser": "Welkom terug, {name}",
     "subtitle": "Beheer je actieve Ping Me sticker, je communicatiekanaal en je bezorgstatus.",
+    "yourVehicles": "Jouw Geregistreerde Voertuigen",
+    "addVehicleBtn": "Voertuig toevoegen",
+    "vehiclesCount": "{count, plural, one {# voertuig} other {# voertuigen}}",
+    "managingMultiple": "Je beheert {count} voertuigen onder je account",
     "userVehicleTitle": "Gekoppeld Voertuig & Sticker",
     "activeBadge": "● Actief",
     "testQr": "Test QR Link",
@@ -263,7 +267,8 @@
     "sepaNote": "Geen stilzwijgende verlenging • Herinnering vóór verloopdatum",
     "paymentMethod": "Betaalmethode",
     "idealMethod": "{method}",
-    "sepaAccount": "Eenmalige betaling vooraf"
+    "sepaAccount": "Eenmalige betaling vooraf",
+    "multiVehicleSubNotice": "Je bekijkt de pas voor {vehicle} ({plate}). Wissel bovenaan het dashboard om je andere auto's te bekijken."
   },
   "modals": {
     "stripeTitle": "Stripe Klantenportaal (Simulatie)",

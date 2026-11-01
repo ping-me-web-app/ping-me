@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { useUserData } from "@/lib/useUserData";
+import { useUserData, UserVehicleData } from "@/lib/useUserData";
 import { Download, CheckCircle2, ShieldCheck } from "lucide-react";
 
 interface StripePortalModalProps {
@@ -14,44 +14,50 @@ interface StripePortalModalProps {
 
 export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
   const intl = useIntl();
-  const { data } = useUserData();
+  const { data, vehicles } = useUserData();
   const [actionDone, setActionDone] = useState<string | null>(null);
 
-  const years = data.durationYears || 2;
-  const createdDate = data.createdAt ? new Date(data.createdAt) : new Date();
-  const expiryDate = data.expiresAt
-    ? new Date(data.expiresAt)
-    : (() => {
-        const d = new Date(createdDate);
-        d.setFullYear(d.getFullYear() + years);
-        return d;
-      })();
-
-  const renewalFormatted = expiryDate.toLocaleDateString(
-    intl.locale === "nl" ? "nl-NL" : "en-US",
-    { day: "numeric", month: "long", year: "numeric" }
-  );
-
-  const createdFormatted = createdDate.toLocaleDateString(
-    intl.locale === "nl" ? "nl-NL" : "en-US",
-    { day: "numeric", month: "short", year: "numeric" }
-  );
-
   const priceMap: Record<number, string> = { 1: "€10.00", 2: "€15.99", 3: "€20.99" };
-  const currentPrice = priceMap[years] || "€15.99";
 
-  const paymentDisplay =
-    data.paymentMethod === "ideal"
-      ? `iDEAL (${data.selectedBank || "Bank"})`
-      : data.paymentMethod === "apple_pay"
-      ? "Apple Pay"
-      : "Creditcard";
+  const getVehicleExpiry = (v: UserVehicleData) => {
+    const years = v.durationYears || 2;
+    const createdDate = v.createdAt ? new Date(v.createdAt) : new Date();
+    return v.expiresAt
+      ? new Date(v.expiresAt)
+      : (() => {
+          const d = new Date(createdDate);
+          d.setFullYear(d.getFullYear() + years);
+          return d;
+        })();
+  };
 
-  const invoiceNumber = `INV-${createdDate.getFullYear()}-${
-    data.token.replace(/\D/g, "") || "8924"
-  }`;
+  const handleDownloadInvoice = (targetVehicle: UserVehicleData) => {
+    const years = targetVehicle.durationYears || 2;
+    const createdDate = targetVehicle.createdAt ? new Date(targetVehicle.createdAt) : new Date();
+    const expiryDate = getVehicleExpiry(targetVehicle);
 
-  const handleDownloadInvoice = () => {
+    const renewalFormatted = expiryDate.toLocaleDateString(
+      intl.locale === "nl" ? "nl-NL" : "en-US",
+      { day: "numeric", month: "long", year: "numeric" }
+    );
+
+    const createdFormatted = createdDate.toLocaleDateString(
+      intl.locale === "nl" ? "nl-NL" : "en-US",
+      { day: "numeric", month: "short", year: "numeric" }
+    );
+
+    const currentPrice = priceMap[years] || "€15.99";
+    const paymentDisplay =
+      targetVehicle.paymentMethod === "ideal"
+        ? `iDEAL (${targetVehicle.selectedBank || "Bank"})`
+        : targetVehicle.paymentMethod === "apple_pay"
+        ? "Apple Pay"
+        : "Creditcard";
+
+    const invoiceNumber = `INV-${createdDate.getFullYear()}-${
+      targetVehicle.token.replace(/\D/g, "") || "8924"
+    }`;
+
     const numericPrice = parseFloat(currentPrice.replace(/[^0-9.]/g, "")) || 15.99;
     const subtotal = (numericPrice / 1.21).toFixed(2);
     const vat = (numericPrice - parseFloat(subtotal)).toFixed(2);
@@ -216,9 +222,9 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
       </div>
       <div class="info-block">
         <h4>Voertuig & Klant / Customer</h4>
-        <p>Kenteken: ${data.plate || "N/A"}</p>
-        ${data.make ? `<p>Voertuig: ${data.make} ${data.model || ""}</p>` : ""}
-        <p>E-mail: ${data.email || "Klant"}</p>
+        <p>Kenteken: ${targetVehicle.plate || "N/A"}</p>
+        ${targetVehicle.make ? `<p>Voertuig: ${targetVehicle.make} ${targetVehicle.model || ""}</p>` : ""}
+        <p>E-mail: ${targetVehicle.email || "Klant"}</p>
       </div>
     </div>
 
@@ -246,7 +252,7 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
         <tr>
           <td>
             <strong>Ping-Me Slimme QR-Sticker</strong><br />
-            <span style="color: #64748b; font-size: 11px;">Statische raamfolie voor binnenzijde voorruit (Token: ${data.token || "PM-NL"})</span>
+            <span style="color: #64748b; font-size: 11px;">Statische raamfolie voor binnenzijde voorruit (Token: ${targetVehicle.token || "PM-NL"})</span>
           </td>
           <td style="text-align: center;">1</td>
           <td style="text-align: right;">€0.00</td>
@@ -300,7 +306,6 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
         printWindow.print();
       }, 300);
     } else {
-      // Fallback: download as .html file if popup was blocked
       const blob = new Blob([invoiceHtml], { type: "text/html;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -347,51 +352,109 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
           </div>
         )}
 
-        {/* Current plan status */}
-        <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="font-display font-bold text-sm text-slate-900 dark:text-white">
-              {years} {intl.locale === "nl" ? "Jaar Pas" : "Year Pass"}
-            </span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-              <FormattedMessage id="modals.activeSubBadge" />
-            </span>
+        {/* Current plan statuses (Shows all active vehicle passes) */}
+        <div className="space-y-3">
+          <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            {vehicles.length > 1 ? "Actieve Passen & Voertuigen" : "Actieve Pas"}
+          </h4>
+          <div className="space-y-2.5">
+            {vehicles.map((v, idx) => {
+              const years = v.durationYears || 2;
+              const expiryDate = getVehicleExpiry(v);
+              const renewalFormatted = expiryDate.toLocaleDateString(
+                intl.locale === "nl" ? "nl-NL" : "en-US",
+                { day: "numeric", month: "long", year: "numeric" }
+              );
+              const paymentDisplay =
+                v.paymentMethod === "ideal"
+                  ? `iDEAL (${v.selectedBank || "Bank"})`
+                  : v.paymentMethod === "apple_pay"
+                  ? "Apple Pay"
+                  : "Creditcard";
+
+              return (
+                <div
+                  key={v.id || v.token || idx}
+                  className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1.5 bg-slate-50/50 dark:bg-slate-900/50"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono font-bold text-xs bg-[#FFD700] text-black px-1.5 py-0.5 rounded border border-black/40">
+                        {v.plate}
+                      </span>
+                      <span className="font-display font-bold text-sm text-slate-900 dark:text-white">
+                        {v.make} {v.model || ""} • {years} {intl.locale === "nl" ? "Jaar Pas" : "Year Pass"}
+                      </span>
+                    </div>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                      <FormattedMessage id="modals.activeSubBadge" />
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <FormattedMessage
+                      id="modals.activeSubDesc"
+                      values={{ date: renewalFormatted, method: paymentDisplay }}
+                    />
+                  </p>
+                </div>
+              );
+            })}
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            <FormattedMessage
-              id="modals.activeSubDesc"
-              values={{ date: renewalFormatted, method: paymentDisplay }}
-            />
-          </p>
         </div>
 
-        {/* Invoices list */}
+        {/* Invoices list across all vehicles */}
         <div>
           <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
             <FormattedMessage id="modals.invoicesTitle" />
           </h4>
           <div className="rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800 text-xs">
-            <div className="p-3.5 flex items-center justify-between">
-              <div>
-                <p className="font-semibold text-slate-900 dark:text-white">
-                  <FormattedMessage id="modals.invName" values={{ number: invoiceNumber }} />
-                </p>
-                <p className="text-slate-400 text-[11px] mt-0.5">
-                  <FormattedMessage
-                    id="modals.invDesc"
-                    values={{ date: createdFormatted, method: paymentDisplay, amount: currentPrice }}
-                  />
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={handleDownloadInvoice}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors cursor-pointer"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <FormattedMessage id="modals.pdfBtn" />
-              </button>
-            </div>
+            {vehicles.map((v, idx) => {
+              const years = v.durationYears || 2;
+              const createdDate = v.createdAt ? new Date(v.createdAt) : new Date();
+              const createdFormatted = createdDate.toLocaleDateString(
+                intl.locale === "nl" ? "nl-NL" : "en-US",
+                { day: "numeric", month: "short", year: "numeric" }
+              );
+              const currentPrice = priceMap[years] || "€15.99";
+              const paymentDisplay =
+                v.paymentMethod === "ideal"
+                  ? `iDEAL (${v.selectedBank || "Bank"})`
+                  : v.paymentMethod === "apple_pay"
+                  ? "Apple Pay"
+                  : "Creditcard";
+              const invoiceNumber = `INV-${createdDate.getFullYear()}-${
+                v.token.replace(/\D/g, "") || "8924"
+              }`;
+
+              return (
+                <div key={v.id || v.token || idx} className="p-3.5 flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-slate-900 dark:text-white">
+                        <FormattedMessage id="modals.invName" values={{ number: invoiceNumber }} />
+                      </span>
+                      <span className="font-mono text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded">
+                        {v.plate}
+                      </span>
+                    </div>
+                    <p className="text-slate-400 text-[11px] mt-0.5">
+                      <FormattedMessage
+                        id="modals.invDesc"
+                        values={{ date: createdFormatted, method: paymentDisplay, amount: currentPrice }}
+                      />
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadInvoice(v)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold text-xs bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <FormattedMessage id="modals.pdfBtn" />
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
 

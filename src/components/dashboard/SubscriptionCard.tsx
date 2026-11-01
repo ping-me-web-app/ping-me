@@ -13,7 +13,7 @@ interface SubscriptionCardProps {
 
 export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) {
   const intl = useIntl();
-  const { data } = useUserData();
+  const { data, vehicles } = useUserData();
 
   const years = data.durationYears || 2;
   const createdDate = data.createdAt ? new Date(data.createdAt) : new Date();
@@ -109,6 +109,17 @@ export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) 
           </p>
         </div>
       </div>
+
+      {vehicles.length > 1 && (
+        <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+          <span>
+            <FormattedMessage
+              id="dashboard.multiVehicleSubNotice"
+              values={{ vehicle: `${data.make} ${data.model}`.trim() || "Voertuig", plate: data.plate }}
+            />
+          </span>
+        </div>
+      )}
     </div>
   );
 }

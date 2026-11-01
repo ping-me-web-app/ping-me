@@ -20,6 +20,8 @@ create table if not exists public.vehicles (
   license_plate text not null,
   make_model text not null,
   color text not null,
+  duration_years integer default 2 not null,
+  expires_at timestamptz default (now() + interval '2 years') not null,
   created_at timestamptz default now() not null
 );
 

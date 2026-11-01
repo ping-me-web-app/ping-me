@@ -209,6 +209,10 @@
     "welcome": "Welcome back",
     "welcomeUser": "Welcome back, {name}",
     "subtitle": "Manage your active Ping Me sticker, communication channel, and delivery status.",
+    "yourVehicles": "Your Registered Vehicles",
+    "addVehicleBtn": "Add Vehicle",
+    "vehiclesCount": "{count, plural, one {# vehicle} other {# vehicles}}",
+    "managingMultiple": "Managing {count} vehicles under your account",
     "userVehicleTitle": "Linked Vehicle & Sticker",
     "activeBadge": "● Active",
     "testQr": "Test QR Link",
@@ -263,7 +267,8 @@
     "sepaNote": "No automatic renewals • Reminded before expiration",
     "paymentMethod": "Payment Method",
     "idealMethod": "{method}",
-    "sepaAccount": "One-time upfront payment"
+    "sepaAccount": "One-time upfront payment",
+    "multiVehicleSubNotice": "Viewing pass for {vehicle} ({plate}). Switch vehicles at the top of the dashboard to view your other cars."
   },
   "modals": {
     "stripeTitle": "Stripe Customer Portal (Simulation)",

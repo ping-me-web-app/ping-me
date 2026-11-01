@@ -10,6 +10,7 @@ import { VehicleCard } from "@/components/dashboard/VehicleCard";
 import { ChannelSelector } from "@/components/dashboard/ChannelSelector";
 import { PostNLTracker } from "@/components/dashboard/PostNLTracker";
 import { SubscriptionCard } from "@/components/dashboard/SubscriptionCard";
+import { VehicleSwitcher } from "@/components/dashboard/VehicleSwitcher";
 import { useUserData } from "@/lib/useUserData";
 import { useAuth } from "@/lib/useAuth";
 import { User, Loader2 } from "lucide-react";
@@ -34,7 +35,7 @@ const ReplacementModal = dynamic(
 export default function DashboardPage() {
   const router = useRouter();
   const { isLoggedIn, mounted } = useAuth();
-  const { data } = useUserData();
+  const { data, vehicles, activeVehicleIndex, setActiveVehicleIndex } = useUserData();
   const [stripeModalOpen, setStripeModalOpen] = useState(false);
   const [replacementModalOpen, setReplacementModalOpen] = useState(false);
 
@@ -84,6 +85,13 @@ export default function DashboardPage() {
               <span>{data.email}</span>
             </div>
           </div>
+
+          {/* Vehicle Switcher Bar (Supports multiple vehicles & passes) */}
+          <VehicleSwitcher
+            vehicles={vehicles}
+            activeIndex={activeVehicleIndex}
+            onSelectVehicle={setActiveVehicleIndex}
+          />
 
           {/* 1. Vehicle & Active Sticker Card */}
           <VehicleCard onOrderReplacement={() => setReplacementModalOpen(true)} />
