@@ -43,6 +43,10 @@ export default function LoginPage() {
     const targetEmail = email.trim();
     if (!targetEmail) return;
 
+    if (typeof window !== "undefined") {
+      localStorage.setItem("pingme-user-email", targetEmail);
+    }
+
     setLoading(true);
     setErrorMsg(null);
 

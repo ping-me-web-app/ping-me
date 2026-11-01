@@ -111,8 +111,8 @@ export default function PrivacyPage() {
               </div>
               <p>
                 {isNl
-                  ? "Onder de Algemene Verordening Gegevensbescherming (AVG) heb je te allen tijde recht op inzage, correctie en volledige verwijdering van je persoonsgegevens (recht op vergetelheid). Je kunt je account en alle gekoppelde stickers op ieder moment opzeggen of permanent laten wissen via je Dashboard of door contact op te nemen met support@pingme.app."
-                  : "Under the General Data Protection Regulation (GDPR), you possess full rights to view, rectify, or permanently erase your personal data. You can delete your account or deactivate linked stickers at any time via your Dashboard or by emailing support@pingme.app."}
+                  ? "Onder de Algemene Verordening Gegevensbescherming (AVG) heb je te allen tijde recht op inzage, correctie en volledige verwijdering van je persoonsgegevens (recht op vergetelheid). Je kunt je account en alle gekoppelde stickers op ieder moment opzeggen of permanent laten wissen via je Dashboard of door contact op te nemen met support@ping-me.nl."
+                  : "Under the General Data Protection Regulation (GDPR), you possess full rights to view, rectify, or permanently erase your personal data. You can delete your account or deactivate linked stickers at any time via your Dashboard or by emailing support@ping-me.nl."}
               </p>
             </section>
           </div>

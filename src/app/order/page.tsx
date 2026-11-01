@@ -387,6 +387,10 @@ export default function OrderPage() {
     setIsProcessingPayment(true);
     setPaymentError(null);
 
+    if (typeof window !== "undefined" && email.trim()) {
+      localStorage.setItem("pingme-user-email", email.trim());
+    }
+
     try {
       const response = await fetch("/api/checkout", {
         method: "POST",

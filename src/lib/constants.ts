@@ -2,7 +2,8 @@ export const SITE_CONFIG = {
   name: "Ping Me",
   tagline: "Anoniem bereikbaar voor je voertuig",
   description: "Krijg direct een WhatsApp, SMS of e-mail wanneer er iets is met je auto, zonder je 06-nummer achter te laten.",
-  url: "https://pingme.app",
+  url: "https://ping-me.nl",
+  supportEmail: "support@ping-me.nl",
   pricing: {
     annualPlan: {
       amount: 10,

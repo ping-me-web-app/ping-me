@@ -102,7 +102,7 @@ export function Footer() {
                   <li><Link href="/login" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="common.login" /></Link></li>
                 )}
                 <li><Link href="/#faq" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="nav.faq" /></Link></li>
-                <li><a href="mailto:support@pingme.app" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="footer.contactSupport" /></a></li>
+                <li><a href="mailto:support@ping-me.nl" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="footer.contactSupport" /></a></li>
               </ul>
             </div>
 

@@ -52,7 +52,7 @@
     "simSmsHeader": "Messages",
     "simSmsFrom": "Ping Me Alert",
     "simSmsMsg": "[PING ME] Vehicle Alert for K-123-XX: “Hi, your vehicle headlights are still on in the parking lot!”",
-    "simEmailFrom": "Ping Me Alerts (bot@pingme.app)",
+    "simEmailFrom": "Ping Me Alerts (bot@ping-me.nl)",
     "simEmailSubject": "Urgent Alert for {plate}",
     "simEmailMsg": "A passerby scanned your Ping Me sticker: “Window is rolled down on passenger side.”",
     "simTestPingBtn": "Simulate Live Alert",

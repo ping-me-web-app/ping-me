@@ -34,10 +34,16 @@ const ReplacementModal = dynamic(
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { isLoggedIn, mounted } = useAuth();
+  const { user, isLoggedIn, mounted } = useAuth();
   const { data, vehicles, activeVehicleIndex, setActiveVehicleIndex } = useUserData();
   const [stripeModalOpen, setStripeModalOpen] = useState(false);
   const [replacementModalOpen, setReplacementModalOpen] = useState(false);
+
+  const displayEmail =
+    user?.email ||
+    data.email ||
+    (typeof window !== "undefined" ? localStorage.getItem("pingme-user-email") : null) ||
+    "";
 
   useEffect(() => {
     if (mounted && !isLoggedIn) {
@@ -80,10 +86,12 @@ export default function DashboardPage() {
               </p>
             </div>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
-              <User className="w-4 h-4 text-emerald-500" />
-              <span>{data.email}</span>
-            </div>
+            {displayEmail && (
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
+                <User className="w-4 h-4 text-emerald-500" />
+                <span>{displayEmail}</span>
+              </div>
+            )}
           </div>
 
           {/* Vehicle Switcher Bar (Supports multiple vehicles & passes) */}

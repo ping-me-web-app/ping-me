@@ -102,8 +102,8 @@ export default function TermsPage() {
               </div>
               <p>
                 {isNl
-                  ? "Op alle overeenkomsten is uitsluitend Nederlands recht van toepassing. Voor vragen over deze voorwaarden kun je contact opnemen via support@pingme.app of via onze Kamer van Koophandel (KVK) registratie."
-                  : "All agreements are governed exclusively by Dutch law. For inquiries regarding these terms, contact us at support@pingme.app or view our Chamber of Commerce (KvK) registration details."}
+                  ? "Op alle overeenkomsten is uitsluitend Nederlands recht van toepassing. Voor vragen over deze voorwaarden kun je contact opnemen via support@ping-me.nl of via onze Kamer van Koophandel (KVK) registratie."
+                  : "All agreements are governed exclusively by Dutch law. For inquiries regarding these terms, contact us at support@ping-me.nl or view our Chamber of Commerce (KvK) registration details."}
               </p>
             </section>
           </div>

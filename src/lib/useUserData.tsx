@@ -42,7 +42,7 @@ export const DEFAULT_USER_DATA: UserVehicleData = {
   token: "PM-NL-8924",
   channel: "whatsapp",
   phone: "+31 6 1234 5678",
-  email: "klant@pingme.app",
+  email: "",
   fullName: "Abdelrhman Adel",
   postalCode: "1016 GD",
   houseNumber: "482",
@@ -68,7 +68,7 @@ export const DEFAULT_USER_VEHICLES: UserVehicleData[] = [
     token: "PM-NL-9102",
     channel: "sms",
     phone: "+31 6 8765 4321",
-    email: "klant@pingme.app",
+    email: "",
     fullName: "Abdelrhman Adel",
     postalCode: "1016 GD",
     houseNumber: "482",
@@ -183,26 +183,38 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         const storedMulti = localStorage.getItem(STORAGE_KEY_MULTI);
         const storedSingle = localStorage.getItem(STORAGE_KEY_SINGLE);
         const storedIndex = localStorage.getItem(ACTIVE_INDEX_KEY);
+        const activeEmail =
+          user?.email ||
+          (typeof window !== "undefined" ? localStorage.getItem("pingme-user-email") : null) ||
+          "";
+
+        const patchVehicles = (list: UserVehicleData[]) => {
+          return list.map((v) => ({
+            ...v,
+            email: !v.email || v.email === "klant@pingme.app" ? activeEmail : v.email,
+          }));
+        };
 
         if (storedMulti) {
           const parsed = JSON.parse(storedMulti);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            setVehicles(parsed);
+            setVehicles(patchVehicles(parsed));
           }
         } else if (storedSingle) {
           const parsedSingle = JSON.parse(storedSingle);
           if (parsedSingle && typeof parsedSingle === "object") {
             // Keep the single user vehicle and preserve demo vehicles for testing
-            const merged = [
+            const merged = patchVehicles([
               parsedSingle,
               DEFAULT_USER_VEHICLES[1] // Tesla Model 3
-            ];
+            ]);
             setVehicles(merged);
             localStorage.setItem(STORAGE_KEY_MULTI, JSON.stringify(merged));
           }
         } else {
-          setVehicles(DEFAULT_USER_VEHICLES);
-          localStorage.setItem(STORAGE_KEY_MULTI, JSON.stringify(DEFAULT_USER_VEHICLES));
+          const defaults = patchVehicles(DEFAULT_USER_VEHICLES);
+          setVehicles(defaults);
+          localStorage.setItem(STORAGE_KEY_MULTI, JSON.stringify(defaults));
         }
 
         if (storedIndex) {

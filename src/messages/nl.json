@@ -52,7 +52,7 @@
     "simSmsHeader": "Berichten",
     "simSmsFrom": "Ping Me Notificatie",
     "simSmsMsg": "[PING ME] Melding voor K-123-XX: “Hoi, je autolampen branden nog op de parkeerplaats!”",
-    "simEmailFrom": "Ping Me Notificaties (bot@pingme.app)",
+    "simEmailFrom": "Ping Me Notificaties (bot@ping-me.nl)",
     "simEmailSubject": "Voertuig Melding voor {plate}",
     "simEmailMsg": "Een voorbijganger heeft je sticker gescand: “Het raam aan de passagierszijde staat open.”",
     "simTestPingBtn": "Simuleer Live Melding",

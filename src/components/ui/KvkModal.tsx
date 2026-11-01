@@ -65,10 +65,10 @@ export function KvkModal({ isOpen, onClose }: KvkModalProps) {
                 {isNl ? "Klantenservice & Privacy Officer" : "Customer Support & DPO"}
               </p>
               <a
-                href="mailto:support@pingme.app"
+                href="mailto:support@ping-me.nl"
                 className="font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
               >
-                support@pingme.app
+                support@ping-me.nl
               </a>
             </div>
           </div>
