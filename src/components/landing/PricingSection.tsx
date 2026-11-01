@@ -97,13 +97,13 @@ export function PricingSection() {
 
         {/* ------------------------------------------------------------- */}
         {/* MOBILE CAROUSEL (< md)                                        */}
-        {/* Shows 2 Years centered with parts of 1 and 3 years peeking in */}
+        {/* Shows 2 Years centered with parts of 1 & 3 years text visible  */}
         {/* ------------------------------------------------------------- */}
         <div className="md:hidden">
           <div
             ref={carouselRef}
             onScroll={handleScroll}
-            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none py-6 px-[8vw] gap-3.5 scroll-smooth items-stretch"
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none py-6 px-[5vw] gap-2.5 scroll-smooth items-stretch"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {/* Card 0: 1 Year (€10.00) */}
@@ -112,32 +112,32 @@ export function PricingSection() {
               onClick={() => {
                 if (activeIndex !== 0) scrollToCard(0);
               }}
-              className={`w-[76vw] max-w-[320px] shrink-0 snap-center rounded-3xl bg-white dark:bg-slate-900 border p-6 flex flex-col justify-between relative transition-all duration-300 ${
+              className={`w-[71vw] max-w-[285px] shrink-0 snap-center rounded-3xl bg-white dark:bg-slate-900 border px-4 py-5 flex flex-col justify-between relative transition-all duration-300 ${
                 activeIndex === 0
-                  ? "border-emerald-500 shadow-xl scale-100 opacity-100"
-                  : "border-slate-200 dark:border-slate-800 shadow-sm scale-95 opacity-70 hover:opacity-90 cursor-pointer"
+                  ? "border-emerald-500 shadow-xl scale-100 opacity-100 ring-2 ring-emerald-500/20"
+                  : "border-slate-200 dark:border-slate-800 shadow-sm scale-[0.97] opacity-85 hover:opacity-100 cursor-pointer"
               }`}
             >
               <div>
-                <div className="mb-4">
-                  <h3 className="font-display font-bold text-xl text-slate-900 dark:text-white">
+                <div className="mb-3">
+                  <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">
                     <FormattedMessage id="pricing.tier1Title" />
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
                     <FormattedMessage id="pricing.tier1Desc" />
                   </p>
                 </div>
 
-                <div className="flex items-baseline gap-1.5 mb-5">
-                  <span className="font-display font-extrabold text-3xl text-slate-900 dark:text-white">
+                <div className="flex items-baseline gap-1.5 mb-4">
+                  <span className="font-display font-extrabold text-2xl text-slate-900 dark:text-white">
                     €<FormattedMessage id="pricing.tier1Price" />
                   </span>
-                  <span className="text-xs font-medium text-slate-400">
+                  <span className="text-[11px] font-medium text-slate-400">
                     <FormattedMessage id="pricing.tier1Rate" />
                   </span>
                 </div>
 
-                <div className="space-y-2.5 border-t border-slate-100 dark:border-slate-800 pt-4 text-xs text-slate-700 dark:text-slate-300">
+                <div className="space-y-2 border-t border-slate-100 dark:border-slate-800 pt-3.5 text-[11px] text-slate-700 dark:text-slate-300">
                   <div className="flex items-start gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                     <span><strong><FormattedMessage id="pricing.fSticker" /></strong></span>
@@ -157,12 +157,12 @@ export function PricingSection() {
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   href={loggedIn ? "/dashboard" : "/order?years=1"}
                   variant="outline"
                   size="sm"
-                  className="w-full text-xs font-bold"
+                  className="w-full text-xs font-bold py-2"
                 >
                   {loggedIn ? (
                     <FormattedMessage id="pricing.mainCtaManage" />
@@ -179,13 +179,13 @@ export function PricingSection() {
               onClick={() => {
                 if (activeIndex !== 1) scrollToCard(1);
               }}
-              className={`w-[76vw] max-w-[320px] shrink-0 snap-center rounded-3xl bg-white dark:bg-slate-900 border-2 border-emerald-500 p-6 flex flex-col justify-between relative transition-all duration-300 ${
+              className={`w-[71vw] max-w-[285px] shrink-0 snap-center rounded-3xl bg-white dark:bg-slate-900 border-2 border-emerald-500 px-4 py-5 flex flex-col justify-between relative transition-all duration-300 ${
                 activeIndex === 1
                   ? "shadow-2xl shadow-emerald-500/20 scale-100 opacity-100 ring-2 ring-emerald-500/30"
-                  : "shadow-md scale-95 opacity-70 hover:opacity-90 cursor-pointer"
+                  : "shadow-md scale-[0.97] opacity-85 hover:opacity-100 cursor-pointer"
               }`}
             >
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 <Badge
                   variant="brand"
                   className="py-0.5 px-2.5 shadow-sm bg-emerald-600 text-white border-emerald-500 flex items-center gap-1 text-[10px] font-bold"
@@ -196,30 +196,30 @@ export function PricingSection() {
               </div>
 
               <div>
-                <div className="mb-4 pt-1">
+                <div className="mb-3 pt-1">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-display font-bold text-xl text-slate-900 dark:text-white">
+                    <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">
                       <FormattedMessage id="pricing.tier2Title" />
                     </h3>
-                    <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/60 px-2 py-0.5 rounded-full">
+                    <span className="text-[9px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/60 px-1.5 py-0.5 rounded-full">
                       <FormattedMessage id="pricing.tier2Savings" />
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
                     <FormattedMessage id="pricing.tier2Desc" />
                   </p>
                 </div>
 
-                <div className="flex items-baseline gap-1.5 mb-5">
-                  <span className="font-display font-extrabold text-3xl text-slate-900 dark:text-white">
+                <div className="flex items-baseline gap-1.5 mb-4">
+                  <span className="font-display font-extrabold text-2xl text-slate-900 dark:text-white">
                     €<FormattedMessage id="pricing.tier2Price" />
                   </span>
-                  <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
                     <FormattedMessage id="pricing.tier2Rate" />
                   </span>
                 </div>
 
-                <div className="space-y-2.5 border-t border-slate-100 dark:border-slate-800 pt-4 text-xs text-slate-700 dark:text-slate-300">
+                <div className="space-y-2 border-t border-slate-100 dark:border-slate-800 pt-3.5 text-[11px] text-slate-700 dark:text-slate-300">
                   <div className="flex items-start gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                     <span><strong><FormattedMessage id="pricing.fSticker" /></strong></span>
@@ -239,11 +239,11 @@ export function PricingSection() {
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   href={loggedIn ? "/dashboard" : "/order?years=2"}
                   size="sm"
-                  className="w-full shadow-lg shadow-emerald-600/25 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
+                  className="w-full shadow-lg shadow-emerald-600/25 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2"
                 >
                   {loggedIn ? (
                     <>
@@ -263,37 +263,37 @@ export function PricingSection() {
               onClick={() => {
                 if (activeIndex !== 2) scrollToCard(2);
               }}
-              className={`w-[76vw] max-w-[320px] shrink-0 snap-center rounded-3xl bg-white dark:bg-slate-900 border p-6 flex flex-col justify-between relative transition-all duration-300 ${
+              className={`w-[71vw] max-w-[285px] shrink-0 snap-center rounded-3xl bg-white dark:bg-slate-900 border px-4 py-5 flex flex-col justify-between relative transition-all duration-300 ${
                 activeIndex === 2
-                  ? "border-sky-500 shadow-xl scale-100 opacity-100"
-                  : "border-slate-200 dark:border-slate-800 shadow-sm scale-95 opacity-70 hover:opacity-90 cursor-pointer"
+                  ? "border-sky-500 shadow-xl scale-100 opacity-100 ring-2 ring-sky-500/20"
+                  : "border-slate-200 dark:border-slate-800 shadow-sm scale-[0.97] opacity-85 hover:opacity-100 cursor-pointer"
               }`}
             >
               <div>
-                <div className="mb-4">
+                <div className="mb-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-display font-bold text-xl text-slate-900 dark:text-white">
+                    <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">
                       <FormattedMessage id="pricing.tier3Title" />
                     </h3>
-                    <span className="text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-100 dark:bg-sky-900/60 px-2 py-0.5 rounded-full">
+                    <span className="text-[9px] font-bold text-sky-700 dark:text-sky-300 bg-sky-100 dark:bg-sky-900/60 px-1.5 py-0.5 rounded-full">
                       <FormattedMessage id="pricing.tier3Savings" />
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
                     <FormattedMessage id="pricing.tier3Desc" />
                   </p>
                 </div>
 
-                <div className="flex items-baseline gap-1.5 mb-5">
-                  <span className="font-display font-extrabold text-3xl text-slate-900 dark:text-white">
+                <div className="flex items-baseline gap-1.5 mb-4">
+                  <span className="font-display font-extrabold text-2xl text-slate-900 dark:text-white">
                     €<FormattedMessage id="pricing.tier3Price" />
                   </span>
-                  <span className="text-xs font-semibold text-sky-600 dark:text-sky-400">
+                  <span className="text-[11px] font-semibold text-sky-600 dark:text-sky-400">
                     <FormattedMessage id="pricing.tier3Rate" />
                   </span>
                 </div>
 
-                <div className="space-y-2.5 border-t border-slate-100 dark:border-slate-800 pt-4 text-xs text-slate-700 dark:text-slate-300">
+                <div className="space-y-2 border-t border-slate-100 dark:border-slate-800 pt-3.5 text-[11px] text-slate-700 dark:text-slate-300">
                   <div className="flex items-start gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
                     <span><strong><FormattedMessage id="pricing.fSticker" /></strong></span>
@@ -313,12 +313,12 @@ export function PricingSection() {
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   href={loggedIn ? "/dashboard" : "/order?years=3"}
                   variant="outline"
                   size="sm"
-                  className="w-full text-xs font-bold"
+                  className="w-full text-xs font-bold py-2"
                 >
                   {loggedIn ? (
                     <FormattedMessage id="pricing.mainCtaManage" />
@@ -331,13 +331,13 @@ export function PricingSection() {
           </div>
 
           {/* Mobile Dot Indicators */}
-          <div className="flex justify-center items-center gap-2 mt-2">
+          <div className="flex justify-center items-center gap-2 mt-3">
             {[0, 1, 2].map((idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => scrollToCard(idx)}
-                className={`transition-all rounded-full ${
+                className={`transition-all rounded-full cursor-pointer ${
                   activeIndex === idx
                     ? "w-6 h-2 bg-emerald-500"
                     : "w-2 h-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400"

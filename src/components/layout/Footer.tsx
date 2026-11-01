@@ -64,74 +64,78 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-          <div className="md:col-span-2 space-y-4">
+          {/* Brand info */}
+          <div className="md:col-span-2 space-y-3 pb-6 md:pb-0 border-b md:border-b-0 border-slate-200/60 dark:border-slate-800/60 text-center md:text-left flex flex-col items-center md:items-start">
             <BrandLogo size="md" />
-            <p className="text-sm max-w-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs sm:text-sm max-w-sm text-slate-500 dark:text-slate-400 leading-relaxed">
               <FormattedMessage id="footer.aboutText" />
             </p>
-            <p className="text-xs text-slate-400">
+            <p className="text-[11px] sm:text-xs text-slate-400">
               <FormattedMessage id="footer.madeFor" />
             </p>
           </div>
 
-          <div>
-            <h4 className="font-display font-bold text-slate-900 dark:text-white mb-3 text-sm">
-              <FormattedMessage id="footer.product" />
-            </h4>
-            <ul className="space-y-2 text-xs">
-              <li><Link href="/#hoe-het-werkt" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="nav.howItWorks" /></Link></li>
-              <li><Link href="/#prijzen" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="nav.pricing" /></Link></li>
-              <li><Link href="/#voordelen" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="nav.benefits" /></Link></li>
-              <li><Link href="/tag/PM-NL-8924" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="footer.qrDemo" /></Link></li>
-            </ul>
-          </div>
+          {/* Links menu (3 clean columns on mobile & desktop) */}
+          <div className="grid grid-cols-3 md:contents gap-4 sm:gap-6 text-left">
+            <div>
+              <h4 className="font-display font-bold text-slate-900 dark:text-white mb-2.5 sm:mb-3 text-xs sm:text-sm">
+                <FormattedMessage id="footer.product" />
+              </h4>
+              <ul className="space-y-2 text-xs">
+                <li><Link href="/#hoe-het-werkt" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="nav.howItWorks" /></Link></li>
+                <li><Link href="/#prijzen" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="nav.pricing" /></Link></li>
+                <li><Link href="/#voordelen" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="nav.benefits" /></Link></li>
+                <li><Link href="/tag/PM-NL-8924" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="footer.qrDemo" /></Link></li>
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="font-display font-bold text-slate-900 dark:text-white mb-3 text-sm">
-              <FormattedMessage id="footer.support" />
-            </h4>
-            <ul className="space-y-2 text-xs">
-              {loggedIn ? (
-                <li><Link href="/dashboard" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold text-emerald-600 dark:text-emerald-400"><FormattedMessage id="common.myDashboard" /></Link></li>
-              ) : (
-                <li><Link href="/login" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="common.login" /></Link></li>
-              )}
-              <li><Link href="/#faq" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="nav.faq" /></Link></li>
-              <li><a href="mailto:support@pingme.app" className="hover:text-emerald-600 dark:hover:text-emerald-400"><FormattedMessage id="footer.contactSupport" /></a></li>
-            </ul>
-          </div>
+            <div>
+              <h4 className="font-display font-bold text-slate-900 dark:text-white mb-2.5 sm:mb-3 text-xs sm:text-sm">
+                <FormattedMessage id="footer.support" />
+              </h4>
+              <ul className="space-y-2 text-xs">
+                {loggedIn ? (
+                  <li><Link href="/dashboard" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold text-emerald-600 dark:text-emerald-400 transition-colors"><FormattedMessage id="common.myDashboard" /></Link></li>
+                ) : (
+                  <li><Link href="/login" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="common.login" /></Link></li>
+                )}
+                <li><Link href="/#faq" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="nav.faq" /></Link></li>
+                <li><a href="mailto:support@pingme.app" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"><FormattedMessage id="footer.contactSupport" /></a></li>
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="font-display font-bold text-slate-900 dark:text-white mb-3 text-sm">
-              <FormattedMessage id="footer.legal" />
-            </h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <Link href="/privacy" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  <FormattedMessage id="footer.privacy" />
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  <FormattedMessage id="footer.terms" />
-                </Link>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => setKvkOpen(true)}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 text-left cursor-pointer"
-                >
-                  <FormattedMessage id="footer.kvk" />
-                </button>
-              </li>
-            </ul>
+            <div>
+              <h4 className="font-display font-bold text-slate-900 dark:text-white mb-2.5 sm:mb-3 text-xs sm:text-sm">
+                <FormattedMessage id="footer.legal" />
+              </h4>
+              <ul className="space-y-2 text-xs">
+                <li>
+                  <Link href="/privacy" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                    <FormattedMessage id="footer.privacy" />
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                    <FormattedMessage id="footer.terms" />
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setKvkOpen(true)}
+                    className="hover:text-emerald-600 dark:hover:text-emerald-400 text-left cursor-pointer transition-colors"
+                  >
+                    <FormattedMessage id="footer.kvk" />
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+        <div className="mt-8 sm:mt-12 pt-6 border-t border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 sm:gap-4 text-center sm:text-left">
           <p><FormattedMessage id="footer.copyright" values={{ year: new Date().getFullYear() }} /></p>
           <p><FormattedMessage id="footer.stripeProcessed" /></p>
         </div>
