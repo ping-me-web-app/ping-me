@@ -94,6 +94,7 @@ export default function OrderPage() {
   const [stickerToken, setStickerToken] = useState("");
   const [resendingMagicLink, setResendingMagicLink] = useState(false);
   const [magicLinkResent, setMagicLinkResent] = useState(false);
+  const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
 
   const handleResendMagicLink = async () => {
     if (!email) return;
@@ -117,6 +118,19 @@ export default function OrderPage() {
       setResendingMagicLink(false);
     }
   };
+
+  // Auto-redirect countdown effect when an existing user adds a vehicle
+  useEffect(() => {
+    if (redirectCountdown === null) return;
+    if (redirectCountdown <= 0) {
+      router.push("/dashboard");
+      return;
+    }
+    const timer = setTimeout(() => {
+      setRedirectCountdown((prev) => (prev !== null ? prev - 1 : null));
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [redirectCountdown, router]);
 
   // Check for Stripe Checkout return (?session_id=... or ?payment=cancelled) or initial duration (?years=...)
   useEffect(() => {
@@ -203,25 +217,29 @@ export default function OrderPage() {
 
             localStorage.setItem("pingme-user-vehicle", JSON.stringify(data.order));
 
-            if (!isLoggedIn) {
+            const isAlreadyUser = Boolean(data.isAddingVehicle || isLoggedIn || isAddingVehicle);
+
+            if (isAlreadyUser) {
+              setRedirectCountdown(10);
+            } else {
               localStorage.removeItem("pingme-has-session");
               localStorage.removeItem("pingme-auth");
-            }
 
-            // Client-side OTP fallback if server did not send it
-            if (!data.magicLinkSent && data.order?.email) {
-              const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-              if (supabaseUrl && !supabaseUrl.includes("placeholder")) {
-                try {
-                  const supabase = createClient();
-                  supabase.auth.signInWithOtp({
-                    email: data.order.email,
-                    options: {
-                      emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
-                    },
-                  });
-                } catch (otpErr) {
-                  console.log("Client fallback OTP notice:", otpErr);
+              // Client-side OTP fallback ONLY if user is new and server did not send it
+              if (!data.magicLinkSent && data.order?.email) {
+                const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+                if (supabaseUrl && !supabaseUrl.includes("placeholder")) {
+                  try {
+                    const supabase = createClient();
+                    supabase.auth.signInWithOtp({
+                      email: data.order.email,
+                      options: {
+                        emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
+                      },
+                    });
+                  } catch (otpErr) {
+                    console.log("Client fallback OTP notice:", otpErr);
+                  }
                 }
               }
             }
@@ -388,6 +406,7 @@ export default function OrderPage() {
           street,
           city,
           durationYears: selectedYears,
+          isAddingVehicle: isAddingVehicle || isLoggedIn,
         }),
       });
 
@@ -1531,56 +1550,89 @@ export default function OrderPage() {
               </div>
             </div>
 
-            {/* Magic Link Notification Card */}
-            <div className="rounded-3xl bg-emerald-50/90 dark:bg-emerald-950/40 border-2 border-emerald-500/30 p-6 sm:p-7 text-left space-y-4 shadow-sm">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
-                  <Mail className="w-6 h-6" />
+            {/* Already Logged In Auto-Redirect OR First-Time Magic Link Card */}
+            {redirectCountdown !== null ? (
+              <div className="rounded-3xl bg-emerald-50/90 dark:bg-emerald-950/40 border-2 border-emerald-500/30 p-6 sm:p-8 text-center space-y-4 shadow-sm">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/20">
+                  <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <div className="space-y-1 flex-1">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 mb-1">
-                    <FormattedMessage id="order.magicLinkBadge" />
+                <div className="space-y-1.5">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200">
+                    <FormattedMessage id="order.vehicleAddedBadge" />
                   </div>
-                  <h3 className="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">
-                    <FormattedMessage id="order.magicLinkTitle" />
+                  <h3 className="font-display font-bold text-lg sm:text-xl text-slate-900 dark:text-white">
+                    <FormattedMessage id="order.alreadyLoggedInTitle" />
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto">
                     <FormattedMessage
-                      id="order.magicLinkDesc"
-                      values={{
-                        email: <strong className="font-bold text-slate-900 dark:text-white">{email}</strong>,
-                      }}
+                      id="order.redirectingCountdown"
+                      values={{ seconds: redirectCountdown }}
                     />
                   </p>
                 </div>
+                <div className="pt-2">
+                  <Button
+                    onClick={() => router.push("/dashboard")}
+                    size="md"
+                    className="rounded-2xl text-xs font-bold px-6 bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 cursor-pointer"
+                  >
+                    <FormattedMessage id="order.goToDashboardNow" />
+                    <ArrowRight className="w-4 h-4 ml-1.5" />
+                  </Button>
+                </div>
               </div>
+            ) : (
+              /* Magic Link Notification Card */
+              <div className="rounded-3xl bg-emerald-50/90 dark:bg-emerald-950/40 border-2 border-emerald-500/30 p-6 sm:p-7 text-left space-y-4 shadow-sm">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20">
+                    <Mail className="w-6 h-6" />
+                  </div>
+                  <div className="space-y-1 flex-1">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 mb-1">
+                      <FormattedMessage id="order.magicLinkBadge" />
+                    </div>
+                    <h3 className="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">
+                      <FormattedMessage id="order.magicLinkTitle" />
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                      <FormattedMessage
+                        id="order.magicLinkDesc"
+                        values={{
+                          email: <strong className="font-bold text-slate-900 dark:text-white">{email}</strong>,
+                        }}
+                      />
+                    </p>
+                  </div>
+                </div>
 
-              <div className="pt-2 border-t border-emerald-200/60 dark:border-emerald-800/40 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
-                <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                  <FormattedMessage id="order.magicLinkSpamNotice" />
-                </span>
-                <button
-                  type="button"
-                  onClick={handleResendMagicLink}
-                  disabled={resendingMagicLink}
-                  className="inline-flex items-center justify-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-300 hover:underline cursor-pointer disabled:opacity-50"
-                >
-                  {resendingMagicLink ? (
-                    <>
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      <FormattedMessage id="order.resendingMagicLink" />
-                    </>
-                  ) : magicLinkResent ? (
-                    <>
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      <FormattedMessage id="order.magicLinkResent" />
-                    </>
-                  ) : (
-                    <FormattedMessage id="order.resendMagicLink" />
-                  )}
-                </button>
+                <div className="pt-2 border-t border-emerald-200/60 dark:border-emerald-800/40 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                    <FormattedMessage id="order.magicLinkSpamNotice" />
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleResendMagicLink}
+                    disabled={resendingMagicLink}
+                    className="inline-flex items-center justify-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-300 hover:underline cursor-pointer disabled:opacity-50"
+                  >
+                    {resendingMagicLink ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <FormattedMessage id="order.resendingMagicLink" />
+                      </>
+                    ) : magicLinkResent ? (
+                      <>
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                        <FormattedMessage id="order.magicLinkResent" />
+                      </>
+                    ) : (
+                      <FormattedMessage id="order.resendMagicLink" />
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Back to Home / Dashboard Button */}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">

@@ -262,7 +262,7 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
         <tr>
           <td>
             <strong>PostNL Brievenbusbezorging</strong><br />
-            <span style="color: #64748b; font-size: 11px;">Brievenbuspakje met Track & Trace</span>
+            <span style="color: #64748b; font-size: 11px;">Standaard brievenbuspost (1-2 werkdagen)</span>
           </td>
           <td style="text-align: center;">1</td>
           <td style="text-align: right;">€0.00</td>

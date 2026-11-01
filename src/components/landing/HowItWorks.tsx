@@ -90,7 +90,7 @@ export function HowItWorks() {
               <p className="text-xs sm:text-sm font-semibold text-emerald-900 dark:text-emerald-200 text-center sm:text-left">
                 <FormattedMessage
                   id="howItWorks.ctaHint"
-                  defaultMessage="Binnen 24 uur verzonden via PostNL brievenbuspost met Track & Trace."
+                  defaultMessage="Binnen 24 uur verzonden via PostNL brievenbuspost."
                 />
               </p>
               <Button

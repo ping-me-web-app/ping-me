@@ -20,8 +20,10 @@ export async function POST(req: Request) {
       city,
       paymentMethod,
       durationYears: reqDuration,
+      isAddingVehicle: reqIsAddingVehicle,
     } = body;
 
+    const isAddingVehicle = Boolean(reqIsAddingVehicle);
     const durationYears = reqDuration === 1 ? 1 : reqDuration === 3 ? 3 : 2;
     const unitAmountMap: Record<number, number> = {
       1: 1000, // €10.00
@@ -117,6 +119,7 @@ export async function POST(req: Request) {
         city: city || "",
         durationYears: durationYears.toString(),
         expiresAt: expiresAt.toISOString(),
+        isAddingVehicle: isAddingVehicle ? "true" : "false",
       },
       success_url: `${origin}/order?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/order?payment=cancelled`,

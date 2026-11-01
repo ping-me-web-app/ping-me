@@ -67,7 +67,9 @@ export async function GET(req: Request) {
       expiresAt,
     };
 
-    // Trigger magic link to customer's email so they can securely access their dashboard
+    const isAddingVehicle = meta.isAddingVehicle === "true";
+
+    // Trigger magic link to customer's email only for new signups (skip if already logged in / adding vehicle)
     let magicLinkSent = false;
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey =
@@ -75,7 +77,7 @@ export async function GET(req: Request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY ||
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (supabaseUrl && supabaseKey && vehicleData.email) {
+    if (!isAddingVehicle && supabaseUrl && supabaseKey && vehicleData.email) {
       try {
         const origin = new URL(req.url).origin;
         const supabase = createClient(supabaseUrl, supabaseKey, {
@@ -101,6 +103,7 @@ export async function GET(req: Request) {
       paid: true,
       order: vehicleData,
       magicLinkSent,
+      isAddingVehicle,
     });
   } catch (err: any) {
     console.error("Stripe verify error:", err);

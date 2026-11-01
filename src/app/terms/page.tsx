@@ -89,8 +89,8 @@ export default function TermsPage() {
               </div>
               <p>
                 {isNl
-                  ? "Stickers worden binnen 24 uur verzonden via PostNL brievenbuspost met Track & Trace binnen Nederland. Conform de Nederlandse wetgeving heb je als consument het recht om binnen 14 dagen na ontvangst van de fysieke sticker de aankoop zonder opgaaf van reden te herroepen."
-                  : "Stickers are dispatched within 24 hours via PostNL letterbox delivery with Track & Trace across the Netherlands. In compliance with Dutch and EU consumer regulations, consumers have a statutory 14-day right of withdrawal from the date of receiving the physical product."}
+                  ? "Stickers worden binnen 24 uur verzonden via PostNL brievenbuspost binnen Nederland. Conform de Nederlandse wetgeving heb je als consument het recht om binnen 14 dagen na ontvangst van de fysieke sticker de aankoop zonder opgaaf van reden te herroepen."
+                  : "Stickers are dispatched within 24 hours via PostNL letterbox delivery across the Netherlands. In compliance with Dutch and EU consumer regulations, consumers have a statutory 14-day right of withdrawal from the date of receiving the physical product."}
               </p>
             </section>
 
