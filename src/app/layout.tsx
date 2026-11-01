@@ -3,6 +3,7 @@ import { Quicksand, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { IntlProviderWrapper } from "@/context/IntlProviderWrapper";
+import { UserDataProvider } from "@/lib/useUserData";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const quicksand = Quicksand({
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col font-sans overflow-x-clip">
         <IntlProviderWrapper>
           <ThemeProvider>
-            {children}
+            <UserDataProvider>
+              {children}
+            </UserDataProvider>
           </ThemeProvider>
         </IntlProviderWrapper>
       </body>

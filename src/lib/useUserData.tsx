@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { useAuth } from "@/lib/useAuth";
 import { createClient } from "@/lib/supabase/client";
 
@@ -84,7 +84,21 @@ export const DEFAULT_USER_VEHICLES: UserVehicleData[] = [
   },
 ];
 
-export function useUserData() {
+export interface UserDataContextType {
+  vehicles: UserVehicleData[];
+  activeVehicle: UserVehicleData;
+  data: UserVehicleData;
+  activeVehicleIndex: number;
+  setActiveVehicleIndex: (index: number) => void;
+  updateActiveVehicle: (updates: Partial<UserVehicleData>) => void;
+  updateData: (updates: Partial<UserVehicleData>) => void;
+  addVehicle: (newVehicle: UserVehicleData) => void;
+  isLoaded: boolean;
+}
+
+const UserDataContext = createContext<UserDataContextType | null>(null);
+
+export function UserDataProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   const [vehicles, setVehicles] = useState<UserVehicleData[]>(DEFAULT_USER_VEHICLES);
   const [activeVehicleIndex, setActiveVehicleIndexState] = useState(0);
@@ -178,8 +192,17 @@ export function useUserData() {
         } else if (storedSingle) {
           const parsedSingle = JSON.parse(storedSingle);
           if (parsedSingle && typeof parsedSingle === "object") {
-            setVehicles([parsedSingle]);
+            // Keep the single user vehicle and preserve demo vehicles for testing
+            const merged = [
+              parsedSingle,
+              DEFAULT_USER_VEHICLES[1] // Tesla Model 3
+            ];
+            setVehicles(merged);
+            localStorage.setItem(STORAGE_KEY_MULTI, JSON.stringify(merged));
           }
+        } else {
+          setVehicles(DEFAULT_USER_VEHICLES);
+          localStorage.setItem(STORAGE_KEY_MULTI, JSON.stringify(DEFAULT_USER_VEHICLES));
         }
 
         if (storedIndex) {
@@ -207,7 +230,6 @@ export function useUserData() {
     if (typeof window === "undefined") return;
     try {
       localStorage.setItem(STORAGE_KEY_MULTI, JSON.stringify(newVehicles));
-      // Keep legacy single-vehicle key synced with active vehicle
       if (newVehicles.length > 0) {
         localStorage.setItem(STORAGE_KEY_SINGLE, JSON.stringify(newVehicles[0]));
       }
@@ -231,12 +253,12 @@ export function useUserData() {
   const updateActiveVehicle = useCallback(
     (updates: Partial<UserVehicleData>) => {
       setVehicles((prev) => {
-        const safeIndex = Math.min(Math.max(0, activeVehicleIndex), prev.length - 1);
-        const current = prev[safeIndex] || DEFAULT_USER_DATA;
+        const safeIdx = Math.min(Math.max(0, activeVehicleIndex), prev.length - 1);
+        const current = prev[safeIdx] || DEFAULT_USER_DATA;
         const updatedVehicle = { ...current, ...updates };
 
         const next = [...prev];
-        next[safeIndex] = updatedVehicle;
+        next[safeIdx] = updatedVehicle;
         persistVehicles(next);
         return next;
       });
@@ -257,19 +279,43 @@ export function useUserData() {
     [persistVehicles, setActiveVehicleIndex]
   );
 
-  // Safe active vehicle
   const safeIndex = Math.min(Math.max(0, activeVehicleIndex), vehicles.length - 1);
   const activeVehicle = vehicles[safeIndex] || DEFAULT_USER_DATA;
 
-  return {
+  const value = useMemo<UserDataContextType>(() => ({
     vehicles,
     activeVehicle,
-    data: activeVehicle, // Alias for 100% backward compatibility
+    data: activeVehicle,
     activeVehicleIndex: safeIndex,
     setActiveVehicleIndex,
     updateActiveVehicle,
-    updateData: updateActiveVehicle, // Alias for backward compatibility
+    updateData: updateActiveVehicle,
     addVehicle,
     isLoaded,
-  };
+  }), [vehicles, activeVehicle, safeIndex, setActiveVehicleIndex, updateActiveVehicle, addVehicle, isLoaded]);
+
+  return (
+    <UserDataContext.Provider value={value}>
+      {children}
+    </UserDataContext.Provider>
+  );
+}
+
+export function useUserData(): UserDataContextType {
+  const context = useContext(UserDataContext);
+  if (!context) {
+    // Graceful fallback if called outside provider (e.g. isolated SSR or unit tests)
+    return {
+      vehicles: DEFAULT_USER_VEHICLES,
+      activeVehicle: DEFAULT_USER_DATA,
+      data: DEFAULT_USER_DATA,
+      activeVehicleIndex: 0,
+      setActiveVehicleIndex: () => {},
+      updateActiveVehicle: () => {},
+      updateData: () => {},
+      addVehicle: () => {},
+      isLoaded: true,
+    };
+  }
+  return context;
 }
