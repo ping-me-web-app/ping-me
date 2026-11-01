@@ -19,7 +19,19 @@ export async function POST(req: Request) {
       street,
       city,
       paymentMethod,
+      durationYears: reqDuration,
     } = body;
+
+    const durationYears = reqDuration === 1 ? 1 : reqDuration === 3 ? 3 : 2;
+    const unitAmountMap: Record<number, number> = {
+      1: 1000, // €10.00
+      2: 1599, // €15.99
+      3: 2099, // €20.99
+    };
+    const unitAmount = unitAmountMap[durationYears] || 1599;
+
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + durationYears);
 
     if (!plate || !email) {
       return NextResponse.json(
@@ -76,10 +88,10 @@ export async function POST(req: Request) {
         {
           price_data: {
             currency: "eur",
-            unit_amount: 1000, // €10.00
+            unit_amount: unitAmount,
             product_data: {
-              name: `Ping-Me Sticker Tag (${plate.toUpperCase()})`,
-              description: "Anonymous Vehicle QR Sticker + 1 Year Protected Notification Forwarding",
+              name: `Ping-Me Sticker Tag (${plate.toUpperCase()}) - ${durationYears} ${durationYears === 1 ? "Jaar" : "Jaar"}`,
+              description: `Anonymous Vehicle QR Sticker + ${durationYears} Year${durationYears > 1 ? "s" : ""} Protected Notification Forwarding (No Auto-Renewal)`,
             },
           },
           quantity: 1,
@@ -103,6 +115,8 @@ export async function POST(req: Request) {
         addition: addition || "",
         street: street || "",
         city: city || "",
+        durationYears: durationYears.toString(),
+        expiresAt: expiresAt.toISOString(),
       },
       success_url: `${origin}/order?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/order?payment=cancelled`,

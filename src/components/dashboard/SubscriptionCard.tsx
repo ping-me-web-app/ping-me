@@ -15,12 +15,17 @@ export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) 
   const intl = useIntl();
   const { data } = useUserData();
 
-  // Calculate 1 year renewal date
+  const years = data.durationYears || 2;
   const createdDate = data.createdAt ? new Date(data.createdAt) : new Date();
-  const renewalDate = new Date(createdDate);
-  renewalDate.setFullYear(renewalDate.getFullYear() + 1);
+  const expiryDate = data.expiresAt
+    ? new Date(data.expiresAt)
+    : (() => {
+        const d = new Date(createdDate);
+        d.setFullYear(d.getFullYear() + years);
+        return d;
+      })();
 
-  const renewalFormatted = renewalDate.toLocaleDateString(
+  const expiryFormatted = expiryDate.toLocaleDateString(
     intl.locale === "nl" ? "nl-NL" : "en-US",
     {
       day: "numeric",
@@ -28,6 +33,9 @@ export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) 
       year: "numeric",
     }
   );
+
+  const priceMap: Record<number, string> = { 1: "€10.00", 2: "€15.99", 3: "€20.99" };
+  const currentPrice = priceMap[years] || "€15.99";
 
   const paymentDisplay =
     data.paymentMethod === "ideal"
@@ -65,9 +73,9 @@ export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) 
             <FormattedMessage id="dashboard.currentRate" />
           </span>
           <p className="font-display font-extrabold text-2xl text-slate-900 dark:text-white mt-1">
-            €10
-            <span className="text-xs font-normal text-slate-400">
-              <FormattedMessage id="pricing.mainInterval" />
+            {currentPrice}
+            <span className="text-xs font-normal text-slate-400 ml-1.5">
+              ({years} {intl.locale === "nl" ? "Jaar" : "Yr"})
             </span>
           </p>
           <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold inline-flex items-center gap-1 mt-1">
@@ -82,7 +90,7 @@ export function SubscriptionCard({ onOpenStripePortal }: SubscriptionCardProps) 
           </span>
           <p className="font-display font-bold text-base text-slate-900 dark:text-white mt-1 flex items-center gap-1.5">
             <Calendar className="w-4 h-4 text-sky-500" />
-            <span>{renewalFormatted}</span>
+            <span>{expiryFormatted}</span>
           </p>
           <p className="text-[11px] text-slate-400 mt-1">
             <FormattedMessage id="dashboard.sepaNote" />

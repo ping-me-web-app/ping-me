@@ -23,6 +23,8 @@ export interface UserVehicleData {
   selectedBank?: string;
   orderId?: string;
   createdAt?: string;
+  durationYears?: number;
+  expiresAt?: string;
 }
 
 const STORAGE_KEY = "pingme-user-vehicle";
@@ -46,6 +48,8 @@ export const DEFAULT_USER_DATA: UserVehicleData = {
   selectedBank: "ING Bank",
   orderId: "PM-NL-892401",
   createdAt: "2026-10-29T10:00:00.000Z",
+  durationYears: 2,
+  expiresAt: "2028-10-29T10:00:00.000Z",
 };
 
 export function useUserData() {

@@ -33,6 +33,10 @@ export async function GET(req: Request) {
     const meta = session.metadata || {};
     const orderId = meta.orderId || `PM-NL-${session.id.slice(-6).toUpperCase()}`;
     const token = meta.token || `PM-NL-${session.id.slice(-4).toUpperCase()}`;
+    const durationYears = meta.durationYears ? parseInt(meta.durationYears, 10) : 2;
+    const computedExpiry = new Date();
+    computedExpiry.setFullYear(computedExpiry.getFullYear() + durationYears);
+    const expiresAt = meta.expiresAt || computedExpiry.toISOString();
 
     const vehicleData = {
       plate: meta.plate || "XX-00-XX",
@@ -59,6 +63,8 @@ export async function GET(req: Request) {
       stripeSessionId: session.id,
       amountTotal: session.amount_total,
       currency: session.currency,
+      durationYears,
+      expiresAt,
     };
 
     // Trigger magic link to customer's email so they can securely access their dashboard

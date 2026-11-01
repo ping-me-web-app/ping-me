@@ -29,6 +29,12 @@ import {
 
 type ChannelType = "whatsapp" | "sms" | "email";
 
+const PLAN_PRICES: Record<1 | 2 | 3, { amount: string; numeric: number; perYear: string; savings?: string }> = {
+  1: { amount: "10.00", numeric: 10.0, perYear: "10.00" },
+  2: { amount: "15.99", numeric: 15.99, perYear: "8.00", savings: "20%" },
+  3: { amount: "20.99", numeric: 20.99, perYear: "7.00", savings: "30%" },
+};
+
 export default function OrderPage() {
   const intl = useIntl();
   const router = useRouter();
@@ -36,6 +42,9 @@ export default function OrderPage() {
 
   // Stepper state: 1 = Vehicle/Alerts, 2 = Shipping & Payment, 3 = Success
   const [step, setStep] = useState<1 | 2 | 3>(1);
+
+  // Selected validity duration (1, 2, or 3 years - 2 years is highlighted middle option)
+  const [selectedYears, setSelectedYears] = useState<1 | 2 | 3>(2);
 
   // Form State - Step 1: Vehicle & Alerts
   const [plate, setPlate] = useState("");
@@ -99,10 +108,15 @@ export default function OrderPage() {
     }
   };
 
-  // Check for Stripe Checkout return (?session_id=... or ?payment=cancelled)
+  // Check for Stripe Checkout return (?session_id=... or ?payment=cancelled) or initial duration (?years=...)
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
+    const yearsParam = params.get("years");
+    if (yearsParam === "1") setSelectedYears(1);
+    else if (yearsParam === "3") setSelectedYears(3);
+    else if (yearsParam === "2") setSelectedYears(2);
+
     const sessionId = params.get("session_id");
     const paymentStatus = params.get("payment");
 
@@ -136,6 +150,9 @@ export default function OrderPage() {
             setHouseNumber(data.order.houseNumber);
             setPostalCode(data.order.postalCode);
             setCity(data.order.city);
+            if (data.order.durationYears) {
+              setSelectedYears(data.order.durationYears === 1 ? 1 : data.order.durationYears === 3 ? 3 : 2);
+            }
 
             localStorage.setItem("pingme-user-vehicle", JSON.stringify(data.order));
             // Do NOT log in directly; clear session flags so user must use the magic link sent to their email
@@ -321,6 +338,7 @@ export default function OrderPage() {
           addition,
           street,
           city,
+          durationYears: selectedYears,
         }),
       });
 
@@ -675,6 +693,138 @@ export default function OrderPage() {
                     </div>
                   </div>
 
+                  <hr className="border-slate-100 dark:border-slate-800" />
+
+                  {/* Duration / Validity Selection (Highlighting 2-year option) */}
+                  <div className="space-y-3 pt-2">
+                    <div>
+                      <h3 className="font-display font-bold text-base text-slate-900 dark:text-white">
+                        <FormattedMessage id="order.durationTitle" />
+                      </h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <FormattedMessage id="order.durationSubtitle" />
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                      {/* 1 Year */}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedYears(1)}
+                        className={`relative p-4 rounded-2xl border text-left transition-all ${
+                          selectedYears === 1
+                            ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30 ring-2 ring-emerald-500/20"
+                            : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-950"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="font-bold text-sm text-slate-900 dark:text-white">
+                            <FormattedMessage id="order.year1Label" />
+                          </span>
+                          <div
+                            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              selectedYears === 1
+                                ? "border-emerald-600 bg-emerald-600 text-white"
+                                : "border-slate-300 dark:border-slate-700"
+                            }`}
+                          >
+                            {selectedYears === 1 && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </div>
+                        <div className="font-display font-extrabold text-xl text-slate-900 dark:text-white">
+                          <FormattedMessage id="order.year1Price" />
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5">
+                          <FormattedMessage id="order.year1Rate" />
+                        </div>
+                      </button>
+
+                      {/* 2 Years (HIGHLIGHTED / RECOMMENDED) */}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedYears(2)}
+                        className={`relative p-4 rounded-2xl border text-left transition-all ${
+                          selectedYears === 2
+                            ? "border-emerald-500 bg-emerald-50/70 dark:bg-emerald-950/40 ring-2 ring-emerald-500 shadow-md shadow-emerald-600/15"
+                            : "border-emerald-300/80 dark:border-emerald-800/80 hover:border-emerald-400 bg-white dark:bg-slate-950"
+                        }`}
+                      >
+                        <div className="absolute -top-2.5 right-3">
+                          <span className="bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                            <FormattedMessage id="order.year2Badge" />
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="font-bold text-sm text-slate-900 dark:text-white">
+                            <FormattedMessage id="order.year2Label" />
+                          </span>
+                          <div
+                            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              selectedYears === 2
+                                ? "border-emerald-600 bg-emerald-600 text-white"
+                                : "border-slate-300 dark:border-slate-700"
+                            }`}
+                          >
+                            {selectedYears === 2 && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </div>
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="font-display font-extrabold text-xl text-slate-900 dark:text-white">
+                            <FormattedMessage id="order.year2Price" />
+                          </span>
+                          <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/60 px-1.5 py-0.5 rounded">
+                            <FormattedMessage id="order.year2Savings" />
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5">
+                          <FormattedMessage id="order.year2Rate" />
+                        </div>
+                      </button>
+
+                      {/* 3 Years */}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedYears(3)}
+                        className={`relative p-4 rounded-2xl border text-left transition-all ${
+                          selectedYears === 3
+                            ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30 ring-2 ring-emerald-500/20"
+                            : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-950"
+                        }`}
+                      >
+                        <div className="absolute -top-2.5 right-3">
+                          <span className="bg-sky-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                            <FormattedMessage id="order.year3Badge" />
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="font-bold text-sm text-slate-900 dark:text-white">
+                            <FormattedMessage id="order.year3Label" />
+                          </span>
+                          <div
+                            className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              selectedYears === 3
+                                ? "border-emerald-600 bg-emerald-600 text-white"
+                                : "border-slate-300 dark:border-slate-700"
+                            }`}
+                          >
+                            {selectedYears === 3 && <Check className="w-3 h-3 stroke-[3]" />}
+                          </div>
+                        </div>
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="font-display font-extrabold text-xl text-slate-900 dark:text-white">
+                            <FormattedMessage id="order.year3Price" />
+                          </span>
+                          <span className="text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-100 dark:bg-sky-900/60 px-1.5 py-0.5 rounded">
+                            <FormattedMessage id="order.year3Savings" />
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5">
+                          <FormattedMessage id="order.year3Rate" />
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
                   {/* Continue Button */}
                   <div className="pt-4">
                     <Button
@@ -890,7 +1040,7 @@ export default function OrderPage() {
                       ) : (
                         <>
                           <Lock className="w-4 h-4 mr-1 text-emerald-200" />
-                          <FormattedMessage id="order.btnProceedToPayment" />
+                          <FormattedMessage id="order.btnProceedToPayment" values={{ amount: PLAN_PRICES[selectedYears].amount }} />
                           <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
                         </>
                       )}
@@ -960,13 +1110,13 @@ export default function OrderPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="font-bold text-slate-800 dark:text-slate-200">
-                        <FormattedMessage id="order.itemSub" />
+                        <FormattedMessage id="order.itemSub" values={{ years: selectedYears }} />
                       </div>
                       <div className="text-slate-400 mt-0.5">
-                        <FormattedMessage id="order.itemSubDesc" />
+                        <FormattedMessage id="order.itemSubDesc" values={{ years: selectedYears }} />
                       </div>
                     </div>
-                    <span className="font-bold text-slate-900 dark:text-white">€10.00</span>
+                    <span className="font-bold text-slate-900 dark:text-white">€{PLAN_PRICES[selectedYears].amount}</span>
                   </div>
 
                   <div className="flex items-start justify-between gap-3">
@@ -984,6 +1134,28 @@ export default function OrderPage() {
                   </div>
                 </div>
 
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-slate-500 dark:text-slate-400 font-medium">
+                    <FormattedMessage id="order.validityDuration" />:
+                  </span>
+                  <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/80 p-0.5 rounded-lg">
+                    {([1, 2, 3] as const).map((yr) => (
+                      <button
+                        key={yr}
+                        type="button"
+                        onClick={() => setSelectedYears(yr)}
+                        className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
+                          selectedYears === yr
+                            ? "bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-xs"
+                            : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                        }`}
+                      >
+                        {yr} {intl.locale === "nl" ? "Jr" : "Yr"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <hr className="border-slate-100 dark:border-slate-800" />
 
                 {/* Total */}
@@ -993,10 +1165,10 @@ export default function OrderPage() {
                   </span>
                   <div className="text-right">
                     <span className="font-display font-extrabold text-2xl text-slate-900 dark:text-white">
-                      €10.00
+                      €{PLAN_PRICES[selectedYears].amount}
                     </span>
                     <span className="text-xs text-slate-400 block">
-                      <FormattedMessage id="pricing.mainInterval" />
+                      <FormattedMessage id="order.totalPeriod" />
                     </span>
                   </div>
                 </div>
@@ -1066,6 +1238,15 @@ export default function OrderPage() {
                 </span>
                 <span className="font-bold text-sm text-slate-800 dark:text-slate-200">
                   {plate} • {make} {model}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                <span className="text-xs text-slate-400">
+                  <FormattedMessage id="order.validityDuration" />
+                </span>
+                <span className="font-bold text-xs text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full">
+                  {selectedYears} {selectedYears === 1 ? (intl.locale === "nl" ? "Jaar Pas" : "Year Pass") : (intl.locale === "nl" ? "Jaar Pas" : "Years Pass")}
                 </span>
               </div>
 

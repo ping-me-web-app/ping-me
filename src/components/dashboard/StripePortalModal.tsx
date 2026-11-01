@@ -18,11 +18,17 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
   const [subStatus, setSubStatus] = useState<"active" | "cancelled">("active");
   const [actionDone, setActionDone] = useState<string | null>(null);
 
+  const years = data.durationYears || 2;
   const createdDate = data.createdAt ? new Date(data.createdAt) : new Date();
-  const renewalDate = new Date(createdDate);
-  renewalDate.setFullYear(renewalDate.getFullYear() + 1);
+  const expiryDate = data.expiresAt
+    ? new Date(data.expiresAt)
+    : (() => {
+        const d = new Date(createdDate);
+        d.setFullYear(d.getFullYear() + years);
+        return d;
+      })();
 
-  const renewalFormatted = renewalDate.toLocaleDateString(
+  const renewalFormatted = expiryDate.toLocaleDateString(
     intl.locale === "nl" ? "nl-NL" : "en-US",
     { day: "numeric", month: "long", year: "numeric" }
   );
@@ -31,6 +37,9 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
     intl.locale === "nl" ? "nl-NL" : "en-US",
     { day: "numeric", month: "short", year: "numeric" }
   );
+
+  const priceMap: Record<number, string> = { 1: "€10.00", 2: "€15.99", 3: "€20.99" };
+  const currentPrice = priceMap[years] || "€15.99";
 
   const paymentDisplay =
     data.paymentMethod === "ideal"
@@ -92,7 +101,7 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
         <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
           <div className="flex items-center justify-between">
             <span className="font-display font-bold text-sm text-slate-900 dark:text-white">
-              <FormattedMessage id="pricing.mainTitle" />
+              {years} {intl.locale === "nl" ? "Jaar Pas" : "Year Pass"}
             </span>
             <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
               subStatus === "active"
@@ -135,7 +144,7 @@ export function StripePortalModal({ isOpen, onClose }: StripePortalModalProps) {
                 <p className="text-slate-400 text-[11px]">
                   <FormattedMessage
                     id="modals.invDesc"
-                    values={{ date: createdFormatted, method: paymentDisplay }}
+                    values={{ date: createdFormatted, method: paymentDisplay, amount: currentPrice }}
                   />
                 </p>
               </div>
