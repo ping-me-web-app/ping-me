@@ -29,7 +29,7 @@ export function PostNLTracker() {
                 <FormattedMessage id="dashboard.trackerTitle" />
               </h3>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300">
-                1-2 Werkdagen
+                <FormattedMessage id="dashboard.deliveryDays" />
               </span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -49,7 +49,9 @@ export function PostNLTracker() {
 
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
           <Mailbox className="w-3.5 h-3.5 text-sky-500" />
-          <span>Past door brievenbus</span>
+          <span>
+            <FormattedMessage id="dashboard.fitsThroughMailbox" />
+          </span>
         </div>
       </div>
 

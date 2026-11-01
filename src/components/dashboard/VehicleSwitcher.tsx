@@ -88,7 +88,7 @@ export function VehicleSwitcher({
                 </div>
                 <div className="flex items-center gap-1.5 text-[10px] text-slate-400 mt-0.5">
                   <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                    {years} Jr Pas
+                    <FormattedMessage id="dashboard.yearPassTag" values={{ years }} />
                   </span>
                   <span>•</span>
                   <span className="font-mono">{v.token}</span>
