@@ -340,8 +340,12 @@
     "magicBtn": "Send Magic Login Link",
     "sendingMagicLink": "Sending magic link...",
     "magicLinkError": "Failed to send magic link. Please check your credentials.",
-    "sentTitle": "Magic link sent!",
-    "sentDesc": "We emailed a login link to {email}. Click the link in your inbox to sign in directly.",
+    "sentTitle": "Login link sent!",
+    "sentDesc": "We emailed a secure login link to {email}. Click the link in your inbox to sign in directly.",
+    "sameDeviceNotice": "Important: open the link on this same device",
+    "sameDeviceTip": "Open the login link in this browser. Opening the link in a different browser or device can cause the security code to fail.",
+    "enterCodeInstead": "Received a 6-digit code instead? Click here",
+    "backToLinkView": "Wait for login link",
     "tryAnother": "Try another email address",
     "authFailed": "The login link is invalid or has expired. Please request a new link below.",
     "otpTitle": "Enter your login code",
@@ -352,9 +356,9 @@
     "verifyingCode": "Verifying code...",
     "otpError": "The login code is not right or has expired. Please check the code in your latest email.",
     "orMagicLink": "Or click the login link directly in your email",
-    "resendBtn": "Send new code",
+    "resendBtn": "Send new login link",
     "resendCooldown": "Resend in {seconds}s",
-    "resendNotice": "Note: requesting a new code invalidates your previous one."
+    "resendNotice": "Note: requesting a new link invalidates your previous link immediately."
   },
   "notFound": {
     "title": "Page Not Found",
