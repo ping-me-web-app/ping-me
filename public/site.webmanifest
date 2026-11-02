@@ -1,0 +1,26 @@
+{
+  "name": "Ping Me — Anoniem bereikbaar voor je voertuig",
+  "short_name": "Ping Me",
+  "description": "Laat voorbijgangers anoniem contact opnemen bij parkeerproblemen of noodsituaties via een slimme QR-code sticker.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1117",
+  "theme_color": "#BCF249",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

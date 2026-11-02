@@ -23,6 +23,19 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: `${SITE_CONFIG.name} — Anoniem bereikbaar voor je voertuig`,
   description: SITE_CONFIG.description,
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

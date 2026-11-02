@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#151922" />
+      <stop offset="100%" stop-color="#090B0E" />
+    </linearGradient>
+    <linearGradient id="border-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2E3545" />
+      <stop offset="100%" stop-color="#151820" />
+    </linearGradient>
+  </defs>
+
+  <!-- App icon tile background with premium squircle geometry -->
+  <rect width="512" height="512" rx="112" fill="url(#bg-grad)" />
+  <rect width="504" height="504" x="4" y="4" rx="108" fill="none" stroke="url(#border-grad)" stroke-width="8" />
+
+  <!-- Ping Me Master Mark -->
+  <g transform="translate(256, 256) scale(0.88) translate(-298, -190)">
+    <!-- Outer Windshield Frame -->
+    <path fill="none" stroke="#FFFFFF" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"
+          d="M 148,94 
+             C 178,82 236,71 298,71 
+             C 360,71 418,82 448,94 
+             C 466,101 474,115 480,131 
+             L 520,227 
+             C 527,243 518,258 502,266 
+             C 445,294 374,308 298,308 
+             C 222,308 151,294 94,266 
+             C 78,258 69,243 76,227 
+             L 116,131 
+             C 122,115 130,101 148,94 Z" />
+
+    <!-- Left Resting Wiper Blade -->
+    <path fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"
+          d="M 152,246 C 174,258 196,269 220,277" />
+
+    <!-- Right Resting Wiper Blade -->
+    <path fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"
+          d="M 444,246 C 422,258 400,269 376,277" />
+
+    <!-- Lime Green Speech Bubble with 3 circular dot cutouts -->
+    <path fill="#BCF249" fill-rule="evenodd"
+          d="M 240,114 
+             L 363,114 
+             C 383,114 399,130 399,150 
+             L 399,198 
+             C 399,218 383,234 363,234 
+             L 308,234 
+             L 267.5,265 
+             L 263,234 
+             L 240,234 
+             C 220,234 204,218 204,198 
+             L 204,150 
+             C 204,130 220,114 240,114 Z
+             M 253.5,159.1 A 14.5,14.5 0 1 0 253.5,188.1 A 14.5,14.5 0 1 0 253.5,159.1 Z
+             M 299.5,159.1 A 14.5,14.5 0 1 0 299.5,188.1 A 14.5,14.5 0 1 0 299.5,159.1 Z
+             M 346.0,159.1 A 14.5,14.5 0 1 0 346.0,188.1 A 14.5,14.5 0 1 0 346.0,159.1 Z" />
+  </g>
+</svg>
