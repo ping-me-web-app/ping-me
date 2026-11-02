@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Button } from "@/components/ui/Button";
@@ -26,21 +26,7 @@ export function PricingSection() {
   const card1Ref = useRef<HTMLDivElement>(null);
   const card2Ref = useRef<HTMLDivElement>(null);
   const cardRefs = [card0Ref, card1Ref, card2Ref];
-  const [activeIndex, setActiveIndex] = useState(1); // 2 years (index 1) active by default
-
-  // Center the 2-year card on mobile mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (cardRefs[1].current && carouselRef.current) {
-        cardRefs[1].current.scrollIntoView({
-          behavior: "auto",
-          inline: "center",
-          block: "nearest",
-        });
-      }
-    }, 60);
-    return () => clearTimeout(timer);
-  }, []);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // Update active index based on horizontal scroll position
   const handleScroll = () => {
@@ -66,12 +52,17 @@ export function PricingSection() {
   };
 
   const scrollToCard = (index: number) => {
-    if (cardRefs[index].current) {
-      cardRefs[index].current.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
+    if (cardRefs[index].current && carouselRef.current) {
+      const container = carouselRef.current;
+      const card = cardRefs[index].current;
+      if (card) {
+        const targetScroll =
+          card.offsetLeft - (container.clientWidth - card.offsetWidth) / 2;
+        container.scrollTo({
+          left: targetScroll,
+          behavior: "smooth",
+        });
+      }
       setActiveIndex(index);
     }
   };
