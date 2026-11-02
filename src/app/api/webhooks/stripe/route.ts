@@ -73,20 +73,24 @@ export async function POST(req: Request) {
               .eq("id", userId);
           }
 
-          // 2. Insert vehicle with duration and expiry
-          const durationYears = parseInt(meta.durationYears || "2", 10) || 2;
-          const expiresAt = new Date();
-          expiresAt.setFullYear(expiresAt.getFullYear() + durationYears);
+          // 1. Ensure user profile exists with contact preference
+          await adminSupabase.from("profiles").upsert({
+            id: userId,
+            email: email,
+            full_name: meta.fullName || "",
+            phone_number: meta.phone || null,
+            preferred_channel: meta.channel || "whatsapp",
+          });
 
+          // 2. Insert vehicle
           const { data: vehicle, error: vehicleErr } = await adminSupabase
             .from("vehicles")
             .insert({
-              user_id: userId,
+              owner_id: userId,
               license_plate: plate,
-              make_model: `${meta.make || ""} ${meta.model || ""}`.trim() || "Auto",
+              make: meta.make || "Auto",
+              model: meta.model || "",
               color: meta.color || "Onbekend",
-              duration_years: durationYears,
-              expires_at: expiresAt.toISOString(),
             })
             .select()
             .single();
@@ -95,12 +99,8 @@ export async function POST(req: Request) {
             // 3. Insert tag linked to vehicle
             await adminSupabase.from("tags").insert({
               token,
-              user_id: userId,
               vehicle_id: vehicle.id,
-              channel: (meta.channel as any) || "whatsapp",
-              destination_phone: meta.phone || null,
-              destination_email: email,
-              status: "active",
+              is_active: true,
             });
           }
         }

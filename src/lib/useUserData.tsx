@@ -120,51 +120,55 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       ) {
         try {
           const supabase = createClient();
+
+          // Fetch user profile for contact channel and phone
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("id, email, full_name, phone_number, preferred_channel")
+            .eq("id", user.id)
+            .maybeSingle();
+
+          // Query vehicles matching the database schema (owner_id, make, model)
           const { data: dbVehicles, error } = await supabase
             .from("vehicles")
             .select(`
               id,
               license_plate,
-              make_model,
+              make,
+              model,
               color,
-              duration_years,
-              expires_at,
               created_at,
               tags (
                 id,
                 token,
-                channel,
-                destination_phone,
-                destination_email,
-                status
+                is_active
               )
             `)
-            .eq("user_id", user.id)
+            .eq("owner_id", user.id)
             .order("created_at", { ascending: false });
 
           if (!error && dbVehicles && dbVehicles.length > 0 && isSubscribed) {
             const mappedVehicles: UserVehicleData[] = dbVehicles.map((v: any, idx: number) => {
               const tag = Array.isArray(v.tags) && v.tags.length > 0 ? v.tags[0] : null;
-              const [make = "Auto", ...modelParts] = (v.make_model || "").split(" ");
               return {
                 id: v.id,
                 plate: v.license_plate || "Onbekend",
-                make: make || "Auto",
-                model: modelParts.join(" ") || "",
+                make: v.make || "Auto",
+                model: v.model || "",
                 color: v.color || "Onbekend",
                 token: tag?.token || `PM-NL-${v.id?.slice(0, 4) || "0000"}`,
-                channel: tag?.channel || "whatsapp",
-                phone: tag?.destination_phone || "+31 6 ",
-                email: tag?.destination_email || user.email || "",
-                fullName: user.user_metadata?.full_name || "",
+                channel: (profile?.preferred_channel as any) || "whatsapp",
+                phone: profile?.phone_number || "+31 6 ",
+                email: profile?.email || user.email || "",
+                fullName: profile?.full_name || user.user_metadata?.full_name || "",
                 postalCode: "",
                 houseNumber: "",
                 street: "",
                 city: "",
                 address: "",
                 createdAt: v.created_at,
-                durationYears: v.duration_years || 2,
-                expiresAt: v.expires_at,
+                durationYears: 2,
+                expiresAt: undefined,
                 orderId: `PM-NL-${idx + 1}`,
               };
             });
