@@ -343,7 +343,18 @@
     "sentTitle": "Magic link sent!",
     "sentDesc": "We emailed a login link to {email}. Click the link in your inbox to sign in directly.",
     "tryAnother": "Try another email address",
-    "authFailed": "The login link is invalid or has expired. Please request a new link below."
+    "authFailed": "The login link is invalid or has expired. Please request a new link below.",
+    "otpTitle": "Enter your login code",
+    "otpDesc": "We emailed a 6-digit code and login link to {email}.",
+    "otpLabel": "6-digit login code",
+    "otpPlaceholder": "123456",
+    "otpBtn": "Log In with Code",
+    "verifyingCode": "Verifying code...",
+    "otpError": "The login code is not right or has expired. Please check the code in your latest email.",
+    "orMagicLink": "Or click the login link directly in your email",
+    "resendBtn": "Send new code",
+    "resendCooldown": "Resend in {seconds}s",
+    "resendNotice": "Note: requesting a new code invalidates your previous one."
   },
   "notFound": {
     "title": "Page Not Found",

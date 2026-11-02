@@ -1,25 +1,36 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormattedMessage, useIntl } from "react-intl";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Button } from "@/components/ui/Button";
 import { LanguageToggle } from "@/components/ui/LanguageToggle";
-import { SuccessState } from "@/components/ui/SuccessState";
 import { useAuth } from "@/lib/useAuth";
 import { createClient } from "@/lib/supabase/client";
-import { Mail, ArrowRight, AlertCircle, Loader2 } from "lucide-react";
+import {
+  Mail,
+  ArrowRight,
+  AlertCircle,
+  Loader2,
+  KeyRound,
+} from "lucide-react";
 
 export default function LoginPage() {
   const intl = useIntl();
   const router = useRouter();
-  const { isLoggedIn, mounted } = useAuth();
+  const { isLoggedIn, mounted, login } = useAuth();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // OTP Verification state
+  const [otpCode, setOtpCode] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [otpError, setOtpError] = useState<string | null>(null);
+  const [cooldown, setCooldown] = useState(0);
 
   // If already authenticated, redirect directly to dashboard
   useEffect(() => {
@@ -33,24 +44,27 @@ export default function LoginPage() {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       if (params.get("error") === "auth_failed") {
-        setErrorMsg(intl.formatMessage({ id: "login.authFailed" }));
+        const details = params.get("details");
+        setErrorMsg(
+          details
+            ? `${intl.formatMessage({ id: "login.authFailed" })} (${details})`
+            : intl.formatMessage({ id: "login.authFailed" })
+        );
       }
     }
   }, [intl]);
 
-  const handleMagicLink = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const targetEmail = email.trim();
-    if (!targetEmail) return;
+  // Cooldown countdown timer
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => {
+      setCooldown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
-    if (typeof window !== "undefined") {
-      localStorage.setItem("pingme-user-email", targetEmail);
-    }
-
-    setLoading(true);
-    setErrorMsg(null);
-
-    try {
+  const sendOtpRequest = useCallback(
+    async (targetEmail: string) => {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const isConfigured =
         Boolean(supabaseUrl) &&
@@ -72,14 +86,103 @@ export default function LoginPage() {
         // Fallback simulation for local dev prior to entering Supabase keys
         await new Promise((r) => setTimeout(r, 600));
       }
+    },
+    []
+  );
 
+  const handleMagicLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const targetEmail = email.trim().toLowerCase();
+    if (!targetEmail) return;
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("pingme-user-email", targetEmail);
+    }
+
+    setLoading(true);
+    setErrorMsg(null);
+    setOtpError(null);
+
+    try {
+      await sendOtpRequest(targetEmail);
       setSent(true);
+      setCooldown(30);
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : intl.formatMessage({ id: "login.magicLinkError" });
+        err instanceof Error
+          ? err.message
+          : intl.formatMessage({ id: "login.magicLinkError" });
       setErrorMsg(message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (cooldown > 0 || loading) return;
+    const targetEmail = email.trim().toLowerCase();
+    if (!targetEmail) return;
+
+    setLoading(true);
+    setOtpError(null);
+
+    try {
+      await sendOtpRequest(targetEmail);
+      setCooldown(30);
+      setOtpCode("");
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : intl.formatMessage({ id: "login.magicLinkError" });
+      setOtpError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanCode = otpCode.replace(/\D/g, "");
+    if (!cleanCode || cleanCode.length < 6) return;
+
+    const targetEmail = email.trim().toLowerCase();
+    setVerifying(true);
+    setOtpError(null);
+
+    try {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const isConfigured =
+        Boolean(supabaseUrl) &&
+        !supabaseUrl?.includes("placeholder-project") &&
+        !supabaseUrl?.includes("your-project-id");
+
+      if (isConfigured) {
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.verifyOtp({
+          email: targetEmail,
+          token: cleanCode,
+          type: "email",
+        });
+
+        if (error || !data.session) {
+          throw new Error(
+            error?.message || intl.formatMessage({ id: "login.otpError" })
+          );
+        }
+      } else {
+        await new Promise((r) => setTimeout(r, 600));
+      }
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("pingme-user-email", targetEmail);
+      }
+      login("/dashboard");
+    } catch (err: unknown) {
+      console.warn("OTP verification error:", err);
+      setOtpError(intl.formatMessage({ id: "login.otpError" }));
+    } finally {
+      setVerifying(false);
     }
   };
 
@@ -102,16 +205,125 @@ export default function LoginPage() {
 
         <div className="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8 space-y-6">
           {sent ? (
-            <SuccessState
-              size="sm"
-              title={<FormattedMessage id="login.sentTitle" />}
-              description={<FormattedMessage id="login.sentDesc" values={{ email: email.trim() }} />}
-              actionButton={
-                <Button variant="outline" size="sm" onClick={() => setSent(false)}>
-                  <FormattedMessage id="login.tryAnother" />
+            <div className="space-y-6">
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center">
+                  <KeyRound className="w-6 h-6" />
+                </div>
+                <h2 className="font-display font-bold text-xl text-slate-900 dark:text-white">
+                  <FormattedMessage id="login.otpTitle" />
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <FormattedMessage
+                    id="login.otpDesc"
+                    values={{
+                      email: (
+                        <strong className="font-bold text-slate-900 dark:text-white">
+                          {email.trim()}
+                        </strong>
+                      ),
+                    }}
+                  />
+                </p>
+              </div>
+
+              {otpError && (
+                <div className="flex items-start gap-2.5 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs text-rose-700 dark:text-rose-300">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-400 mt-0.5" />
+                  <span>{otpError}</span>
+                </div>
+              )}
+
+              {/* 6-Digit Code Form */}
+              <form onSubmit={handleVerifyOtp} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 text-center">
+                    <FormattedMessage id="login.otpLabel" />
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    maxLength={6}
+                    value={otpCode}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+                      setOtpCode(val);
+                      if (val.length === 6) {
+                        setOtpError(null);
+                      }
+                    }}
+                    placeholder="123456"
+                    className="w-full text-center font-mono font-extrabold text-2xl tracking-[0.35em] rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 py-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all placeholder:text-slate-300 dark:placeholder:text-slate-700"
+                    autoFocus
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  size="md"
+                  disabled={verifying || otpCode.length < 6}
+                  className="w-full shadow-md shadow-emerald-600/20"
+                >
+                  {verifying ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <span>
+                        <FormattedMessage id="login.verifyingCode" />
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <FormattedMessage id="login.otpBtn" />
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </>
+                  )}
                 </Button>
-              }
-            />
+              </form>
+
+              {/* Alternative: Link Hint */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 text-center space-y-1">
+                <p className="font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-emerald-500" />
+                  <FormattedMessage id="login.orMagicLink" />
+                </p>
+                <p className="text-[11px] text-slate-400">
+                  <FormattedMessage id="login.resendNotice" />
+                </p>
+              </div>
+
+              {/* Actions Footer */}
+              <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSent(false);
+                    setOtpError(null);
+                    setOtpCode("");
+                  }}
+                  className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+                >
+                  <FormattedMessage id="login.tryAnother" />
+                </button>
+
+                <button
+                  type="button"
+                  disabled={cooldown > 0 || loading}
+                  onClick={handleResend}
+                  className="font-semibold text-emerald-600 dark:text-emerald-400 hover:underline disabled:opacity-50 disabled:no-underline flex items-center gap-1"
+                >
+                  {loading && <Loader2 className="w-3 h-3 animate-spin" />}
+                  {cooldown > 0 ? (
+                    <FormattedMessage
+                      id="login.resendCooldown"
+                      values={{ seconds: cooldown }}
+                    />
+                  ) : (
+                    <FormattedMessage id="login.resendBtn" />
+                  )}
+                </button>
+              </div>
+            </div>
           ) : (
             <form onSubmit={handleMagicLink} className="space-y-4">
               {errorMsg && (

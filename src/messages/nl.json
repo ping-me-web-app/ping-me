@@ -343,7 +343,18 @@
     "sentTitle": "Magische link verzonden!",
     "sentDesc": "We hebben een inloglink gemaild naar {email}. Klik op de link in je inbox om direct in te loggen.",
     "tryAnother": "Ander e-mailadres proberen",
-    "authFailed": "De inloglink is verlopen of ongeldig. Vraag hieronder een nieuwe link aan."
+    "authFailed": "De inloglink is verlopen of ongeldig. Vraag hieronder een nieuwe link aan.",
+    "otpTitle": "Voer je inlogcode in",
+    "otpDesc": "We hebben een 6-cijferige code en inloglink gemaild naar {email}.",
+    "otpLabel": "6-cijferige inlogcode",
+    "otpPlaceholder": "123456",
+    "otpBtn": "Inloggen met Code",
+    "verifyingCode": "Code verifiëren...",
+    "otpError": "De inlogcode klopt niet of is verlopen. Controleer de code in je nieuwste e-mail.",
+    "orMagicLink": "Of klik direct op de inloglink in je e-mail",
+    "resendBtn": "Nieuwe code verzenden",
+    "resendCooldown": "Opnieuw verzenden over {seconds}s",
+    "resendNotice": "Let op: bij een nieuwe aanvraag vervalt je vorige code."
   },
   "notFound": {
     "title": "Pagina niet gevonden",
